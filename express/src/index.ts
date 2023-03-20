@@ -35,8 +35,6 @@ db.sequelize
     console.error(err);
   });
 
-const upload: multer.Multer = multer();
-
 app.use("/api", routes);
 
 app.listen(8080, () => {

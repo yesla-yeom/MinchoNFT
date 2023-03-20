@@ -2,13 +2,14 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 const TokenDetailComponent = ({ detail }) => {
+  console.log(detail);
   return (
     <DetailBox>
       <div>
-        <img src="./imgs/brownBear.jpg" alt="" />
+        <img src={detail.imgSrc} alt="" />
       </div>
       <div>
-        <div>#{detail.tokenId}</div>
+        <div>#{detail.tokenId + 1}</div>
         <div>
           <div>컨트랙트 주소(CA) : </div>
           <div>{detail.CA}</div>
@@ -22,8 +23,12 @@ const TokenDetailComponent = ({ detail }) => {
         </div>
         <div>
           <div>아이템 특성</div>
-          <div>Rank</div>
-          <div>Type</div>
+          {/* <div>
+            Rank : {detail.atrributes[0].value && detail.atrributes[0].value}{" "}
+          </div>
+          <div>
+            Type : {detail.atrributes[1].value && detail.atrributes[1].value}
+          </div> */}
         </div>
         <div>거래내역</div>
         <div>

@@ -1,11 +1,13 @@
 import { Router, Request, Response } from "express";
 
+import dummyDataList from "../data/dummyData.json";
+
 const router = Router();
 
 interface tokenData {
-  tokenId?: string;
+  tokenId: number;
   CA?: string;
-  price?: string;
+  price?: number;
   blockChain?: string;
   tokenOwner?: string;
   tokenBase?: string;
@@ -14,19 +16,19 @@ interface tokenData {
   image: string;
 }
 
-router.get("/detail", (req: Request, res: Response) => {
-  const tempData: tokenData = {
-    tokenId: "4282",
-    CA: "0x682371274859",
-    price: "123",
-    blockChain: "Ethereum",
-    tokenOwner: "0xasdasdasd",
-    tokenBase: "ERC-721",
-    name: "tempName",
-    description: "asdasdasd",
-    image: "dkdk",
-  };
+router.post("/detail", (req: Request, res: Response) => {
+  const { tokenId }: { tokenId: number } = req.body;
+  const tempData: tokenData = dummyDataList[tokenId];
   res.send(tempData);
+});
+
+router.post("/buy", (req: Request, res: Response) => {
+  const { tokenId }: { tokenId: string } = req.body;
+
+  console.log(tokenId, dummyDataList);
+  // PurchaseToken(uint _tokenId)
+
+  res.end();
 });
 
 export default router;
