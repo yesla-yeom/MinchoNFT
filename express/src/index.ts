@@ -16,6 +16,8 @@ import db from "../models/index";
 import { sequelize } from "../models/index";
 import routes from "../routes/index";
 
+
+
 const app: Express = express();
 
 app.use("/upload", express.static(path.join(__dirname, "uploads")));
