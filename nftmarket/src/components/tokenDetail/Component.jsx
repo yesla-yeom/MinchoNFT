@@ -1,22 +1,22 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-const TokenDetailComponent = ({ detail }) => {
+const TokenDetailComponent = () => {
   return (
     <DetailBox>
       <div>
         <img src="./imgs/brownBear.jpg" alt="" />
       </div>
       <div>
-        <div>#{detail.tokenId}</div>
+        <div>#4278</div>
         <div>
-          <div>컨트랙트 주소(CA) : </div>
-          <div>{detail.CA}</div>
+          <div>컨트랙트 주소 : </div>
+          <div>0x682371274859</div>
         </div>
-        <div>블록체인 : {detail.blockChain}</div>
-        <div>토큰 기반: {detail.tokenBase}</div>
-        <div>토큰 소유자 : {detail.tokenOwner}</div>
-        <div>가격 : {detail.price} Goerli</div>
+        <div>블록체인 : ethereum</div>
+        <div>토큰 기반: ERC-721</div>
+        <div>토큰 소유자 : 0xasdasdasd</div>
+        <div>가격 : 1Goerli</div>
         <div>
           <button>구매하기</button>
         </div>
@@ -25,7 +25,6 @@ const TokenDetailComponent = ({ detail }) => {
           <div>Rank</div>
           <div>Type</div>
         </div>
-        <div>거래내역</div>
         <div>
           <Link to={"/"}>전체 목록 보기</Link>
         </div>
@@ -66,28 +65,20 @@ const DetailBox = styled.div`
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        & > div {
-          padding: 0 5px 0 0;
-        }
       }
 
       &:nth-child(7) {
         width: fit-content;
         margin: 0 auto;
         & > button {
-          width: 100%;
           padding: 10px 200px;
-          background-color: rgba(176, 222, 219, 1);
+          background-color: #b0dedb;
           border: none;
           border-radius: 10px;
           cursor: pointer;
-          color: rgba(88, 49, 49, 1);
+          color: white;
           font-weight: 900;
           font-size: 1rem;
-          white-space: nowrap;
-          &:hover {
-            color: white;
-          }
         }
       }
       &:nth-child(8) > div {
