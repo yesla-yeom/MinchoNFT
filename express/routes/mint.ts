@@ -1,8 +1,6 @@
 import { Router } from "express";
 const router = Router();
 
-import mint from "./mint";
-
-router.use("/mint", mint);
+import axios from "axios";
 
 export default router;
