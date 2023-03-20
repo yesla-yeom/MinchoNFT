@@ -1,9 +1,10 @@
-import { Sequelize } from "sequelize";
+import { Sequelize } from "sequelize-typescript";
 import Config from "../config/config.json";
+import Minting from "./minting";
 
 const env = process.env.NODE_ENV || "development";
 const config = Config[env];
-const db: any = {};
+const db: any = { Minting };
 
 let sequelize = new Sequelize(
   config.database,

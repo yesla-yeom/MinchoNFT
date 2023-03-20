@@ -40,10 +40,9 @@ function MintingContainer() {
     // formData.append("from", account);
     console.log(formData);
     const result = (
-      await axios.post("http://localhost:8080/api/mint", formData)
+      await axios.post("http://localhost:8080/api/mint/", formData)
     ).data;
     console.log(result);
-    // 백에서 obj보내준거임(트랜잭션)
     // web3.eth.sendTransaction(result);
   };
 
