@@ -1,5 +1,11 @@
+import MintingContainer from "./components/Minting/Container";
+
 function App() {
-  return <div>ㅎㅇㅎㅇ</div>;
+  return (
+    <div>
+      <MintingContainer />
+    </div>
+  );
 }
 
 export default App;
