@@ -1,11 +1,13 @@
 import { Sequelize } from "sequelize";
 import Config from "../config/config.json";
 
-import Minting from "./minting";
 
+import BuyToken from "./buyToken";
+import Minting from "./minting";
 const env = process.env.NODE_ENV || "development";
 const config = Config[env];
-const db: any = { Minting };
+const db: any = { BuyToken, Minting };
+
 
 let sequelize: any = new Sequelize(
   config.database,
@@ -20,7 +22,10 @@ Object.keys(db).forEach((modelName) => {
   }
 });
 
+
+db.BuyToken = BuyToken.initModel(sequelize);
 db.Minting = Minting.initModel(sequelize);
+
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
