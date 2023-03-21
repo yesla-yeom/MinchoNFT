@@ -10,6 +10,7 @@ const router = Router();
 const upload: multer.Multer = multer();
 dotenv.config();
 const { Minting } = db;
+
 const pinata = new pinataSDK(process.env.API_Key, process.env.API_Secret);
 
 // const web3 = new Web3("http://ganache.test.errorcode.help:8545");
