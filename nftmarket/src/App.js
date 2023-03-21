@@ -1,9 +1,11 @@
+
 import { Card, Col, Row, Layout, theme } from "antd";
 import styled from "styled-components";
 import { Route, Routes } from "react-router-dom";
 
 import HeaderContainer from "./components/header/Container";
-
+import TokenDetailContainer from "./components/tokenDetail/Container";
+import MintingContainer from "./components/Minting/Container";
 import CollectContainer from "./components/body/collect/Container";
 import BodyContainer from "./components/body/Container";
 const { Header, Content, Footer } = Layout;
@@ -22,9 +24,11 @@ function App() {
         <NftHeader>
           <HeaderContainer />
         </NftHeader>
-        {/* <Routes>
-          <Route path="/" element={<></>} />
-        </Routes> */}
+        <Routes>
+        <Route path="/minting" element={<MintingContainer />} />
+        <Route path="/" element={<>여기는 홈이야</>} />
+        <Route path="/detail" element={<TokenDetailContainer />} />
+        </Routes>
         <NftBody className="site-layout">
           <div
             style={{
@@ -42,6 +46,7 @@ function App() {
         </NftBody>
         <NftFooter>대충 알아서 짜기</NftFooter>
       </Layout>
+
     </>
   );
 }
