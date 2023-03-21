@@ -8,7 +8,11 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "removeComments": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "allowJs": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "baseUrl": ".",
     "typeRoots": ["./node_modules/@types", "./@types"],
     "paths": {
