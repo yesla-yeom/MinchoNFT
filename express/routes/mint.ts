@@ -1,15 +1,15 @@
 import { Router, Request, Response } from "express";
-const router = Router();
+
 import pinataSDK from "@pinata/sdk";
 import multer from "multer";
-import axios from "axios";
+// import axios from "axios";
 import dotenv from "dotenv";
-
+import db from "../models/index";
 import { Readable } from "stream";
-
+const router = Router();
 const upload: multer.Multer = multer();
 dotenv.config();
-
+const { Minting } = db;
 const pinata = new pinataSDK(process.env.API_Key, process.env.API_Secret);
 
 // const web3 = new Web3("http://ganache.test.errorcode.help:8545");
@@ -126,6 +126,13 @@ router.post("/", upload.single("file"), async (req: Request, res: Response) => {
     console.log(description);
     console.log(imgResult.IpfsHash);
     console.log(jsonResult.IpfsHash);
+    await Minting.create({
+      tokenId: 1,
+      name: name,
+      description: description,
+      imgipfshash: imgResult.IpfsHash,
+      jsonipfshash: jsonResult.IpfsHash,
+    });
   }
 
   res.send(req.body);

@@ -1,32 +1,48 @@
-import { Table, Column, Model, DataType } from "sequelize-typescript";
+import { Model, DataTypes, Sequelize } from "sequelize";
 
-@Table({
-  tableName: "minting",
-})
-export class Minting extends Model<Minting> {
-  @Column({
-    type: DataType.STRING,
-    allowNull: false,
-  })
-  title!: string;
+export default class Minting extends Model {
+  public tokenId!: number;
+  public name!: string;
+  public description!: string;
+  public imgIpfsHash!: string;
+  public jsonIpfsHash!: string;
 
-  @Column({
-    type: DataType.STRING,
-    allowNull: false,
-  })
-  author!: string;
+  public static initModel(sequelize: Sequelize) {
+    return Minting.init(
+      {
+        tokenId: {
+          type: DataTypes.INTEGER.UNSIGNED,
+          allowNull: false,
+        },
+        name: {
+          type: DataTypes.STRING(255),
+          allowNull: false,
+        },
+        description: {
+          type: DataTypes.STRING(255),
+          allowNull: false,
+        },
+        imgipfshash: {
+          type: DataTypes.STRING(255),
+          allowNull: false,
+        },
+        jsonipfshash: {
+          type: DataTypes.STRING(255),
+          allowNull: false,
+        },
+      },
+      {
+        sequelize,
+        timestamps: true,
+        underscored: true,
+        paranoid: false,
+        modelName: "Minting",
+        tableName: "minting",
+        charset: "utf8mb4",
+        collate: "utf8mb4_general_ci",
+      }
+    );
+  }
 
-  @Column({
-    type: DataType.INTEGER,
-    allowNull: false,
-  })
-  year!: number;
-
-  @Column({
-    type: DataType.FLOAT,
-    allowNull: false,
-  })
-  price!: number;
+  public static associate(db: any) {}
 }
-
-export default Minting;

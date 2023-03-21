@@ -1,12 +1,13 @@
-import { Sequelize } from "sequelize-typescript";
+import { Sequelize } from "sequelize";
 import Config from "../config/config.json";
+
 import Minting from "./minting";
 
 const env = process.env.NODE_ENV || "development";
 const config = Config[env];
 const db: any = { Minting };
 
-let sequelize = new Sequelize(
+let sequelize: any = new Sequelize(
   config.database,
   config.username,
   config.password,
@@ -18,6 +19,8 @@ Object.keys(db).forEach((modelName) => {
     db[modelName].associate(db);
   }
 });
+
+db.Minting = Minting.initModel(sequelize);
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
