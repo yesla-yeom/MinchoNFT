@@ -1,21 +1,30 @@
-import { Button } from "antd";
+import { Button, Dropdown } from "antd";
 import styled from "styled-components";
-import { useWeb3 } from "../../utility/useWeb3";
+import { useWeb3React } from "@web3-react/core";
+import { connectors } from "../../utility/connect";
 
 const HeaderEditComponent = () => {
-  const { chainId, account, logIn } = useWeb3();
-  console.log(account);
-  console.log(chainId);
+  const { account, activate, deactivate, active } = useWeb3React();
+
+  const items = [
+    {
+      key: "1",
+      label: <p>{account}</p>,
+    },
+  ];
   return (
     <EditDiv>
-      {account ? (
-        <div style={{ display: "flex", columnGap: "10px" }}>
-          <div>Account : {account}</div>
-        </div>
+      {active ? (
+        <>
+          <Dropdown menu={{ items }} placement="bottomLeft">
+            <Button>My Account</Button>
+          </Dropdown>
+          <Button>My NFT</Button>
+        </>
       ) : (
         <Button
           onClick={() => {
-            logIn();
+            activate(connectors.injected);
           }}
         >
           지갑 연결
@@ -27,6 +36,7 @@ const HeaderEditComponent = () => {
 
 const EditDiv = styled.div`
   display: flex;
+  column-gap: 15px;
   justify-content: center;
   align-items: center;
 `;

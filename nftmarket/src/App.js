@@ -1,7 +1,6 @@
-
-import { Card, Col, Row, Layout, theme } from "antd";
+import { Layout, theme } from "antd";
 import styled from "styled-components";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Link } from "react-router-dom";
 
 import HeaderContainer from "./components/header/Container";
 import TokenDetailContainer from "./components/tokenDetail/Container";
@@ -24,29 +23,35 @@ function App() {
         <NftHeader>
           <HeaderContainer />
         </NftHeader>
-        <Routes>
-        <Route path="/minting" element={<MintingContainer />} />
-        <Route path="/" element={<>여기는 홈이야</>} />
-        <Route path="/detail" element={<TokenDetailContainer />} />
-        </Routes>
+
         <NftBody className="site-layout">
+          123
           <div
             style={{
               padding: "64px 128px",
-              minHeight: 3800,
               background: colorBgContainer,
-              backgroundColor: "purple",
+              backgroundColor: " rgba(227, 243, 247, 1)",
             }}
           >
-            <BodyContainer />
-            <div>
-              <CollectContainer />
-            </div>
+            <Routes>
+              <Route path="/minting" element={<MintingContainer />} />
+              <Route
+                path="/"
+                element={
+                  <>
+                    <BodyContainer />
+                    <CollectContainer />
+                  </>
+                }
+              />
+              <Route path="/detail" element={<TokenDetailContainer />} />
+            </Routes>
           </div>
         </NftBody>
-        <NftFooter>대충 알아서 짜기</NftFooter>
+        <NftFooter>
+          <p>여기는 푸터야</p>
+        </NftFooter>
       </Layout>
-
     </>
   );
 }
@@ -63,16 +68,17 @@ const NftHeader = styled(Header)`
     display: flex;
     color: red;
     justify-content: space-between;
+    align-items: center;
   }
 `;
 const NftBody = styled(Content)`
   padding: 0 50px;
   margin: 16px 0;
-  background-color: black;
+  background-color: rgba(227, 243, 247, 1);
 `;
 const NftFooter = styled(Footer)`
   text-align: center;
-  background-color: blue;
+  background-color: rgba(176, 222, 219, 1);
   color: red;
 `;
 

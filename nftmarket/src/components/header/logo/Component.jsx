@@ -1,12 +1,20 @@
 import styled from "styled-components";
 
 const HeaderLogoComponent = () => {
-  return <ImgDiv>여기는 로고 들어갈곳</ImgDiv>;
+  return (
+    <ImgDiv>
+      <img src="./imgs/mintChoLogo2.png" />
+    </ImgDiv>
+  );
 };
 
 const ImgDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 7px 0;
   & > img {
-    width: 64px;
+    width: 120px;
   }
 `;
 
