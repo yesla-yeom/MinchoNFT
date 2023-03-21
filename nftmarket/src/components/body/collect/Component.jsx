@@ -1,24 +1,32 @@
-import { Card, Row, Col } from "antd";
-
+import { Row, Col } from "antd";
+import styled from "styled-components";
 import CollectItemContainer from "./item/Container";
-const { Meta } = Card;
 
 const CollectComponent = ({ tokenArr }) => {
   return (
-    <Row gutter={[16, 24]}>
-      {tokenArr.map((item, index) => {
-        return (
-          <Col className="gutter-row" span={6} key={`Col-${index}`}>
-            <CollectItemContainer
-              tokenName={item.tokenId}
-              price={item.price}
-              key={`Card-${index}`}
-            />
-          </Col>
-        );
-      })}
-    </Row>
+    <CollectDiv>
+      <div>컬랙션 1입니다</div>
+      <Row gutter={[16, 24]}>
+        {tokenArr.map((item, index) => {
+          return (
+            <Col className="gutter-row" span={6} key={`Col-${index}`}>
+              <CollectItemContainer
+                tokenName={item.tokenId}
+                price={item.price}
+                key={`Card-${index}`}
+              />
+            </Col>
+          );
+        })}
+      </Row>
+    </CollectDiv>
   );
 };
+
+const CollectDiv = styled.div`
+  & > div {
+    margin: 20px 0;
+  }
+`;
 
 export default CollectComponent;
