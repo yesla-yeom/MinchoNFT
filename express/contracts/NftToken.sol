@@ -9,12 +9,15 @@ import "../node_modules/@openzeppelin/contracts/utils/Counters.sol";
 contract NftToken is ERC721Enumerable, ERC721URIStorage, Ownable {
   using Counters for Counters.Counter;
   Counters.Counter private _tokenId;
+  // uint public constant MAX_TOKEN_COUNT = 10000;
 
   struct TokenData {
     uint Rank;
     uint Type;
   }
   mapping(uint => TokenData) public TokenDatas;
+
+  uint[4][4] public tokenCount;
 
   constructor(
     string memory _name,
@@ -50,10 +53,24 @@ contract NftToken is ERC721Enumerable, ERC721URIStorage, Ownable {
     return "https://gateway.pinata.cloud/ipfs/";
   }
 
-  function safeMint(string memory uri) public {
+  // function safeMint(string memory uri) public {
+  //   uint tokenId = _tokenId.current();
+
+  //   _tokenId.increment();
+  //   _safeMint(msg.sender, tokenId);
+  //   _setTokenURI(tokenId, uri);
+  // }
+  function mintToken(string memory uri) public payable {
     uint tokenId = _tokenId.current();
 
     _tokenId.increment();
+
+    TokenDatas[tokenId] = getRandomTokenData(msg.sender, tokenId);
+
+    tokenCount[TokenDatas[tokenId].Rank - 1][TokenDatas[tokenId].Type - 1] += 1;
+    // 토큰이 민팅될 때마다 랭크, 타입에 따라 배열의 요소값을 1씩 추가해준다.
+
+    // payable(Ownable.owner()).transfer(msg.value);
     _safeMint(msg.sender, tokenId);
     _setTokenURI(tokenId, uri);
   }

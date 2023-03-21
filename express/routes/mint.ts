@@ -2,18 +2,28 @@ import { Router, Request, Response } from "express";
 
 import pinataSDK from "@pinata/sdk";
 import multer from "multer";
+import Web3 from "web3";
+
 // import axios from "axios";
 import dotenv from "dotenv";
 import db from "../models/index";
 import { Readable } from "stream";
 const router = Router();
 const upload: multer.Multer = multer();
+import { AbiItem } from "web3-utils";
+
 dotenv.config();
 const { Minting } = db;
+import { abi as NftAbi } from "../contracts/artifacts/NftToken.json";
+import { abi as SaleAbi } from "../contracts/artifacts/SaleToken.json";
+// const web3 = new Web3("https://goerli.infura.io/v3");
+// const web3 = new Web3("http://ganache.test.errorcode.help:8545");
+const web3 = new Web3("http://localhost:8545");
 
 const pinata = new pinataSDK(process.env.API_Key, process.env.API_Secret);
 
-// const web3 = new Web3("http://ganache.test.errorcode.help:8545");
+// let rankvalue = Math.floor(Math.random() * 10001);
+// console.log(rankvalue);
 
 router.post("/", upload.single("file"), async (req: Request, res: Response) => {
   const { name, description }: { name: string; description: string } = req.body;
@@ -44,7 +54,7 @@ router.post("/", upload.single("file"), async (req: Request, res: Response) => {
       image: `https://gateway.pinata.cloud/ipfs/${imgResult.IpfsHash}`,
 
       attributes: [
-        { trait_type: "Rank", value: "1" },
+        { trait_type: "Rank", value: 1 },
         // {
         //   trait_type: "BackGround",
         //   value: "Off White A",
@@ -100,43 +110,57 @@ router.post("/", upload.single("file"), async (req: Request, res: Response) => {
   );
   console.log(jsonResult);
 
-  //   //   const deployed = new web3.eth.Contract(
-  //   //     NftAbi as AbiItem[],
-  //   //     process.env.NFT_CA
-  //   //   );
-  //   //   // NftAbi as AbiItem[] NftAbi 이건 AbiItem[] 이형식갖고있다
+  const deployed = new web3.eth.Contract(
+    NftAbi as AbiItem[],
+    process.env.NFT_CA
+  );
 
-  //   //   const obj: { nonce: number; to: string; from: string; data: string } = {
-  //   //     nonce: 0,
-  //   //     to: "",
-  //   //     from: "",
-  //   //     data: "",
-  //   //   };
+  const saledeployed = new web3.eth.Contract(
+    SaleAbi as AbiItem[],
+    process.env.SALE_CA
+  );
 
-  //   //   console.log("test");
-  //   //   console.log(req.body.from);
-  //   //   // obj.nonce = await web3.eth.getTransactionCount(req.body.from);
+  const obj: {
+    // nonce: number;
+    to: string;
+    from: string;
+    data: string;
+  } = {
+    // nonce: 0,
+    to: "",
+    from: "",
+    data: "",
+  };
+
+  // let test = await web3.eth.getTransactionCount(req.body.from);
+  // console.log(test);
+
   //   //   console.log("test2");
-  //   //   obj.to = process.env.NFT_CA;
-  //   //   obj.from = req.body.from;
-  //   //   obj.data = deployed.methods.safeMint(jsonResult.IpfsHash).encodeABI();
+  obj.to = process.env.NFT_CA;
+  obj.from = req.body.from;
+  obj.data = deployed.methods.mintToken(jsonResult.IpfsHash).encodeABI();
 
+  console.log(obj);
+  console.log("2");
   //   //   res.send(obj);
   if (imgResult && jsonResult) {
     console.log(name);
     console.log(description);
     console.log(imgResult.IpfsHash);
     console.log(jsonResult.IpfsHash);
+    console.log(req.body.from);
+
     await Minting.create({
       tokenId: 1,
       name: name,
       description: description,
       imgipfshash: imgResult.IpfsHash,
       jsonipfshash: jsonResult.IpfsHash,
+      from: req.body.from,
+      rank: 1,
     });
   }
-
-  res.send(req.body);
+  res.send(obj);
 });
 
 export default router;

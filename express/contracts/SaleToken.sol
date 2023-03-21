@@ -12,6 +12,7 @@ contract SaleToken {
 
   struct TokenInfo {
     uint tokenId;
+    uint Rank;
     uint price;
     string tokenURI;
   }

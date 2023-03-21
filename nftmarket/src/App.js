@@ -8,12 +8,15 @@ import MintingContainer from "./components/Minting/Container";
 import CollectContainer from "./components/body/collect/Container";
 import BodyContainer from "./components/body/Container";
 
+import { useWeb3 } from "./components/utility/useWeb3";
+
 const { Header, Content, Footer } = Layout;
 
 function App() {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+  const { account, logIn, web3 } = useWeb3();
   return (
     <>
       <Layout
@@ -22,7 +25,7 @@ function App() {
         }}
       >
         <NftHeader>
-          <HeaderContainer />
+          <HeaderContainer logIn={logIn} />
         </NftHeader>
 
         <NftBody className="site-layout">
@@ -35,7 +38,10 @@ function App() {
             }}
           >
             <Routes>
-              <Route path="/minting" element={<MintingContainer />} />
+              <Route
+                path="/minting"
+                element={<MintingContainer account={account} web3={web3} />}
+              />
               <Route
                 path="/"
                 element={
