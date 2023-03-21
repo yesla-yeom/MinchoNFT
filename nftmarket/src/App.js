@@ -1,13 +1,13 @@
-import { Card, Col, Row, Layout, theme } from "antd";
-
+import { Layout, theme } from "antd";
 import styled from "styled-components";
-import { Route, Routes, Link } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 import HeaderContainer from "./components/header/Container";
 import TokenDetailContainer from "./components/tokenDetail/Container";
 import MintingContainer from "./components/Minting/Container";
 import CollectContainer from "./components/body/collect/Container";
 import BodyContainer from "./components/body/Container";
+
 const { Header, Content, Footer } = Layout;
 
 function App() {
@@ -25,15 +25,8 @@ function App() {
           <HeaderContainer />
         </NftHeader>
 
-
         <NftBody className="site-layout">
           123
-
-        <Routes>
-        <Route path="/minting" element={<MintingContainer />} />
-
-        <Route path="/" element={<><NftBody className="site-layout">
-
           <div
             style={{
               padding: "64px 128px",
@@ -52,14 +45,16 @@ function App() {
                   </>
                 }
               />
-              <Route path="/detail/:tokenId" element={<TokenDetailContainer />} />
+              <Route
+                path="/detail/:tokenId"
+                element={<TokenDetailContainer />}
+              />
             </Routes>
           </div>
         </NftBody>
         <NftFooter>
           <p>여기는 푸터야</p>
         </NftFooter>
-
       </Layout>
     </>
   );
