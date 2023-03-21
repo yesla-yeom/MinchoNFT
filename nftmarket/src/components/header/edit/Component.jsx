@@ -2,9 +2,10 @@ import { Button, Dropdown } from "antd";
 import styled from "styled-components";
 import { useWeb3React } from "@web3-react/core";
 import { connectors } from "../../utility/connect";
+import { Link } from "react-router-dom";
 
 const HeaderEditComponent = () => {
-  const { account, activate, deactivate, active } = useWeb3React();
+  const { account, activate, active, library } = useWeb3React();
 
   const items = [
     {
@@ -19,7 +20,9 @@ const HeaderEditComponent = () => {
           <Dropdown menu={{ items }} placement="bottomLeft">
             <Button>My Account</Button>
           </Dropdown>
-          <Button>My NFT</Button>
+          <Link to={"/myNFT"}>
+            <Button>My NFT</Button>
+          </Link>
         </>
       ) : (
         <Button
