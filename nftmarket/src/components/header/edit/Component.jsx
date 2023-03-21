@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useWeb3React } from "@web3-react/core";
 import { connectors } from "../../utility/connect";
 
-const HeaderEditComponent = () => {
+const HeaderEditComponent = ({ logIn }) => {
   const { account, activate, deactivate, active } = useWeb3React();
 
   const items = [
@@ -25,6 +25,7 @@ const HeaderEditComponent = () => {
         <Button
           onClick={() => {
             activate(connectors.injected);
+            logIn();
           }}
         >
           지갑 연결
