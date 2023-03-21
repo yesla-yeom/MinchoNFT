@@ -10,7 +10,7 @@ import CollectContainer from "./components/body/collect/Container";
 import BannerContainer from "./components/body/banner/Container";
 import { useWeb3 } from "./components/utility/useWeb3";
 import BodyContainer from "./components/body/Container";
-
+import QnaContainer from "./components/qna/Container";
 
 const { Header, Content, Footer } = Layout;
 
@@ -46,16 +46,16 @@ function App() {
                     }}
                   >
                     <CollectContainer />
-    </>
-                }
-              />
-              <Route
-                path="/detail/:tokenId"
-                element={<TokenDetailContainer account={account} web3={web3} />}
-              />
-            </Routes>
-          </div>
-
+                  </div>
+                </>
+              }
+            />
+            <Route
+              path="/detail/:tokenId"
+              element={<TokenDetailContainer account={account} web3={web3} />}
+            />
+            <Route path="/qna" element={<QnaContainer />} />
+          </Routes>
         </NftBody>
         <NftFooter>
           <p>여기는 푸터야</p>
