@@ -1,6 +1,7 @@
 import { Router, Request, Response } from "express";
 
 import dummyDataList from "../data/dummyData.json";
+import BuyToken from "../models/buyToken";
 
 const router = Router();
 
@@ -23,13 +24,47 @@ router.post("/detail", (req: Request, res: Response) => {
   res.send(tempData);
 });
 
-router.post("/buy", (req: Request, res: Response) => {
-  const { tokenId }: { tokenId: string } = req.body;
+router.post("/buy", async (req: Request, res: Response) => {
+  try {
+    const {
+      tokenId,
+      name,
+      description,
+      imgSrc,
+      CA,
+      price,
+      blockChain,
+      tokenOwner,
+      tokenBase,
+    } = dummyDataList[req.body.tokenId];
 
-  console.log(tokenId, dummyDataList);
-  // PurchaseToken(uint _tokenId)
+    const tempData = await BuyToken.findOne({
+      where: {
+        tokenId: req.body.tokenId,
+      },
+    });
+    if (tempData) return res.status(201).send({ msg: "already exist Token" });
 
-  res.end();
+    await BuyToken.create({
+      tokenId,
+      name,
+      description,
+      image: imgSrc,
+      ca: CA,
+      price,
+      blockChain,
+      tokenOwner,
+      tokenBase,
+      value: 1,
+    });
+
+    // PurchaseToken(uint _tokenId)
+
+    res.send({ msg: "correct buy Token" });
+  } catch (err) {
+    console.log(err);
+    res.send({ err });
+  }
 });
 
 export default router;

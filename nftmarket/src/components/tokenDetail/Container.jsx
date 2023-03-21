@@ -18,15 +18,18 @@ const TokenDetailContainer = () => {
     setDetail(data);
   }, [params]);
 
-  const buyToken = (_tokenId) => {
-    axios.post("http://localhost:8080/api/nftToken/buy", { tokenId: _tokenId });
+  const buyToken = async (_tokenId) => {
+    const result = await axios.post("http://localhost:8080/api/nftToken/buy", {
+      tokenId: _tokenId,
+    });
+    console.log(result);
   };
 
   useEffect(() => {
     tokenDetail();
   }, [params]);
 
-  return <TokenDetailComponent detail={detail} />;
+  return <TokenDetailComponent detail={detail} buyToken={buyToken} />;
 };
 
 export default TokenDetailContainer;
