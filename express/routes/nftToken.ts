@@ -14,6 +14,7 @@ interface tokenData {
   name: string;
   description: string;
   image: string;
+  atrributes?: Array<{ trait_type: string; value: number }>;
 }
 
 router.post("/detail", (req: Request, res: Response) => {

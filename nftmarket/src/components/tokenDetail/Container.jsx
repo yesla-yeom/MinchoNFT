@@ -15,8 +15,6 @@ const TokenDetailContainer = () => {
         tokenId: params.tokenId,
       })
     ).data;
-    console.log(params.tokenId);
-    console.log(data);
     setDetail(data);
   }, [params]);
 
@@ -26,7 +24,7 @@ const TokenDetailContainer = () => {
 
   useEffect(() => {
     tokenDetail();
-  }, []);
+  }, [params]);
 
   return <TokenDetailComponent detail={detail} />;
 };
