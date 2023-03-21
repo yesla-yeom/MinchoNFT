@@ -242,19 +242,19 @@
 	},
 	"sources": {
 		"contracts/NftToken.sol": {
-			"keccak256": "0x3e36864420eff82267b046362d363c713388ae574506a9d11b437904b461d4f4",
+			"keccak256": "0x1010b08a76dfd30bd78bcea2651ef30a4b1d2f7940630eb75d76c2f7a9ad5186",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://0f89690e075786867eed0d51449d71da9e099cdb4b415366f08412834d78bde8",
-				"dweb:/ipfs/Qmac9mM1SqDKdqwRgCEMUSbQsPLB8iTNHAvQ6Z7eDZEysS"
+				"bzz-raw://e9566c05706bc72cfa40f7f917bd40d5993738aa7a7e4bfd77960620dcc58471",
+				"dweb:/ipfs/QmVvhowpKpJK4tpJ8EV3Cc9zUnprQ1aZUMu5rPySakEE8Z"
 			]
 		},
 		"contracts/SaleToken.sol": {
-			"keccak256": "0xc6118ace6bf4cbf122efa2af76eaa7ee671703aad949d5d5a8ed4982652ba666",
+			"keccak256": "0xcdf63fc097d30cdd7c849c8e26df617266f434fd3e28f3406babeb2a0183ce84",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://bdbcb8a226d6e4513bf0aa747ae20b249eaafc2b71648c16692cb885b26f4ae5",
-				"dweb:/ipfs/QmSsn2bFEaWNuu6EvdZxAovXU88XfKtaJnihwSQeTV6w4k"
+				"bzz-raw://9816e89788a21819bbcfb4c1b70560d07f1f6b0d32707507e3c6a05b5b1c81d6",
+				"dweb:/ipfs/QmdAEfmdzuWm2hMEK8hTQdkLL3T6q9LRBSCRfhwauZx8eW"
 			]
 		},
 		"node_modules/@openzeppelin/contracts/access/Ownable.sol": {

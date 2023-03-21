@@ -24,6 +24,8 @@ contract NftToken is ERC721Enumerable, ERC721URIStorage, Ownable {
     string memory _symbol
   ) ERC721(_name, _symbol) {}
 
+  event info(uint tokenId);
+
   function _beforeTokenTransfer(
     address from,
     address to,
@@ -69,6 +71,8 @@ contract NftToken is ERC721Enumerable, ERC721URIStorage, Ownable {
 
     tokenCount[TokenDatas[tokenId].Rank - 1][TokenDatas[tokenId].Type - 1] += 1;
     // 토큰이 민팅될 때마다 랭크, 타입에 따라 배열의 요소값을 1씩 추가해준다.
+
+    emit info(tokenId);
 
     // payable(Ownable.owner()).transfer(msg.value);
     _safeMint(msg.sender, tokenId);
@@ -133,5 +137,9 @@ contract NftToken is ERC721Enumerable, ERC721URIStorage, Ownable {
 
   function getTokenRank(uint tokenId) public view returns (uint) {
     return TokenDatas[tokenId].Rank;
+  }
+
+  function getTokenType(uint tokenId) public view returns (uint) {
+    return TokenDatas[tokenId].Type;
   }
 }

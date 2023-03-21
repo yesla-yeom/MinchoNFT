@@ -12,9 +12,9 @@ contract SaleToken {
 
   struct TokenInfo {
     uint tokenId;
-    uint Rank;
     uint price;
     string tokenURI;
+    
   }
 
   mapping(uint => uint) public tokenPrices;
