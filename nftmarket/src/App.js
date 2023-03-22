@@ -10,6 +10,7 @@ import CollectContainer from "./components/body/collect/Container";
 import BannerContainer from "./components/body/banner/Container";
 import { useWeb3 } from "./components/utility/useWeb3";
 import BodyContainer from "./components/body/Container";
+import CollectionContainer from "./components/collection/Container";
 
 const { Header, Content, Footer } = Layout;
 
@@ -49,6 +50,7 @@ function App() {
                 </>
               }
             />
+            <Route path="/detail" element={<CollectionContainer />} />
             <Route
               path="/detail/:tokenId"
               element={<TokenDetailContainer account={account} web3={web3} />}
