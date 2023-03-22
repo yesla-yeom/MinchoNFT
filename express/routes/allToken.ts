@@ -54,5 +54,4 @@ router.post("/connectedAccount", async (req: Request, res: Response) => {
   }
   res.send({ msg: "update Complete" });
 });
-
 export default router;
