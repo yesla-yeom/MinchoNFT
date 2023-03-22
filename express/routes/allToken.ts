@@ -42,13 +42,6 @@ router.get("/list", async (req: Request, res: Response) => {
   res.send({ jsonResultArr, result });
 });
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 781d55a (after rebase)
-=======
->>>>>>> 781d55a6f42549c7d3e1bb07f9b4b0950e572d28
 router.post("/accountList", async (req: Request, res: Response) => {
   const list = await AllToken.findAll();
   res.send({ list });
@@ -61,30 +54,4 @@ router.post("/connectedAccount", async (req: Request, res: Response) => {
   }
   res.send({ msg: "update Complete" });
 });
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
-
->>>>>>> 781d55a (after rebase)
-=======
-
->>>>>>> 781d55a6f42549c7d3e1bb07f9b4b0950e572d28
-router.post("/latestToken", async (req: Request, res: Response) => {
-  const tempTokenArr = await AllToken.findAll({
-    attributes: ["image", "price", "name"],
-    order: [["createdAt", "DESC"]],
-  });
-  console.log(tempTokenArr);
-  console.log("나 일단 한번 왓어");
-  res.send(tempTokenArr);
-});
-
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 6b57df8 (23.3.22)
-=======
->>>>>>> 781d55a (after rebase)
-=======
->>>>>>> 781d55a6f42549c7d3e1bb07f9b4b0950e572d28
 export default router;
