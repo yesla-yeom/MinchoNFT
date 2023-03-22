@@ -66,7 +66,7 @@ router.post("/", upload.single("file"), async (req: Request, res: Response) => {
       image: `https://gateway.pinata.cloud/ipfs/${imgResult.IpfsHash}`,
 
       attributes: [
-        { trait_type: "Rank", value: "1" },
+        { trait_type: "Rank", value: 1 },
         // {
         //   trait_type: "BackGround",
         //   value: "Off White A",

@@ -1,12 +1,17 @@
 import MintingComponent from "./Component";
 import axios from "axios";
 import { useCallback, useState } from "react";
+// import { useWeb3React } from "@web3-react/core";
+// import { connectors } from "../utility/connect";
+import Web3 from "web3";
+import { useWeb3 } from "../utility/useWeb3";
 
 function MintingContainer({ account, web3 }) {
   const [NftName, setName] = useState("");
   const [NftDescription, setDescription] = useState("");
   const [file, setFile] = useState();
   const [img, setImg] = useState("");
+  // const { account, activate, deactivate, active } = useWeb3React();
 
   const nameInput = useCallback((e) => {
     setName(e.target.value);
@@ -22,7 +27,7 @@ function MintingContainer({ account, web3 }) {
 
       const reader = new FileReader();
       reader.readAsDataURL(e.target.files[0]);
-      console.log(reader);
+      // console.log(reader);
       reader.onload = () => {
         if (reader.result) {
           setImg(reader.result);
@@ -32,7 +37,8 @@ function MintingContainer({ account, web3 }) {
   }, []);
 
   const mint = async () => {
-    if (!NftName || !NftDescription || !file) return;
+    console.log(account);
+    if (!NftName || !NftDescription || !file || !account) return;
     const formData = new FormData();
     formData.append("file", file);
     formData.append("name", NftName);
