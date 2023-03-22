@@ -3,7 +3,7 @@ import styled from "styled-components";
 const HeaderLogoComponent = () => {
   return (
     <ImgDiv>
-      <img src="./imgs/mintChoLogo2.png" />
+      <img src="/imgs/mintChoLogo2.png" />
     </ImgDiv>
   );
 };

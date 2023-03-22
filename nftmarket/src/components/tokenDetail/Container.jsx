@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 
 import TokenDetailComponent from "./Component";
 
-const TokenDetailContainer = () => {
+const TokenDetailContainer = ({ account, web3 }) => {
   const [detail, setDetail] = useState({});
 
   const params = useParams();
@@ -21,6 +21,7 @@ const TokenDetailContainer = () => {
   const buyToken = async (_tokenId) => {
     const result = await axios.post("http://localhost:8080/api/nftToken/buy", {
       tokenId: _tokenId,
+      from: account,
     });
     console.log(result);
   };
