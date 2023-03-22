@@ -14,6 +14,7 @@ import MyNftContainer from "./components/myNFT/Container";
 import BodyContainer from "./components/body/Container";
 import CollectionContainer from "./components/collection/Container";
 import { useEffect } from "react";
+import FooterContainer from "./components/footer/Container";
 
 const { Header, Content, Footer } = Layout;
 
