@@ -9,7 +9,6 @@ import CollectContainer from "./components/body/collect/Container";
 
 import BannerContainer from "./components/body/banner/Container";
 import { useWeb3 } from "./components/utility/useWeb3";
-import BodyContainer from "./components/body/Container";
 import QnaContainer from "./components/qna/Container";
 
 const { Header, Content, Footer } = Layout;
