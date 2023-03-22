@@ -16,7 +16,7 @@ const TokenDetailContainer = ({ account, web3 }) => {
       })
     ).data;
     setDetail(data);
-  }, [params]);
+  }, [params, account]);
 
   const buyToken = async (_tokenId) => {
     const result = await axios.post("http://localhost:8080/api/nftToken/buy", {
@@ -28,7 +28,7 @@ const TokenDetailContainer = ({ account, web3 }) => {
 
   useEffect(() => {
     tokenDetail();
-  }, [params]);
+  }, [params, account]);
 
   return <TokenDetailComponent detail={detail} buyToken={buyToken} />;
 };

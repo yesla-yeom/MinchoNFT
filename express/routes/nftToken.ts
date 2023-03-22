@@ -32,9 +32,9 @@ interface tokenData {
   atrributes?: Array<{ trait_type: string; value: number }>;
 }
 
-router.post("/detail", (req: Request, res: Response) => {
+router.post("/detail", async (req: Request, res: Response) => {
   const { tokenId }: { tokenId: number } = req.body;
-  const tempData: tokenData = dummyDataList[tokenId];
+  const tempData: tokenData = await AllToken.findOne({ where: { tokenId } });
   res.send(tempData);
 });
 
@@ -51,6 +51,8 @@ router.post("/buy", async (req: Request, res: Response) => {
       tokenOwner,
       tokenBase,
     } = dummyDataList[req.body.tokenId];
+    const checkToken = await BuyToken.findOne({ where: { tokenId } });
+    if (checkToken) return res.status(202).send({ msg: "already Buy Token" });
     let tempBuf = Buffer.from(imgSrc, "utf-8");
 
     const tempResult: {
@@ -64,7 +66,6 @@ router.post("/buy", async (req: Request, res: Response) => {
     });
     console.log(tempResult);
     if (tempResult.isDuplicate) console.log("img dupli");
-    // return res.status(301).send({ msg: "img Duplicated" });
 
     const jsonResult = await pinata.pinJSONToIPFS(
       dummyDataList[req.body.tokenId],
@@ -73,7 +74,6 @@ router.post("/buy", async (req: Request, res: Response) => {
         pinataOptions: { cidVersion: 0 },
       }
     );
-    console.log(jsonResult);
     const deployed = new web3.eth.Contract(
       abi as AbiItem[],
       process.env.Nft_CA
@@ -89,7 +89,6 @@ router.post("/buy", async (req: Request, res: Response) => {
     obj.to = process.env.NFT_CA;
     obj.from = req.body.from;
     obj.data = deployed.methods.safeMint(jsonResult.IpfsHash).encodeABI();
-    console.log(obj);
 
     const tempData = await AllToken.findOne({
       where: {
@@ -110,8 +109,6 @@ router.post("/buy", async (req: Request, res: Response) => {
       tokenBase,
       value: 1,
     });
-
-    // PurchaseToken(uint _tokenId)
 
     res.send({ msg: "success buy Token", obj });
   } catch (err) {
