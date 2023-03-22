@@ -3,10 +3,19 @@ import styled from "styled-components";
 import { useWeb3React } from "@web3-react/core";
 import { connectors } from "../../utility/connect";
 import { Link } from "react-router-dom";
+import { ethers } from "ethers";
 
 const HeaderEditComponent = () => {
   const { account, activate, active, library } = useWeb3React();
 
+  const sendTransaction = async () => {
+    const signer = library.getSigner(account);
+    const tx = await signer.sendTransaction({
+      to: "0x1234567890123456789012345678901234567890",
+      value: ethers.utils.parseEther("1.0"),
+    });
+    console.log("Transaction hash:", tx.hash);
+  };
   const items = [
     {
       key: "1",
@@ -21,7 +30,13 @@ const HeaderEditComponent = () => {
             <Button>My Account</Button>
           </Dropdown>
           <Link to={"/myNFT"}>
-            <Button>My NFT</Button>
+            <Button
+              onClick={() => {
+                sendTransaction();
+              }}
+            >
+              My NFT
+            </Button>
           </Link>
         </>
       ) : (
