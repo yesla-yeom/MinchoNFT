@@ -11,7 +11,6 @@ import BannerContainer from "./components/body/banner/Container";
 import { useWeb3 } from "./components/utility/useWeb3";
 import BodyContainer from "./components/body/Container";
 
-
 const { Header, Content, Footer } = Layout;
 
 function App() {
@@ -46,16 +45,15 @@ function App() {
                     }}
                   >
                     <CollectContainer />
-    </>
-                }
-              />
-              <Route
-                path="/detail/:tokenId"
-                element={<TokenDetailContainer account={account} web3={web3} />}
-              />
-            </Routes>
-          </div>
-
+                  </div>
+                </>
+              }
+            />
+            <Route
+              path="/detail/:tokenId"
+              element={<TokenDetailContainer account={account} web3={web3} />}
+            />
+          </Routes>
         </NftBody>
         <NftFooter>
           <p>여기는 푸터야</p>
