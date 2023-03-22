@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 import Web3 from "web3";
+import axios from "axios";
 
 export const useWeb3 = () => {
   const [web3, setWeb3] = useState();
@@ -17,6 +18,10 @@ export const useWeb3 = () => {
         });
         if (_account) {
           setAccount(_account);
+          await axios.post(
+            "http://localhost:8080/api/allToken/connectedAccount",
+            { account: _account }
+          );
         }
         setChainId(window.ethereum.networkVersion);
       } else {

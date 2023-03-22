@@ -1,6 +1,7 @@
 import { Layout, theme } from "antd";
 import styled from "styled-components";
 import { Route, Routes } from "react-router-dom";
+import axios from "axios";
 
 import HeaderContainer from "./components/header/Container";
 import TokenDetailContainer from "./components/tokenDetail/Container";
@@ -11,10 +12,17 @@ import BannerContainer from "./components/body/banner/Container";
 import { useWeb3 } from "./components/utility/useWeb3";
 import BodyContainer from "./components/body/Container";
 import CollectionContainer from "./components/collection/Container";
+import { useEffect } from "react";
 
 const { Header, Content, Footer } = Layout;
 
 function App() {
+  useEffect(() => {
+    (async () => {
+      const data = await axios.get("http://localhost:8080/api/allToken/list");
+      console.log(data.data);
+    })();
+  }, []);
   const { account, logIn, web3 } = useWeb3();
   const {
     token: { colorBgContainer },
@@ -50,7 +58,10 @@ function App() {
                 </>
               }
             />
-            <Route path="/detail" element={<CollectionContainer />} />
+            <Route
+              path="/detail"
+              element={<CollectionContainer account={account} />}
+            />
             <Route
               path="/detail/:tokenId"
               element={<TokenDetailContainer account={account} web3={web3} />}

@@ -21,21 +21,37 @@ router.get("/list", async (req: Request, res: Response) => {
     });
     jsonResultArr.push(tempResult);
     result.push(
-      await AllToken.create({
-        tokenId: dummyDataList[i].tokenId,
-        name: dummyDataList[i].name,
-        description: dummyDataList[i].description,
-        image: dummyDataList[i].imgSrc,
-        ca: dummyDataList[i].CA,
-        price: dummyDataList[i].price,
-        blockChain: dummyDataList[i].blockChain,
-        tokenOwner: dummyDataList[i].tokenOwner,
-        tokenBase: dummyDataList[i].tokenBase,
-        value: 1,
-      })
+      await AllToken.create(
+        {
+          tokenId: dummyDataList[i].tokenId,
+          name: dummyDataList[i].name,
+          description: dummyDataList[i].description,
+          image: dummyDataList[i].imgSrc,
+          ca: dummyDataList[i].CA,
+          price: dummyDataList[i].price,
+          blockChain: dummyDataList[i].blockChain,
+          tokenOwner: dummyDataList[i].tokenOwner,
+          tokenBase: dummyDataList[i].tokenBase,
+          value: 1,
+        },
+        { ignoreDuplicates: true }
+      )
     );
   }
 
   res.send({ jsonResultArr, result });
+});
+
+router.post("/accountList", async (req: Request, res: Response) => {
+  const list = await AllToken.findAll();
+  res.send({ list });
+});
+
+router.post("/connectedAccount", async (req: Request, res: Response) => {
+  const { account } = req.body;
+  for (let i = 0; i < dummyDataList.length; i++) {
+    await AllToken.update({ tokenOwner: account }, { where: { tokenId: i } });
+  }
+  res.send({ msg: "update Complete" });
 });
 export default router;
