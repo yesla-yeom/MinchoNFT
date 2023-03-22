@@ -6,6 +6,8 @@ export default class Minting extends Model {
   public description!: string;
   public imgIpfsHash!: string;
   public jsonIpfsHash!: string;
+  public from!: string;
+  public rank!: number;
 
   public static initModel(sequelize: Sequelize) {
     return Minting.init(
@@ -28,6 +30,14 @@ export default class Minting extends Model {
         },
         jsonipfshash: {
           type: DataTypes.STRING(255),
+          allowNull: false,
+        },
+        from: {
+          type: DataTypes.STRING(255),
+          allowNull: false,
+        },
+        rank: {
+          type: DataTypes.INTEGER.UNSIGNED,
           allowNull: false,
         },
       },
