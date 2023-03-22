@@ -18,6 +18,7 @@ export default class AllToken extends Model {
         tokenId: {
           type: DataTypes.INTEGER.UNSIGNED,
           allowNull: false,
+          unique:true,
         },
         ca: {
           type: DataTypes.STRING(255),

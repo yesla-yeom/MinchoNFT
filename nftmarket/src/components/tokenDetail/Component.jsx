@@ -5,13 +5,13 @@ const TokenDetailComponent = ({ detail, buyToken }) => {
   return (
     <DetailBox>
       <div>
-        <img src={detail.imgSrc} alt="" />
+        <img src={detail.image} alt="" />
       </div>
       <div>
         <div>#{detail.tokenId}</div>
         <div>
           <div>컨트랙트 주소(CA) : </div>
-          <div>{detail.CA}</div>
+          <div>{detail.ca}</div>
         </div>
         <div>블록체인 : {detail.blockChain}</div>
         <div>토큰 기반: {detail.tokenBase}</div>
@@ -28,10 +28,10 @@ const TokenDetailComponent = ({ detail, buyToken }) => {
         </div>
         <div>
           <div>아이템 특성</div>
-          {detail.atrributes && (
+          {detail.value && (
             <>
-              <div>Rank : {detail.atrributes[0].value} </div>
-              <div>Type : {detail.atrributes[1].value}</div>
+              <div>Rank : {detail.value} </div>
+              <div>Type : {detail.value}</div>
             </>
           )}
         </div>
