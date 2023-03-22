@@ -11,7 +11,6 @@ import CollectContainer from "./components/body/collect/Container";
 import BannerContainer from "./components/body/banner/Container";
 import { useWeb3 } from "./components/utility/useWeb3";
 import MyNftContainer from "./components/myNFT/Container";
-import BodyContainer from "./components/body/Container";
 import CollectionContainer from "./components/collection/Container";
 import { useEffect } from "react";
 import FooterContainer from "./components/footer/Container";
