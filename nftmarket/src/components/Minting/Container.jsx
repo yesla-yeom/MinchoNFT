@@ -37,6 +37,12 @@ function MintingContainer({ account, web3 }) {
     }
   }, []);
 
+  // const test = async () => {
+  //   const result = await axios.post("http://localhost:8080/api/mint/network");
+  //   console.log(result);
+  // };
+  // test();
+
   const mint = async () => {
     console.log(account);
     if (!NftName || !NftDescription || !file || !account) return;
@@ -46,12 +52,20 @@ function MintingContainer({ account, web3 }) {
     formData.append("description", NftDescription);
     formData.append("from", account);
     // console.log(formData);
+
     const result = (
-      await axios.post("http://localhost:8080/api/mint/", formData)
+      await axios.post("http://localhost:8080/api/mint/minting", formData)
     ).data;
-    console.log(result);
-    console.log("1");
-    web3.eth.sendTransaction(result);
+
+    let transactionResult = await web3.eth.sendTransaction(result);
+    let signFrom = transactionResult.from;
+    console.log(signFrom);
+    const create = (
+      await axios.post("http://localhost:8080/api/mint/create", {
+        from: signFrom,
+      })
+    ).data;
+    console.log(create);
   };
 
   return (

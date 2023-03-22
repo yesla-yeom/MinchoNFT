@@ -31,7 +31,10 @@ function App() {
 
         <NftBody className="site-layout">
           <Routes>
-            <Route path="/minting" element={<MintingContainer />} />
+            <Route
+              path="/minting"
+              element={<MintingContainer account={account} web3={web3} />}
+            />
             <Route
               path="/"
               element={
