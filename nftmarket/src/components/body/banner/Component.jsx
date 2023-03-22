@@ -8,7 +8,7 @@ const BannerComponent = () => {
         <div>끼얏호우</div>
         <div>하하하하</div>
         <div>오늘은 상목이형 헬스하는날</div>
-        <GotoAllButton type="primary">전체보기</GotoAllButton>
+        <GotoAllButton>전체보기</GotoAllButton>
       </div>
     </BannerDiv>
   );

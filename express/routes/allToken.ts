@@ -38,4 +38,15 @@ router.get("/list", async (req: Request, res: Response) => {
 
   res.send({ jsonResultArr, result });
 });
+
+router.post("/latestToken", async (req: Request, res: Response) => {
+  const tempTokenArr = await AllToken.findAll({
+    attributes: ["image", "price", "name"],
+    order: [["createdAt", "DESC"]],
+  });
+  console.log(tempTokenArr);
+  console.log("나 일단 한번 왓어");
+  res.send(tempTokenArr);
+});
+
 export default router;
