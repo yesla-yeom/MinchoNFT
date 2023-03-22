@@ -15,7 +15,7 @@ contract NftToken is ERC721Enumerable, ERC721URIStorage, Ownable {
     uint Rank;
     uint Type;
   }
-  mapping(uint => TokenData) public TokenDatas;
+  mapping(uint => TokenData) public tokenDatas;
 
   uint[4][4] public tokenCount;
 
@@ -24,7 +24,7 @@ contract NftToken is ERC721Enumerable, ERC721URIStorage, Ownable {
     string memory _symbol
   ) ERC721(_name, _symbol) {}
 
-  event info(uint tokenId);
+  event info(uint tokenId, TokenData tokenData);
 
   function _beforeTokenTransfer(
     address from,
@@ -67,16 +67,15 @@ contract NftToken is ERC721Enumerable, ERC721URIStorage, Ownable {
 
     _tokenId.increment();
 
-    TokenDatas[tokenId] = getRandomTokenData(msg.sender, tokenId);
+    tokenDatas[tokenId] = getRandomTokenData(msg.sender, tokenId);
 
-    tokenCount[TokenDatas[tokenId].Rank - 1][TokenDatas[tokenId].Type - 1] += 1;
+    tokenCount[tokenDatas[tokenId].Rank - 1][tokenDatas[tokenId].Type - 1] += 1;
     // 토큰이 민팅될 때마다 랭크, 타입에 따라 배열의 요소값을 1씩 추가해준다.
-
-    emit info(tokenId);
 
     // payable(Ownable.owner()).transfer(msg.value);
     _safeMint(msg.sender, tokenId);
     _setTokenURI(tokenId, uri);
+    emit info(tokenId, tokenDatas[tokenId]);
   }
 
   function getRandomTokenData(
@@ -136,10 +135,10 @@ contract NftToken is ERC721Enumerable, ERC721URIStorage, Ownable {
   }
 
   function getTokenRank(uint tokenId) public view returns (uint) {
-    return TokenDatas[tokenId].Rank;
+    return tokenDatas[tokenId].Rank;
   }
 
   function getTokenType(uint tokenId) public view returns (uint) {
-    return TokenDatas[tokenId].Type;
+    return tokenDatas[tokenId].Type;
   }
 }

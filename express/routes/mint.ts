@@ -16,9 +16,9 @@ dotenv.config();
 const { Minting } = db;
 import { abi as NftAbi } from "../contracts/artifacts/NftToken.json";
 import { abi as SaleAbi } from "../contracts/artifacts/SaleToken.json";
-// const web3 = new Web3("https://goerli.infura.io/v3");
+const web3 = new Web3("https://goerli.infura.io/v3");
 // const web3 = new Web3("http://ganache.test.errorcode.help:8545");
-const web3 = new Web3("http://localhost:8545");
+// const web3 = new Web3("http://localhost:8545");
 
 const pinata = new pinataSDK(process.env.API_Key, process.env.API_Secret);
 
