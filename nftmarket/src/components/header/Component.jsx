@@ -2,12 +2,12 @@ import HeaderLogoContainer from "./logo/Container";
 import HeaderInputContainer from "./input/Container";
 import HeaderEditContainer from "./edit/Container";
 
-const HeaderComponent = () => {
+const HeaderComponent = ({ logIn }) => {
   return (
     <div>
       <HeaderLogoContainer />
       <HeaderInputContainer />
-      <HeaderEditContainer />
+      <HeaderEditContainer logIn={logIn} />
     </div>
   );
 };

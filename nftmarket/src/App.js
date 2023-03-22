@@ -6,10 +6,16 @@ import HeaderContainer from "./components/header/Container";
 import TokenDetailContainer from "./components/tokenDetail/Container";
 import MintingContainer from "./components/Minting/Container";
 import CollectContainer from "./components/body/collect/Container";
+
 import BannerContainer from "./components/body/banner/Container";
+import { useWeb3 } from "./components/utility/useWeb3";
+import BodyContainer from "./components/body/Container";
+
+
 const { Header, Content, Footer } = Layout;
 
 function App() {
+  const { account, logIn, web3 } = useWeb3();
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -21,7 +27,7 @@ function App() {
         }}
       >
         <NftHeader>
-          <HeaderContainer />
+          <HeaderContainer logIn={logIn} />
         </NftHeader>
 
         <NftBody className="site-layout">
@@ -40,12 +46,16 @@ function App() {
                     }}
                   >
                     <CollectContainer />
-                  </div>
-                </>
-              }
-            />
-            <Route path="/detail/:tokenId" element={<TokenDetailContainer />} />
-          </Routes>
+    </>
+                }
+              />
+              <Route
+                path="/detail/:tokenId"
+                element={<TokenDetailContainer account={account} web3={web3} />}
+              />
+            </Routes>
+          </div>
+
         </NftBody>
         <NftFooter>
           <p>여기는 푸터야</p>

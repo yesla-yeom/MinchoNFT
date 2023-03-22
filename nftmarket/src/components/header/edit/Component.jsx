@@ -5,8 +5,10 @@ import { connectors } from "../../utility/connect";
 import { Link } from "react-router-dom";
 import { ethers } from "ethers";
 
-const HeaderEditComponent = () => {
-  const { account, activate, active, library } = useWeb3React();
+
+const HeaderEditComponent = ({ logIn }) => {
+  const { account, activate, deactivate, active } = useWeb3React();
+
 
   const sendTransaction = async () => {
     const signer = library.getSigner(account);
@@ -43,6 +45,7 @@ const HeaderEditComponent = () => {
         <Button
           onClick={() => {
             activate(connectors.injected);
+            logIn();
           }}
         >
           지갑 연결

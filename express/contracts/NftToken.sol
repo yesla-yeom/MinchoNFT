@@ -10,6 +10,12 @@ contract NftToken is ERC721Enumerable, ERC721URIStorage, Ownable {
   using Counters for Counters.Counter;
   Counters.Counter private _tokenId;
 
+  struct TokenData {
+    uint Rank;
+    uint Type;
+  }
+  mapping(uint => TokenData) public TokenDatas;
+
   constructor(
     string memory _name,
     string memory _symbol
@@ -50,5 +56,65 @@ contract NftToken is ERC721Enumerable, ERC721URIStorage, Ownable {
     _tokenId.increment();
     _safeMint(msg.sender, tokenId);
     _setTokenURI(tokenId, uri);
+  }
+
+  function getRandomTokenData(
+    address _owner,
+    uint tokenId
+  ) private pure returns (TokenData memory) {
+    uint randomNum = uint(keccak256(abi.encodePacked(_owner, tokenId))) % 100;
+
+    TokenData memory data;
+
+    if (randomNum < 5) {
+      data.Rank = 4;
+      if (randomNum == 1) {
+        data.Type = 1;
+      } else if (randomNum == 2) {
+        data.Type = 2;
+      } else if (randomNum == 3) {
+        data.Type = 3;
+      } else {
+        data.Type = 4;
+      }
+    } else if (randomNum < 13) {
+      data.Rank = 3;
+      if (randomNum < 7) {
+        data.Type = 1;
+      } else if (randomNum < 9) {
+        data.Type = 2;
+      } else if (randomNum < 11) {
+        data.Type = 3;
+      } else {
+        data.Type = 4;
+      }
+    } else if (randomNum < 37) {
+      data.Rank = 2;
+      if (randomNum < 19) {
+        data.Type = 1;
+      } else if (randomNum < 25) {
+        data.Type = 2;
+      } else if (randomNum < 31) {
+        data.Type = 3;
+      } else {
+        data.Type = 4;
+      }
+    } else {
+      data.Rank = 1;
+      if (randomNum < 52) {
+        data.Type = 1;
+      } else if (randomNum < 68) {
+        data.Type = 2;
+      } else if (randomNum < 84) {
+        data.Type = 3;
+      } else {
+        data.Type = 4;
+      }
+    }
+    return data;
+  }
+
+  function getTokenRank(uint tokenId) public view returns (uint) {
+    return TokenDatas[tokenId].Rank;
   }
 }
