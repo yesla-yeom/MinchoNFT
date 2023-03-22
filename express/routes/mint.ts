@@ -1,7 +1,10 @@
 import { Router, Request, Response } from "express";
 import pinataSDK from "@pinata/sdk";
 import multer from "multer";
-import axios from "axios";
+import Web3 from "web3";
+// import WebsocketProvider from "web3-providers-ws";
+
+// import axios from "axios";
 import dotenv from "dotenv";
 import { Readable } from "stream";
 import Web3 from "web3";
@@ -16,6 +19,7 @@ dotenv.config();
 
 const router = Router();
 const { Minting } = db;
+// const _web3 = new Web3(window.ethereum);
 
 const storage = multer.diskStorage({
   destination: (req, res, cb) => {
@@ -35,9 +39,20 @@ const upload: multer.Multer = multer({
 const web3 = new Web3(
   "wss://goerli.infura.io/ws/v3/2ca09ab04a7c44dcb6f886deeba97502"
 );
+let type = "";
+// 형이 현재 있는 토큰들의 rank를 전부 받아서 배열로 만든다.
+// let randomCorr =  rankArr.filter((item)=> item==randomnum)
+// 길이가 0 아니면 1이 무조건 나온다.
+// 길이가 0이면 => 아에 없는것 => 추가해도 되는 숫자
+// 길이가 1이면 =>추가하면 안됨
+// 길이가 1이면 =>다시 뽑는다
+let rank = 0;
 
-router.post("/", upload.single("file"), async (req: Request, res: Response) => {
-  const { name, description }: { name: string; description: string } = req.body;
+// if (rank == 0) {
+//   Minting.findOne({ id: 1 }).then((data) => {
+//     rank += 1;
+//   });
+// }
 
   let imgBuffer = fs.createReadStream(`./upload/${req.file.filename}`);
 
@@ -58,82 +73,48 @@ router.post("/", upload.single("file"), async (req: Request, res: Response) => {
     console.log("같은 이미지!");
   }
   console.log("imgResult", imgResult);
-
+if (randomnum < 6) {
+  type = "Legendary";
+} else if (randomnum < 18) {
+  type = "Epic";
+} else if (randomnum < 36) {
+  type = "Rare";
+} else if (randomnum < 60) {
+  type = "Uncommon";
+} else type = "Common";
   const jsonResult = await pinata.pinJSONToIPFS(
     {
       name,
       description,
       image: `https://gateway.pinata.cloud/ipfs/${imgResult.IpfsHash}`,
 
-      attributes: [
-        { trait_type: "Rank", value: 1 },
-        // {
-        //   trait_type: "BackGround",
-        //   value: "Off White A",
-        // },
-        // {
-        //   trait_type: "CLOTHING",
-        //   value: "Azuki Tech Jacket",
-        // },
-        // { trait_type: "EYES", value: "Closed" },
-        // {
-        //   trait_type: "Level",
-        //   value: 5,
-        // },
-        // {
-        //   trait_type: "Stamina",
-        //   value: 1.4,
-        // },
-        // {
-        //   trait_type: "Personality",
-        //   value: "Sad",
-        // },
-        // {
-        //   display_type: "boost_number",
-        //   trait_type: "Aqua Power",
-        //   value: 40,
-        // },
-        // {
-        //   display_type: "boost_percentage",
-        //   trait_type: "Stamina Increase",
-        //   value: 10,
-        // },
-        // {
-        //   display_type: "number",
-        //   trait_type: "Generation",
-        //   value: 2,
-        // },
-        // {
-        //   display_type: "date",
-        //   trait_type: "birthday",
-        //   value: 1546360800,
-        // },
-      ],
-    },
-    {
+    const imgResult: {
+      IpfsHash: string;
+      PinSize: number;
+      Timestamp: string;
+      isDuplicate?: boolean;
+    } = await pinata.pinFileToIPFS(Readable.from(req.file.buffer), {
       pinataMetadata: {
-        name: Date.now().toString() + ".json",
-        //json파일이름
+        name: Date.now().toString(),
       },
       pinataOptions: {
         cidVersion: 0,
       },
+    });
+    if (imgResult.isDuplicate) {
+      console.log("같은 이미지!");
     }
-  );
-  console.log(jsonResult);
+    console.log(imgResult);
 
-  const deployed = new web3.eth.Contract(
-    NftAbi as AbiItem[],
-    process.env.NFT_CA
-  );
+    const jsonResult = await pinata.pinJSONToIPFS(
+      {
+        name,
+        description,
+        //   image: "https://gateway.pinata.cloud/ipfs/" + imgResult.IpfsHash,
+        image: `https://gateway.pinata.cloud/ipfs/${imgResult.IpfsHash}`,
   // NftAbi as AbiItem[] NftAbi 이건 AbiItem[] 이형식갖고있다
 
-  const obj: { nonce: number; to: string; from: string; data: string } = {
-    nonce: 0,
-    to: "",
-    from: "",
-    data: "",
-  };
+
 
   console.log("test");
   console.log(req.body.from);
@@ -145,7 +126,18 @@ router.post("/", upload.single("file"), async (req: Request, res: Response) => {
 
   const temp = await deployed.methods.name().call();
   console.log("temp", temp);
-  res.send(obj);
+);
+
+router.post("/create", async (req: Request, res: Response) => {
+  console.log("req.body는:", req.body.from);
+  const saleDeployed = new web3.eth.Contract(
+    SaleAbi as AbiItem[],
+    process.env.SALE_CA
+  );
+  // console.log(await saleDeployed.methods.getLatestToken(req.body.from).call());
+
+  // console.log(tokenIdGet);
+  res.send({ msg: "잘가고있다" });
   // if (imgResult && jsonResult) {
   //   console.log(name);
   //   console.log(description);

@@ -40,6 +40,10 @@ export default class Minting extends Model {
           type: DataTypes.INTEGER.UNSIGNED,
           allowNull: false,
         },
+        type: {
+          type: DataTypes.STRING(255),
+          allowNull: false,
+        },
       },
       {
         sequelize,
