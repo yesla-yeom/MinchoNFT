@@ -32,6 +32,7 @@ router.get("/list", async (req: Request, res: Response) => {
           blockChain: dummyDataList[i].blockChain,
           tokenOwner: dummyDataList[i].tokenOwner,
           tokenBase: dummyDataList[i].tokenBase,
+          tokenName: dummyDataList[i].tokenName,
           value: 1,
         },
         { ignoreDuplicates: true }
@@ -42,16 +43,8 @@ router.get("/list", async (req: Request, res: Response) => {
   res.send({ jsonResultArr, result });
 });
 
-router.post("/accountList", async (req: Request, res: Response) => {
+router.get("/collectionList", async (req: Request, res: Response) => {
   const list = await AllToken.findAll();
   res.send({ list });
-});
-
-router.post("/connectedAccount", async (req: Request, res: Response) => {
-  const { account } = req.body;
-  for (let i = 0; i < dummyDataList.length; i++) {
-    await AllToken.update({ tokenOwner: account }, { where: { tokenId: i } });
-  }
-  res.send({ msg: "update Complete" });
 });
 export default router;

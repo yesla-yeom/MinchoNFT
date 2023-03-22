@@ -55,6 +55,10 @@ export default class BuyToken extends Model {
           type: DataTypes.INTEGER.UNSIGNED,
           allowNull: false,
         },
+        tokenName: {
+          type: DataTypes.STRING(45),
+          allowNull: false,
+        },
       },
       {
         sequelize,

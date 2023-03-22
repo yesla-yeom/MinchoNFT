@@ -15,7 +15,7 @@ const CollectComponent = ({ tokenArr }) => {
           {tokenArr.map((item, index) => {
             return (
               <Col className="gutter-row" span={6} key={`Col-${index}`}>
-                <Link to={`/detail`}>
+                <Link to={`/${item.tokenName}`}>
                   <CollectItemContainer
                     tokenName={item.tokenId}
                     price={item.price}

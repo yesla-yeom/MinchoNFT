@@ -18,10 +18,6 @@ export const useWeb3 = () => {
         });
         if (_account) {
           setAccount(_account);
-          await axios.post(
-            "http://localhost:8080/api/allToken/connectedAccount",
-            { account: _account }
-          );
         }
         setChainId(window.ethereum.networkVersion);
       } else {

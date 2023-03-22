@@ -8,6 +8,7 @@ const TokenDetailContainer = ({ account, web3 }) => {
   const [detail, setDetail] = useState({});
 
   const params = useParams();
+  console.log(params);
 
   const tokenDetail = useCallback(async () => {
     const data = (

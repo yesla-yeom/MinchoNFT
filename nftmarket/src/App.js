@@ -10,7 +10,6 @@ import CollectContainer from "./components/body/collect/Container";
 
 import BannerContainer from "./components/body/banner/Container";
 import { useWeb3 } from "./components/utility/useWeb3";
-import BodyContainer from "./components/body/Container";
 import CollectionContainer from "./components/collection/Container";
 import { useEffect } from "react";
 
@@ -20,7 +19,6 @@ function App() {
   useEffect(() => {
     (async () => {
       const data = await axios.get("http://localhost:8080/api/allToken/list");
-      console.log(data.data);
     })();
   }, []);
   const { account, logIn, web3 } = useWeb3();
@@ -58,12 +56,9 @@ function App() {
                 </>
               }
             />
+            <Route path="/:tokenName" element={<CollectionContainer />} />
             <Route
-              path="/detail"
-              element={<CollectionContainer account={account} />}
-            />
-            <Route
-              path="/detail/:tokenId"
+              path="/:tokenName/:tokenId"
               element={<TokenDetailContainer account={account} web3={web3} />}
             />
           </Routes>
