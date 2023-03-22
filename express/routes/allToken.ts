@@ -42,8 +42,6 @@ router.get("/list", async (req: Request, res: Response) => {
   res.send({ jsonResultArr, result });
 });
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 router.post("/accountList", async (req: Request, res: Response) => {
   const list = await AllToken.findAll();
   res.send({ list });
@@ -56,9 +54,7 @@ router.post("/connectedAccount", async (req: Request, res: Response) => {
   }
   res.send({ msg: "update Complete" });
 });
-=======
-=======
->>>>>>> 6b57df887f227ff9e36e06442244ec2491577af3
+
 router.post("/latestToken", async (req: Request, res: Response) => {
   const tempTokenArr = await AllToken.findAll({
     attributes: ["image", "price", "name"],
@@ -69,8 +65,4 @@ router.post("/latestToken", async (req: Request, res: Response) => {
   res.send(tempTokenArr);
 });
 
-<<<<<<< HEAD
->>>>>>> 6b57df8 (23.3.22)
-=======
->>>>>>> 6b57df887f227ff9e36e06442244ec2491577af3
 export default router;
