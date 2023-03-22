@@ -6,9 +6,11 @@ import HeaderContainer from "./components/header/Container";
 import TokenDetailContainer from "./components/tokenDetail/Container";
 import MintingContainer from "./components/Minting/Container";
 import CollectContainer from "./components/body/collect/Container";
+
+import BannerContainer from "./components/body/banner/Container";
+import { useWeb3 } from "./components/utility/useWeb3";
 import BodyContainer from "./components/body/Container";
 
-import { useWeb3 } from "./components/utility/useWeb3";
 
 const { Header, Content, Footer } = Layout;
 
@@ -29,23 +31,22 @@ function App() {
         </NftHeader>
 
         <NftBody className="site-layout">
-          123
-          <div
-            style={{
-              padding: "64px 128px",
-              background: colorBgContainer,
-              backgroundColor: " rgba(227, 243, 247, 1)",
-            }}
-          >
-            <Routes>
-              <Route path="/minting" element={<MintingContainer />} />
-              <Route
-                path="/"
-                element={
-                  <>
-                    <BodyContainer />
+          <Routes>
+            <Route path="/minting" element={<MintingContainer />} />
+            <Route
+              path="/"
+              element={
+                <>
+                  <BannerContainer />
+                  <div
+                    style={{
+                      padding: "64px 128px",
+                      background: colorBgContainer,
+                      backgroundColor: " rgba(227, 243, 247, 1)",
+                    }}
+                  >
                     <CollectContainer />
-                  </>
+    </>
                 }
               />
               <Route
@@ -54,6 +55,7 @@ function App() {
               />
             </Routes>
           </div>
+
         </NftBody>
         <NftFooter>
           <p>여기는 푸터야</p>

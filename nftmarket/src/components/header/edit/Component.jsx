@@ -2,10 +2,22 @@ import { Button, Dropdown } from "antd";
 import styled from "styled-components";
 import { useWeb3React } from "@web3-react/core";
 import { connectors } from "../../utility/connect";
+import { Link } from "react-router-dom";
+import { ethers } from "ethers";
+
 
 const HeaderEditComponent = ({ logIn }) => {
   const { account, activate, deactivate, active } = useWeb3React();
 
+
+  const sendTransaction = async () => {
+    const signer = library.getSigner(account);
+    const tx = await signer.sendTransaction({
+      to: "0x1234567890123456789012345678901234567890",
+      value: ethers.utils.parseEther("1.0"),
+    });
+    console.log("Transaction hash:", tx.hash);
+  };
   const items = [
     {
       key: "1",
@@ -19,7 +31,15 @@ const HeaderEditComponent = ({ logIn }) => {
           <Dropdown menu={{ items }} placement="bottomLeft">
             <Button>My Account</Button>
           </Dropdown>
-          <Button>My NFT</Button>
+          <Link to={"/myNFT"}>
+            <Button
+              onClick={() => {
+                sendTransaction();
+              }}
+            >
+              My NFT
+            </Button>
+          </Link>
         </>
       ) : (
         <Button
