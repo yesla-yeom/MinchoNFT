@@ -5,8 +5,9 @@ import { connectors } from "../../utility/connect";
 import { Link } from "react-router-dom";
 
 const HeaderEditComponent = ({ logIn }) => {
-  const { account, activate, active } = useWeb3React();
+  const { account, activate, active, deactivate } = useWeb3React();
 
+  console.log(active);
   const items = [
     {
       key: "1",

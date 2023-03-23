@@ -1,24 +1,56 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-const CollectionItemComponent = ({ account, collectionArr }) => {
+const CollectionItemComponent = ({
+  collectionArr,
+  search,
+  setSearch,
+  findSearch,
+}) => {
   return (
     <ItemBox>
       <div>
-        <span>{account}</span> 님의 전체 NFT
+        <span>{collectionArr[0].tokenOwner}</span> 님의 전체 NFT
       </div>
       <div>
-        <select>
-          <option>가격 높은순</option>
-          <option>가격 낮은순</option>
-        </select>
-        <input type={"text"} placeholder={"NFT 이름을 입력하세요"} />
+        <div>
+          <select>
+            <option>가격 높은순</option>
+            <option>가격 낮은순</option>
+          </select>
+        </div>
+        <div>
+          <input
+            type={"text"}
+            placeholder={"NFT 이름을 입력하세요"}
+            value={search}
+            onInput={(e) => {
+              setSearch(e.target.value);
+            }}
+          />
+        </div>
+        <div>
+          <button
+            onClick={() => {
+              findSearch(search);
+              setSearch("");
+            }}
+          >
+            <img
+              src="https://media.giphy.com/media/wp2rA9gXbKXo0KzTjD/giphy.gif"
+              alt=""
+            />
+          </button>
+        </div>
       </div>
       <div>{collectionArr.length} 개의 NFT</div>
       <div>
         {collectionArr.map((item, index) => (
-          <Link to={`/detail/${index}`}>
-            <div>
+          <Link
+            to={`/${collectionArr[0].tokenName}/${index}`}
+            key={`collectionItemLink-${index}`}
+          >
+            <div key={`collectionItemBox-${index}`}>
               <img
                 key={`collectionArr-image-${index}`}
                 src={item.image}
@@ -40,20 +72,38 @@ const CollectionItemComponent = ({ account, collectionArr }) => {
 export default CollectionItemComponent;
 
 const ItemBox = styled.div`
-  width: fit-content;
-
   & > div {
     padding: 5px 0;
     width: 80%;
   }
   & > div:nth-child(2) {
     width: 100%;
-    & > select {
-      padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    & > div:nth-child(2) {
+      width: 100%;
     }
-    & > input {
-      width: 70%;
-      padding: 5px;
+    & > div {
+      & > select {
+        width: fit-content;
+        padding: 5px;
+      }
+      & > input {
+        width: 100%;
+        padding: 5px;
+      }
+      & > button {
+        width: 45px;
+        cursor: pointer;
+        border: none;
+        & > img {
+          width: 100%;
+        }
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.5);
+        }
+      }
     }
   }
   & > div:last-child {
@@ -63,7 +113,7 @@ const ItemBox = styled.div`
     align-item: center;
     flex-wrap: wrap;
     a {
-      width: 15%;
+      width: 30%;
       & > div {
         width: 100%;
         box-shadow: 1px 1px 1px 1px gray;

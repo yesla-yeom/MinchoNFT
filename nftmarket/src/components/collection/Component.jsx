@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 import CollectionItemContainer from "./collectionItem/Container";
 
-const CollectionComponent = ({ account, collectionArr }) => {
+const CollectionComponent = ({ collectionArr, setCollection }) => {
   return (
     <CollectionBox>
       <div>
@@ -14,7 +14,12 @@ const CollectionComponent = ({ account, collectionArr }) => {
           TokenName : <span>JLNToken</span>
         </div>
         <div>
-          <div>소유자 : {account && <span>{account}</span>}</div>
+          <div>
+            소유자 :{" "}
+            {collectionArr[0].tokenOwner && (
+              <span>{collectionArr[0].tokenOwner}</span>
+            )}
+          </div>
           <div>
             네트워크 :
             {collectionArr.length ? (
@@ -25,8 +30,8 @@ const CollectionComponent = ({ account, collectionArr }) => {
           </div>
         </div>
         <CollectionItemContainer
-          account={account}
           collectionArr={collectionArr}
+          setCollection={setCollection}
         />
       </div>
     </CollectionBox>

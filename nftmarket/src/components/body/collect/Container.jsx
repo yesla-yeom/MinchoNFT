@@ -1,18 +1,26 @@
+import { useState, useEffect } from "react";
 import CollectComponent from "./Component";
+import axios from "axios";
 
-const CollectContainer = () => {
-  const tokenArr = [
-    { tokenId: "나는", price: "1818ETH" },
-    { tokenId: "언제", price: "188ETH" },
-    { tokenId: "이것을", price: "28ETH" },
-    { tokenId: "다", price: "54ETH" },
-    { tokenId: "할수있냐", price: "694ETH" },
-    { tokenId: "장정현", price: "421ETH" },
-    { tokenId: "주거", price: "517ETH" },
-    { tokenId: "!", price: "32154ETH" },
-  ];
+const CollectContainer = ({ type, account }) => {
+  const [tokenArr, setTokenArr] = useState([]);
+  console.log(account, "나는 받아주는애임");
 
-  return <CollectComponent tokenArr={tokenArr} />;
+  // const tokenArr = await axios.post(`/api/allToken/latestToken`);
+
+  const tokenData = async () => {
+    const tokenArr = await axios.post(
+      `http://localhost:8080/api/sortToken/${type}`,
+      { userAccount: account }
+    );
+    setTokenArr(tokenArr.data);
+  };
+  useEffect(() => {
+    tokenData();
+  }, [type]);
+  console.log(tokenArr.data);
+
+  return <CollectComponent tokenArr={tokenArr} account={account} />;
 };
 
 export default CollectContainer;

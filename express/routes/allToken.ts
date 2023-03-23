@@ -1,5 +1,6 @@
 import { Router, Request, Response } from "express";
 import pinataSDK from "@pinata/sdk";
+import { Op } from "sequelize";
 
 import dummyDataList from "../data/dummyData.json";
 import AllToken from "../models/allToken";
@@ -32,6 +33,7 @@ router.get("/list", async (req: Request, res: Response) => {
           blockChain: dummyDataList[i].blockChain,
           tokenOwner: dummyDataList[i].tokenOwner,
           tokenBase: dummyDataList[i].tokenBase,
+          tokenName: dummyDataList[i].tokenName,
           value: 1,
         },
         { ignoreDuplicates: true }
@@ -42,16 +44,19 @@ router.get("/list", async (req: Request, res: Response) => {
   res.send({ jsonResultArr, result });
 });
 
-router.post("/accountList", async (req: Request, res: Response) => {
-  const list = await AllToken.findAll();
-  res.send({ list });
-});
+router.post("/collectionList", async (req: Request, res: Response) => {
+  let list = [];
+  const { search } = req.body;
+  console.log(search);
 
-router.post("/connectedAccount", async (req: Request, res: Response) => {
-  const { account } = req.body;
-  for (let i = 0; i < dummyDataList.length; i++) {
-    await AllToken.update({ tokenOwner: account }, { where: { tokenId: i } });
+  if (!search) {
+    list = await AllToken.findAll();
+    res.send({ list });
   }
-  res.send({ msg: "update Complete" });
+  list = await AllToken.findAll({
+    where: { name: { [Op.like]: "%" + search + "%" } },
+  });
+  console.log(list);
+  res.send({ list });
 });
 export default router;

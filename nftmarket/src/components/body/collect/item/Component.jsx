@@ -1,18 +1,36 @@
 import { Card } from "antd";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
 const { Meta } = Card;
 
-const CollectItemComponent = ({ tokenName, price }) => {
+const CollectItemComponent = ({ tokenName, price, way }) => {
   return (
-    <Card
+    <NewCard
       hoverable
       style={{
         width: 240,
       }}
-      cover={<img alt="example" src="./imgs/brownBear.jpg" />}
+      cover={
+        <Link to={`/detail/${way}`}>
+          <img
+            alt="example"
+            src="./imgs/brownBear.jpg"
+            style={{ width: "240px" }}
+          />
+        </Link>
+      }
     >
-      <Meta title={tokenName} description={price} />
-    </Card>
+      <Link to={`/detail/${way}`}>
+        <Meta title={tokenName} description={price} />
+      </Link>
+    </NewCard>
   );
 };
+
+const NewCard = styled(Card)`
+  &:hover {
+    cursor: default;
+  }
+`;
 
 export default CollectItemComponent;

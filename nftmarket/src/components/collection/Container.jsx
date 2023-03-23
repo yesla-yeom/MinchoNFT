@@ -1,27 +1,30 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 import CollectionComponent from "./Component";
-const CollectionContainer = ({ account }) => {
+const CollectionContainer = () => {
   const [collectionArr, setCollection] = useState([{}]);
+  const params = useParams();
+
+  // console.log(params);
   const findCollection = async () => {
-    if (!account) return;
     const data = await axios.post(
-      "http://localhost:8080/api/allToken/accountList",
-      {
-        account,
-      }
+      "http://localhost:8080/api/allToken/collectionList"
     );
-    console.log(data.data);
+    console.log(data.data.list);
     setCollection(data.data.list);
   };
 
   useEffect(() => {
     findCollection();
-  }, [account]);
+  }, []);
 
   return (
-    <CollectionComponent account={account} collectionArr={collectionArr} />
+    <CollectionComponent
+      collectionArr={collectionArr}
+      setCollection={setCollection}
+    />
   );
 };
 
