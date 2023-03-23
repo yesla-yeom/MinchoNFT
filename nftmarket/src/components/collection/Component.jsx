@@ -15,7 +15,10 @@ const CollectionComponent = ({ collectionArr, setCollection }) => {
         </div>
         <div>
           <div>
-            소유자 : <span>{collectionArr[0].tokenOwner}</span>
+            소유자 :{" "}
+            {collectionArr[0].tokenOwner && (
+              <span>{collectionArr[0].tokenOwner}</span>
+            )}
           </div>
           <div>
             네트워크 :
