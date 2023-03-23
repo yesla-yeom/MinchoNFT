@@ -10,9 +10,10 @@ import CollectContainer from "./components/body/collect/Container";
 
 import BannerContainer from "./components/body/banner/Container";
 import { useWeb3 } from "./components/utility/useWeb3";
-import BodyContainer from "./components/body/Container";
+import MyNftContainer from "./components/myNFT/Container";
 import CollectionContainer from "./components/collection/Container";
 import { useEffect } from "react";
+import FooterContainer from "./components/footer/Container";
 
 const { Header, Content, Footer } = Layout;
 
@@ -53,7 +54,7 @@ function App() {
                       backgroundColor: " rgba(227, 243, 247, 1)",
                     }}
                   >
-                    <CollectContainer />
+                    <CollectContainer type={"latestToken"} />
                   </div>
                 </>
               }
@@ -65,11 +66,12 @@ function App() {
             <Route
               path="/detail/:tokenId"
               element={<TokenDetailContainer account={account} web3={web3} />}
-            />
+            />{" "}
+            <Route path="/myNFT" element={<MyNftContainer />} />
           </Routes>
         </NftBody>
         <NftFooter>
-          <p>여기는 푸터야</p>
+          <FooterContainer />
         </NftFooter>
       </Layout>
     </>
@@ -99,7 +101,6 @@ const NftBody = styled(Content)`
 const NftFooter = styled(Footer)`
   text-align: center;
   background-color: rgba(176, 222, 219, 1);
-  color: red;
 `;
 
 export default App;

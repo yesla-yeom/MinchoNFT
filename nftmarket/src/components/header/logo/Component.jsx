@@ -1,10 +1,13 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const HeaderLogoComponent = () => {
   return (
-    <ImgDiv>
-      <img src="/imgs/mintChoLogo2.png" />
-    </ImgDiv>
+    <Link to={"/"}>
+      <ImgDiv>
+        <img src="/imgs/mintChoLogo2.png" />
+      </ImgDiv>
+    </Link>
   );
 };
 
@@ -13,6 +16,9 @@ const ImgDiv = styled.div`
   justify-content: center;
   align-items: center;
   margin: 7px 0;
+  &:hover {
+    cursor: pointer;
+  }
   & > img {
     width: 120px;
   }
