@@ -22,6 +22,13 @@ import { abi as NftAbi } from "../contracts/artifacts/NftToken.json";
 import { abi as SaleAbi } from "../contracts/artifacts/SaleToken.json";
 const web3 = new Web3("https://goerli.infura.io/v3");
 // const web3 = new Web3("http://ganache.test.errorcode.help:8545");
+// wss://goerli-light.eth.linkpool.io/ws
+// const web3 = new Web3(
+//   new Web3.providers.HttpProvider("https://goerli.infura.io/v3")
+// );
+
+// const providerUrl = "wss://goerli.infura.io/ws/v3";
+// const web3 = new Web3(new Web3.providers.WebsocketProvider(providerUrl));
 
 // declare global {
 //   interface Window {
@@ -223,9 +230,12 @@ router.post("/create", async (req: Request, res: Response) => {
     SaleAbi as AbiItem[],
     process.env.SALE_CA
   );
-  // console.log(await saleDeployed.methods.getLatestToken(req.body.from).call());
 
-  // console.log(tokenIdGet);
+  let tokenIdGet = await saleDeployed.methods
+    .getLatestToken(req.body.from)
+    .call();
+
+  console.log(tokenIdGet);
   res.send({ msg: "잘가고있다" });
 });
 
