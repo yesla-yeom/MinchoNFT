@@ -15,6 +15,7 @@ import CollectionContainer from "./components/collection/Container";
 import { useEffect } from "react";
 import FooterContainer from "./components/footer/Container";
 
+
 const { Header, Content, Footer } = Layout;
 
 function App() {
@@ -60,10 +61,22 @@ function App() {
             />
             <Route path="/:tokenName" element={<CollectionContainer />} />
             <Route
+
+              path="/detail"
+              element={<CollectionContainer account={account} />}
+            />
+
+            <Route
+              path="/detail/:tokenId"
+              element={<TokenDetailContainer account={account} web3={web3} />}
+            />
+            <Route path="/qna" element={<QnaContainer />} />
+
               path="/:tokenName/:tokenId"
               element={<TokenDetailContainer account={account} web3={web3} />}
-            />{" "}
+            />
             <Route path="/myNFT" element={<MyNftContainer />} />
+
           </Routes>
         </NftBody>
         <NftFooter>

@@ -59,7 +59,7 @@ const DetailBox = styled.div`
   }
   & > div {
     width: 49%;
-    &: first-child {
+    & :first-child {
       width: 37%;
       & > img {
         width: 100%;
@@ -68,7 +68,7 @@ const DetailBox = styled.div`
 
     &:last-child > div {
       padding: 15px 0;
-      &: first-child {
+      & :first-child {
         font-size: 1.5rem;
         font-weight: 750;
       }
