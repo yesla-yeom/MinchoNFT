@@ -11,7 +11,7 @@ const CollectItemComponent = ({ tokenName, price, way }) => {
         width: 240,
       }}
       cover={
-        <Link to={`/detail/${way}`}>
+        <Link to={`/${way}`}>
           <img
             alt="example"
             src="./imgs/brownBear.jpg"
@@ -20,7 +20,7 @@ const CollectItemComponent = ({ tokenName, price, way }) => {
         </Link>
       }
     >
-      <Link to={`/detail/${way}`}>
+      <Link to={`/${way}`}>
         <Meta title={tokenName} description={price} />
       </Link>
     </NewCard>

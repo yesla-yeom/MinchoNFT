@@ -1,7 +1,6 @@
 import { Row, Col, Button } from "antd";
 import styled from "styled-components";
 import CollectItemContainer from "./item/Container";
-import { Link } from "react-router-dom";
 
 const CollectComponent = ({ tokenArr, account }) => {
   console.log(tokenArr);
@@ -12,13 +11,16 @@ const CollectComponent = ({ tokenArr, account }) => {
           {tokenArr.map((item, index) => {
             return (
               <Col className="gutter-row" span={6} key={`Col-${index}`}>
-                <Link to={`/${item.tokenName}`}>
-                  <CollectItemContainer
-                    tokenName={item.name}
-                    price={`${item.price} ETH`}
-                    key={`Card-${index}`}
-                  />
-                </Link>
+                <CollectItemContainer
+                  tokenName={item.name}
+                  price={`${item.price} ETH`}
+                  key={`Card-${index}`}
+                  way={
+                    item.tokenId
+                      ? `${item.tokenName}/${item.tokenId}`
+                      : item.tokenName
+                  }
+                />
               </Col>
             );
           })}

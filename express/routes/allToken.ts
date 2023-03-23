@@ -46,17 +46,34 @@ router.get("/list", async (req: Request, res: Response) => {
 
 router.post("/collectionList", async (req: Request, res: Response) => {
   let list = [];
-  const { search } = req.body;
-  console.log(search);
-
+  let tempInfo = {};
+  const {
+    search,
+    order,
+    tokenName,
+  }: { search: string; order: string; tokenName: string } = req.body;
+  tempInfo = await AllToken.findOne({ where: { tokenName } });
   if (!search) {
-    list = await AllToken.findAll();
-    res.send({ list });
+    if (!order) {
+      list = await AllToken.findAll();
+
+      res.send({ list, status: 200, tempInfo });
+    } else {
+      list = await AllToken.findAll({ order: [["price", order]] });
+      res.send({ list, status: 200, tempInfo });
+    }
+  } else {
+    const tempSearch = await AllToken.findOne({
+      where: { name: { [Op.like]: "%" + search + "%" } },
+    });
+    if (!tempSearch) {
+      return res.send({ msg: "No search result", status: 401, tempInfo });
+    }
+    list = await AllToken.findAll({
+      where: { name: { [Op.like]: "%" + search + "%" } },
+      order: [["price", order]],
+    });
+    res.send({ list, status: 200, tempInfo });
   }
-  list = await AllToken.findAll({
-    where: { name: { [Op.like]: "%" + search + "%" } },
-  });
-  console.log(list);
-  res.send({ list });
 });
 export default router;
