@@ -5,7 +5,7 @@ const router = Router();
 
 router.post("/latestToken", async (req: Request, res: Response) => {
   const tempTokenArr = await AllToken.findAll({
-    attributes: ["image", "price", "name"],
+    attributes: ["image", "price", "name", "tokenName"],
     order: [["createdAt", "DESC"]],
   });
   res.send(tempTokenArr);
@@ -14,7 +14,7 @@ router.post("/latestToken", async (req: Request, res: Response) => {
 router.post("/ownToken", async (req: Request, res: Response) => {
   const tempTokenArr = await AllToken.findAll({
     where: { tokenOwner: req.body.userAccount },
-    attributes: ["image", "price", "name"],
+    attributes: ["image", "price", "name", "tokenName", "tokenId"],
     order: [["createdAt", "DESC"]],
   });
 
@@ -23,7 +23,7 @@ router.post("/ownToken", async (req: Request, res: Response) => {
 });
 router.post("/mintToken", async (req: Request, res: Response) => {
   const tempTokenArr = await AllToken.findAll({
-    attributes: ["image", "price", "name"],
+    attributes: ["image", "price", "name", "tokenName", "tokenId"],
     order: [["createdAt", "DESC"]],
   });
   console.log("mint", req.body);
