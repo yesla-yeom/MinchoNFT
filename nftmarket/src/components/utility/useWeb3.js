@@ -1,6 +1,5 @@
 import { useCallback, useState } from "react";
 import Web3 from "web3";
-import axios from "axios";
 
 export const useWeb3 = () => {
   const [web3, setWeb3] = useState();

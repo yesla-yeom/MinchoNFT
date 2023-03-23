@@ -2,7 +2,16 @@ import styled from "styled-components";
 
 import CollectionItemContainer from "./collectionItem/Container";
 
-const CollectionComponent = ({ collectionArr, setCollection }) => {
+const CollectionComponent = ({
+  collectionArr,
+  setCollection,
+  order,
+  setOrder,
+  collectionInfo,
+  setCollectionInfo,
+  check,
+  setCheck,
+}) => {
   return (
     <CollectionBox>
       <div>
@@ -11,27 +20,32 @@ const CollectionComponent = ({ collectionArr, setCollection }) => {
       </div>
       <div>
         <div>
-          TokenName : <span>JLNToken</span>
+          TokenName :{" "}
+          {collectionInfo.tokenName && <span>{collectionInfo.tokenName}</span>}
         </div>
         <div>
           <div>
             소유자 :{" "}
-            {collectionArr[0].tokenOwner && (
-              <span>{collectionArr[0].tokenOwner}</span>
+            {collectionInfo.tokenOwner && (
+              <span>{collectionInfo.tokenOwner}</span>
             )}
           </div>
           <div>
             네트워크 :
-            {collectionArr.length ? (
-              <span>{collectionArr[0].blockChain}</span>
-            ) : (
-              <></>
+            {collectionInfo.blockChain && (
+              <span>{collectionInfo.blockChain}</span>
             )}
           </div>
         </div>
         <CollectionItemContainer
           collectionArr={collectionArr}
           setCollection={setCollection}
+          order={order}
+          setOrder={setOrder}
+          collectionInfo={collectionInfo}
+          setCollectionInfo={setCollectionInfo}
+          check={check}
+          setCheck={setCheck}
         />
       </div>
     </CollectionBox>
