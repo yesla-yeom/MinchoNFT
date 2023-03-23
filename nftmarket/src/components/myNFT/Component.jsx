@@ -3,7 +3,7 @@ import styled from "styled-components";
 import CollectContainer from "../body/collect/Container";
 import { useState } from "react";
 
-const MyNftComponent = () => {
+const MyNftComponent = ({ account }) => {
   const [selected, setSelectd] = useState("ownToken");
   const onChange = (key) => {
     if (key == 1) {
@@ -14,6 +14,7 @@ const MyNftComponent = () => {
       setSelectd("salesToken");
     }
   };
+  console.log(account);
 
   const items = [
     {
@@ -33,7 +34,7 @@ const MyNftComponent = () => {
   return (
     <>
       <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
-      <CollectContainer type={selected} />
+      <CollectContainer type={selected} account={account} />
     </>
   );
 };

@@ -3,7 +3,8 @@ import styled from "styled-components";
 import CollectItemContainer from "./item/Container";
 import { Link } from "react-router-dom";
 
-const CollectComponent = ({ tokenArr }) => {
+const CollectComponent = ({ tokenArr, account }) => {
+  console.log(tokenArr);
   return (
     <>
       <CollectDiv>
@@ -13,8 +14,8 @@ const CollectComponent = ({ tokenArr }) => {
               <Col className="gutter-row" span={6} key={`Col-${index}`}>
                 <Link to={`/${item.tokenName}`}>
                   <CollectItemContainer
-                    tokenName={item.tokenId}
-                    price={item.price}
+                    tokenName={item.name}
+                    price={`${item.price} ETH`}
                     key={`Card-${index}`}
                   />
                 </Link>

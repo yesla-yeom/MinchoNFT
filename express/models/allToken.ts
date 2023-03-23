@@ -60,6 +60,10 @@ export default class AllToken extends Model {
           type: DataTypes.STRING(45),
           allowNull: false,
         },
+        sale: {
+          type: DataTypes.INTEGER.UNSIGNED,
+          allowNull: true,
+        },
       },
       {
         sequelize,
