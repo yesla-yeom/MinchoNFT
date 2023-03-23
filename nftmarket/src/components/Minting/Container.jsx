@@ -2,7 +2,7 @@ import MintingComponent from "./Component";
 import axios from "axios";
 import { useCallback, useState } from "react";
 
-function MintingContainer() {
+function MintingContainer({ account, web3 }) {
   const [NftName, setName] = useState("");
   const [NftDescription, setDescription] = useState("");
   const [file, setFile] = useState();
@@ -37,13 +37,13 @@ function MintingContainer() {
     formData.append("file", file);
     formData.append("name", NftName);
     formData.append("description", NftDescription);
-    // formData.append("from", account);
+    formData.append("from", account);
     console.log(formData);
     const result = (
       await axios.post("http://localhost:8080/api/mint/", formData)
     ).data;
     console.log(result);
-    // web3.eth.sendTransaction(result);
+    web3.eth.sendTransaction(result);
   };
 
   return (

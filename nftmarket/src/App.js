@@ -13,8 +13,8 @@ import { useWeb3 } from "./components/utility/useWeb3";
 import MyNftContainer from "./components/myNFT/Container";
 import CollectionContainer from "./components/collection/Container";
 import { useEffect } from "react";
+import QnaContainer from "./components/qna/Container";
 import FooterContainer from "./components/footer/Container";
-
 
 const { Header, Content, Footer } = Layout;
 
@@ -41,7 +41,10 @@ function App() {
 
         <NftBody className="site-layout">
           <Routes>
-            <Route path="/minting" element={<MintingContainer />} />
+            <Route
+              path="/minting"
+              element={<MintingContainer account={account} web3={web3} />}
+            />
             <Route
               path="/"
               element={
@@ -61,7 +64,6 @@ function App() {
             />
             <Route path="/:tokenName" element={<CollectionContainer />} />
             <Route
-
               path="/detail"
               element={<CollectionContainer account={account} />}
             />
@@ -71,12 +73,11 @@ function App() {
               element={<TokenDetailContainer account={account} web3={web3} />}
             />
             <Route path="/qna" element={<QnaContainer />} />
-
+            <Route
               path="/:tokenName/:tokenId"
               element={<TokenDetailContainer account={account} web3={web3} />}
             />
             <Route path="/myNFT" element={<MyNftContainer />} />
-
           </Routes>
         </NftBody>
         <NftFooter>
