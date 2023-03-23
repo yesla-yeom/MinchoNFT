@@ -1,18 +1,26 @@
 import { Router, Request, Response } from "express";
-
 import pinataSDK from "@pinata/sdk";
 import multer from "multer";
-// import axios from "axios";
+import axios from "axios";
 import dotenv from "dotenv";
-import db from "../models/index";
 import { Readable } from "stream";
+import Web3 from "web3";
+import { AbiItem } from "web3-utils";
+
+import db from "../models/index";
+
+dotenv.config();
+
 const router = Router();
 const upload: multer.Multer = multer();
-dotenv.config();
 const { Minting } = db;
 const pinata = new pinataSDK(process.env.API_Key, process.env.API_Secret);
 
-// const web3 = new Web3("http://ganache.test.errorcode.help:8545");
+const web3 = new Web3(
+  "wss://goerli.infura.io/ws/v3/2ca09ab04a7c44dcb6f886deeba97502"
+);
+
+import { abi as NftAbi } from "../contracts/artifacts/NftToken.json";
 
 router.post("/", upload.single("file"), async (req: Request, res: Response) => {
   const { name, description }: { name: string; description: string } = req.body;
@@ -99,43 +107,43 @@ router.post("/", upload.single("file"), async (req: Request, res: Response) => {
   );
   console.log(jsonResult);
 
-  //   //   const deployed = new web3.eth.Contract(
-  //   //     NftAbi as AbiItem[],
-  //   //     process.env.NFT_CA
-  //   //   );
-  //   //   // NftAbi as AbiItem[] NftAbi 이건 AbiItem[] 이형식갖고있다
+  const deployed = new web3.eth.Contract(
+    NftAbi as AbiItem[],
+    process.env.NFT_CA
+  );
+  // NftAbi as AbiItem[] NftAbi 이건 AbiItem[] 이형식갖고있다
 
-  //   //   const obj: { nonce: number; to: string; from: string; data: string } = {
-  //   //     nonce: 0,
-  //   //     to: "",
-  //   //     from: "",
-  //   //     data: "",
-  //   //   };
+  const obj: { nonce: number; to: string; from: string; data: string } = {
+    nonce: 0,
+    to: "",
+    from: "",
+    data: "",
+  };
 
-  //   //   console.log("test");
-  //   //   console.log(req.body.from);
-  //   //   // obj.nonce = await web3.eth.getTransactionCount(req.body.from);
-  //   //   console.log("test2");
-  //   //   obj.to = process.env.NFT_CA;
-  //   //   obj.from = req.body.from;
-  //   //   obj.data = deployed.methods.safeMint(jsonResult.IpfsHash).encodeABI();
+  console.log("test");
+  console.log(req.body.from);
+  obj.nonce = await web3.eth.getTransactionCount(req.body.from);
+  console.log("test2");
+  obj.to = process.env.NFT_CA;
+  obj.from = req.body.from;
+  obj.data = deployed.methods.safeMint(jsonResult.IpfsHash).encodeABI();
 
-  //   //   res.send(obj);
-  if (imgResult && jsonResult) {
-    console.log(name);
-    console.log(description);
-    console.log(imgResult.IpfsHash);
-    console.log(jsonResult.IpfsHash);
-    await Minting.create({
-      tokenId: 1,
-      name: name,
-      description: description,
-      imgipfshash: imgResult.IpfsHash,
-      jsonipfshash: jsonResult.IpfsHash,
-    });
-  }
-
-  res.send(req.body);
+  const temp = await deployed.methods.name().call();
+  console.log("temp", temp);
+  res.send(obj);
+  // if (imgResult && jsonResult) {
+  //   console.log(name);
+  //   console.log(description);
+  //   console.log(imgResult.IpfsHash);
+  //   console.log(jsonResult.IpfsHash);
+  //   await Minting.create({
+  //     tokenId: 1,
+  //     name: name,
+  //     description: description,
+  //     imgipfshash: imgResult.IpfsHash,
+  //     jsonipfshash: jsonResult.IpfsHash,
+  //   });
+  // }
 });
 
 export default router;
