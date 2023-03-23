@@ -1,24 +1,18 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
+
 import CollectionItemComponent from "./Component";
 
 const CollectionItemContainer = ({ collectionArr, setCollection }) => {
   const [isOrder, setIsOrder] = useState(false);
   const [search, setSearch] = useState("");
 
-  const findSearch = (_search) => {
-    console.log(_search);
-    let tempArr = [];
-    collectionArr.forEach((item) => {
-      if (item.name.includes(_search)) {
-        console.log(item.name);
-        console.log(_search);
-        console.log(item.name.includes(_search));
-        console.log([item]);
-        tempArr.push(item);
-      }
-    });
-    console.log(tempArr);
-    setCollection(tempArr);
+  const findSearch = async (_search) => {
+    const data = await axios.post(
+      "http://localhost:8080/api/allToken/collectionList",
+      { search: _search }
+    );
+    setCollection(data.data.list);
   };
 
   return (

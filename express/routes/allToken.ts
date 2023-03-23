@@ -1,5 +1,6 @@
 import { Router, Request, Response } from "express";
 import pinataSDK from "@pinata/sdk";
+import { Op } from "sequelize";
 
 import dummyDataList from "../data/dummyData.json";
 import AllToken from "../models/allToken";
@@ -43,8 +44,19 @@ router.get("/list", async (req: Request, res: Response) => {
   res.send({ jsonResultArr, result });
 });
 
-router.get("/collectionList", async (req: Request, res: Response) => {
-  const list = await AllToken.findAll();
+router.post("/collectionList", async (req: Request, res: Response) => {
+  let list = [];
+  const { search } = req.body;
+  console.log(search);
+
+  if (!search) {
+    list = await AllToken.findAll();
+    res.send({ list });
+  }
+  list = await AllToken.findAll({
+    where: { name: { [Op.like]: "%" + search + "%" } },
+  });
+  console.log(list);
   res.send({ list });
 });
 export default router;

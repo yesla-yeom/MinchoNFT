@@ -9,9 +9,10 @@ const CollectionContainer = () => {
 
   // console.log(params);
   const findCollection = async () => {
-    const data = await axios.get(
+    const data = await axios.post(
       "http://localhost:8080/api/allToken/collectionList"
     );
+    console.log(data.data.list);
     setCollection(data.data.list);
   };
 

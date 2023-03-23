@@ -46,8 +46,11 @@ const CollectionItemComponent = ({
       <div>{collectionArr.length} 개의 NFT</div>
       <div>
         {collectionArr.map((item, index) => (
-          <Link to={`/${collectionArr[0].tokenName}/${index}`}>
-            <div>
+          <Link
+            to={`/${collectionArr[0].tokenName}/${index}`}
+            key={`collectionItemLink-${index}`}
+          >
+            <div key={`collectionItemBox-${index}`}>
               <img
                 key={`collectionArr-image-${index}`}
                 src={item.image}
