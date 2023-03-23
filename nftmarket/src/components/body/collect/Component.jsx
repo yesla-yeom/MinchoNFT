@@ -11,12 +11,13 @@ const CollectComponent = ({ tokenArr }) => {
           {tokenArr.map((item, index) => {
             return (
               <Col className="gutter-row" span={6} key={`Col-${index}`}>
-                <CollectItemContainer
-                  tokenName={item.name}
-                  price={item.price}
-                  key={`Card-${index}`}
-                  way={index}
-                />
+                <Link to={`/${item.tokenName}`}>
+                  <CollectItemContainer
+                    tokenName={item.tokenId}
+                    price={item.price}
+                    key={`Card-${index}`}
+                  />
+                </Link>
               </Col>
             );
           })}

@@ -21,7 +21,6 @@ function App() {
   useEffect(() => {
     (async () => {
       const data = await axios.get("http://localhost:8080/api/allToken/list");
-      console.log(data.data);
     })();
   }, []);
   const { account, logIn, web3 } = useWeb3();
@@ -59,12 +58,9 @@ function App() {
                 </>
               }
             />
+            <Route path="/:tokenName" element={<CollectionContainer />} />
             <Route
-              path="/detail"
-              element={<CollectionContainer account={account} />}
-            />
-            <Route
-              path="/detail/:tokenId"
+              path="/:tokenName/:tokenId"
               element={<TokenDetailContainer account={account} web3={web3} />}
             />{" "}
             <Route path="/myNFT" element={<MyNftContainer />} />

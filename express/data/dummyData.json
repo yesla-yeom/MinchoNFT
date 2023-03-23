@@ -10,6 +10,7 @@
     "blockChain": "Ethereum",
     "tokenOwner": "0x1",
     "tokenBase": "ERC-721",
+    "tokenName": "JLNToken",
     "atrributes": [
       {
         "trait_type": "Rank",
@@ -32,6 +33,7 @@
     "blockChain": "Ethereum",
     "tokenOwner": "0x12",
     "tokenBase": "ERC-721",
+    "tokenName": "JLNToken",
     "atrributes": [
       {
         "trait_type": "Rank",
@@ -54,6 +56,7 @@
     "CA": "0x789371274859",
     "tokenOwner": "0x123",
     "tokenBase": "ERC-721",
+    "tokenName": "JLNToken",
     "atrributes": [
       {
         "trait_type": "Rank",
