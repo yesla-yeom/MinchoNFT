@@ -9,6 +9,10 @@ import "../node_modules/@openzeppelin/contracts/utils/Counters.sol";
 contract NftToken is ERC721Enumerable, ERC721URIStorage, Ownable {
   using Counters for Counters.Counter;
   Counters.Counter private _tokenId;
+
+  // uint8 public decimals = 18;
+  // uint public totalToken = 1000 * 10 ** decimals;
+  uint public constant totalToken = 1000;
   // uint public constant MAX_TOKEN_COUNT = 10000;
 
   struct TokenData {
@@ -26,6 +30,11 @@ contract NftToken is ERC721Enumerable, ERC721URIStorage, Ownable {
 
   // event info(uint tokenId, TokenData tokenData);
   event info(uint tokenId);
+  event total(uint totalToken);
+
+  function totals() public pure returns (uint) {
+    return totalToken;
+  }
 
   function _beforeTokenTransfer(
     address from,
@@ -38,6 +47,14 @@ contract NftToken is ERC721Enumerable, ERC721URIStorage, Ownable {
 
   function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
     super._burn(tokenId);
+  }
+
+  function name() public view override(ERC721) returns (string memory) {
+    return super.name();
+  }
+
+  function symbol() public view override(ERC721) returns (string memory) {
+    return super.symbol();
   }
 
   function supportsInterface(
@@ -56,92 +73,16 @@ contract NftToken is ERC721Enumerable, ERC721URIStorage, Ownable {
     return "https://gateway.pinata.cloud/ipfs/";
   }
 
-  function safeMint(string memory uri) public {
+  function safeMint(string memory uri) public returns (uint) {
     uint tokenId = _tokenId.current();
+    require(totalToken >= tokenId);
 
     _tokenId.increment();
     _safeMint(msg.sender, tokenId);
     _setTokenURI(tokenId, uri);
     emit info(tokenId);
+    emit total(totalToken);
+
+    return tokenId;
   }
-
-  // function mintToken(string memory uri) public payable {
-  //   uint tokenId = _tokenId.current();
-
-  //   _tokenId.increment();
-
-  //   tokenDatas[tokenId] = getRandomTokenData(msg.sender, tokenId);
-
-  //   tokenCount[tokenDatas[tokenId].Rank - 1][tokenDatas[tokenId].Type - 1] += 1;
-  //   // 토큰이 민팅될 때마다 랭크, 타입에 따라 배열의 요소값을 1씩 추가해준다.
-
-  //   // payable(Ownable.owner()).transfer(msg.value);
-  //   _safeMint(msg.sender, tokenId);
-  //   _setTokenURI(tokenId, uri);
-  //   emit info(tokenId, tokenDatas[tokenId]);
-  // }
-
-  // function getRandomTokenData(
-  //   address _owner,
-  //   uint tokenId
-  // ) private pure returns (TokenData memory) {
-  //   uint randomNum = uint(keccak256(abi.encodePacked(_owner, tokenId))) % 100;
-
-  //   TokenData memory data;
-
-  //   if (randomNum < 5) {
-  //     data.Rank = 4;
-  //     if (randomNum == 1) {
-  //       data.Type = 1;
-  //     } else if (randomNum == 2) {
-  //       data.Type = 2;
-  //     } else if (randomNum == 3) {
-  //       data.Type = 3;
-  //     } else {
-  //       data.Type = 4;
-  //     }
-  //   } else if (randomNum < 13) {
-  //     data.Rank = 3;
-  //     if (randomNum < 7) {
-  //       data.Type = 1;
-  //     } else if (randomNum < 9) {
-  //       data.Type = 2;
-  //     } else if (randomNum < 11) {
-  //       data.Type = 3;
-  //     } else {
-  //       data.Type = 4;
-  //     }
-  //   } else if (randomNum < 37) {
-  //     data.Rank = 2;
-  //     if (randomNum < 19) {
-  //       data.Type = 1;
-  //     } else if (randomNum < 25) {
-  //       data.Type = 2;
-  //     } else if (randomNum < 31) {
-  //       data.Type = 3;
-  //     } else {
-  //       data.Type = 4;
-  //     }
-  //   } else {
-  //     data.Rank = 1;
-  //     if (randomNum < 52) {
-  //       data.Type = 1;
-  //     } else if (randomNum < 68) {
-  //       data.Type = 2;
-  //     } else if (randomNum < 84) {
-  //       data.Type = 3;
-  //     } else {
-  //       data.Type = 4;
-  //     }
-  //   }
-  //   return data;
-  // }
-
-  // function getTokenRank(uint tokenId) public view returns (uint) {
-  //   return tokenDatas[tokenId].Rank;
-  // }
-
-  // function getTokenType(uint tokenId) public view returns (uint) {
-  //   return tokenDatas[tokenId].Type;
-  // }
 }

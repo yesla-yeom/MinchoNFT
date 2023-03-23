@@ -20,8 +20,14 @@ dotenv.config();
 const { Minting } = db;
 import { abi as NftAbi } from "../contracts/artifacts/NftToken.json";
 import { abi as SaleAbi } from "../contracts/artifacts/SaleToken.json";
-const web3 = new Web3("https://goerli.infura.io/v3");
+
+const TOTALTOKENCOUNT: number = 1000;
+const web3 = new Web3(
+  "wss://goerli.infura.io/ws/v3/417c70b502174e5cb15ef580dae6b3d8"
+);
 // const web3 = new Web3("http://ganache.test.errorcode.help:8545");
+// const web3 = new Web3("http://127.0.0.1:8545");
+
 // wss://goerli-light.eth.linkpool.io/ws
 // const web3 = new Web3(
 //   new Web3.providers.HttpProvider("https://goerli.infura.io/v3")
@@ -36,7 +42,6 @@ const web3 = new Web3("https://goerli.infura.io/v3");
 //   }
 // }
 
-// const web3 = new Web3("http://localhost:8545");
 // const _web3 = new Web3(window.ethereum);
 
 // const provider = new WebsocketProvider("ws://localhost:8545");
@@ -56,11 +61,17 @@ let type = "";
 // 길이가 1이면 =>다시 뽑는다
 let rank = 0;
 
-// if (rank == 0) {
-//   Minting.findOne({ id: 1 }).then((data) => {
-//     rank += 1;
-//   });
-// }
+// Minting.findAll({
+//   where: { id: req.body.id },
+//   include: [
+//     {
+//       model: Individualuser_Info,
+//       as: "RecruitInfo",
+//     },
+//   ],
+// }).then((data) => {
+//   res.send(data);
+// });
 
 if (randomnum < 6) {
   type = "Legendary";
@@ -76,166 +87,205 @@ router.post(
   "/minting",
   upload.single("file"),
   async (req: Request, res: Response) => {
-    const { name, description }: { name: string; description: string } =
-      req.body;
+    try {
+      const { name, description }: { name: string; description: string } =
+        req.body;
 
-    const imgResult: {
-      IpfsHash: string;
-      PinSize: number;
-      Timestamp: string;
-      isDuplicate?: boolean;
-    } = await pinata.pinFileToIPFS(Readable.from(req.file.buffer), {
-      pinataMetadata: {
-        name: Date.now().toString(),
-      },
-      pinataOptions: {
-        cidVersion: 0,
-      },
-    });
-    if (imgResult.isDuplicate) {
-      console.log("같은 이미지!");
-    }
-    console.log(imgResult);
-
-    const jsonResult = await pinata.pinJSONToIPFS(
-      {
-        name,
-        description,
-        //   image: "https://gateway.pinata.cloud/ipfs/" + imgResult.IpfsHash,
-        image: `https://gateway.pinata.cloud/ipfs/${imgResult.IpfsHash}`,
-
-        attributes: [
-          { trait_type: "Rank", value: rank },
-          { trait_type: "type", value: type },
-          // {
-          //   trait_type: "BackGround",
-          //   value: "Off White A",
-          // },
-          // {
-          //   trait_type: "CLOTHING",
-          //   value: "Azuki Tech Jacket",
-          // },
-          // { trait_type: "EYES", value: "Closed" },
-          // {
-          //   trait_type: "Level",
-          //   value: 5,
-          // },
-          // {
-          //   trait_type: "Stamina",
-          //   value: 1.4,
-          // },
-          // {
-          //   trait_type: "Personality",
-          //   value: "Sad",
-          // },
-          // {
-          //   display_type: "boost_number",
-          //   trait_type: "Aqua Power",
-          //   value: 40,
-          // },
-          // {
-          //   display_type: "boost_percentage",
-          //   trait_type: "Stamina Increase",
-          //   value: 10,
-          // },
-          // {
-          //   display_type: "number",
-          //   trait_type: "Generation",
-          //   value: 2,
-          // },
-          // {
-          //   display_type: "date",
-          //   trait_type: "birthday",
-          //   value: 1546360800,
-          // },
-        ],
-      },
-      {
+      const imgResult: {
+        IpfsHash: string;
+        PinSize: number;
+        Timestamp: string;
+        isDuplicate?: boolean;
+      } = await pinata.pinFileToIPFS(Readable.from(req.file.buffer), {
         pinataMetadata: {
-          name: Date.now().toString() + ".json",
-          //json파일이름
+          name: Date.now().toString(),
         },
         pinataOptions: {
           cidVersion: 0,
         },
-      }
-    );
-    console.log(jsonResult);
-
-    const deployed = new web3.eth.Contract(
-      NftAbi as AbiItem[],
-      process.env.NFT_CA
-    );
-
-    const obj: {
-      // nonce: number;
-      to: string;
-      from: string;
-      data: string;
-    } = {
-      // nonce: 0,
-      to: "",
-      from: "",
-      data: "",
-    };
-
-    // let test = await web3.eth.getTransactionCount(req.body.from);
-    // console.log(test);
-
-    //   //   console.log("test2");
-    obj.to = process.env.NFT_CA;
-    obj.from = req.body.from;
-    obj.data = deployed.methods.safeMint(jsonResult.IpfsHash).encodeABI();
-
-    console.log(obj);
-    // console.log("2");
-    //   //   res.send(obj);
-    if (imgResult && jsonResult) {
-      // console.log(name);
-      // console.log(description);
-      // console.log(imgResult.IpfsHash);
-      // console.log(jsonResult.IpfsHash);
-      // console.log(req.body.from);
-
-      await Minting.create({
-        tokenId: 1,
-        name: name,
-        description: description,
-        imgipfshash: imgResult.IpfsHash,
-        jsonipfshash: jsonResult.IpfsHash,
-        from: req.body.from,
-        rank: rank,
-        type: type,
       });
-    }
-    // web3.eth
-    //   .subscribe("logs", { address: process.env.NFT_CA })
-    //   .on("data", (log) => {
-    //     console.log(log);
-    //     const params = [{ type: "uint", name: "tokenId" }];
-    //     const value = web3.eth.abi.decodeLog(params, log.data, []);
+      if (imgResult.isDuplicate) {
+        console.log("같은 이미지!");
+      }
+      console.log(imgResult);
 
-    //     console.log(value);
-    //   })
-    //   .on("error", (error) => {
-    //     console.error(error);
-    //   });
-    res.send(obj);
+      const jsonResult = await pinata.pinJSONToIPFS(
+        {
+          name,
+          description,
+          //   image: "https://gateway.pinata.cloud/ipfs/" + imgResult.IpfsHash,
+          image: `https://gateway.pinata.cloud/ipfs/${imgResult.IpfsHash}`,
+
+          attributes: [
+            { trait_type: "Rank", value: rank },
+            { trait_type: "type", value: type },
+            // {
+            //   trait_type: "BackGround",
+            //   value: "Off White A",
+            // },
+            // {
+            //   trait_type: "CLOTHING",
+            //   value: "Azuki Tech Jacket",
+            // },
+            // { trait_type: "EYES", value: "Closed" },
+            // {
+            //   trait_type: "Level",
+            //   value: 5,
+            // },
+            // {
+            //   trait_type: "Stamina",
+            //   value: 1.4,
+            // },
+            // {
+            //   trait_type: "Personality",
+            //   value: "Sad",
+            // },
+            // {
+            //   display_type: "boost_number",
+            //   trait_type: "Aqua Power",
+            //   value: 40,
+            // },
+            // {
+            //   display_type: "boost_percentage",
+            //   trait_type: "Stamina Increase",
+            //   value: 10,
+            // },
+            // {
+            //   display_type: "number",
+            //   trait_type: "Generation",
+            //   value: 2,
+            // },
+            // {
+            //   display_type: "date",
+            //   trait_type: "birthday",
+            //   value: 1546360800,
+            // },
+          ],
+        },
+        {
+          pinataMetadata: {
+            name: Date.now().toString() + ".json",
+            //json파일이름
+          },
+          pinataOptions: {
+            cidVersion: 0,
+          },
+        }
+      );
+      console.log(jsonResult);
+
+      const deployed = new web3.eth.Contract(
+        NftAbi as AbiItem[],
+        process.env.NFT_CA
+      );
+
+      const obj: {
+        // nonce: number;
+        to: string;
+        from: string;
+        data: string;
+      } = {
+        // nonce: 0,
+        to: "",
+        from: "",
+        data: "",
+      };
+
+      // let test = await web3.eth.getTransactionCount(req.body.from);
+      // console.log(test);
+
+      //   //   console.log("test2");
+      obj.to = process.env.NFT_CA;
+      obj.from = req.body.from;
+      obj.data = deployed.methods.safeMint(jsonResult.IpfsHash).encodeABI();
+
+      // let dd = web3.eth.abi.decodeParameter(testdecode, "");
+      // console.log(dd);
+      // let testone = await deployed.methods.totals().call();
+      // console.log(testone);
+
+      console.log(obj);
+      // console.log("2");
+      //   //   res.send(obj);
+      //////////////////////////////
+      let tokenName = await deployed.methods.name().call();
+      console.log(tokenName);
+      if (imgResult && jsonResult) {
+        // console.log(name);
+        // console.log(description);
+        // console.log(imgResult.IpfsHash);
+        // console.log(jsonResult.IpfsHash);
+        // console.log(req.body.from);
+        // let randomArray = await Minting.findAll({
+        //   where: {},
+        // });
+
+        let randomArray = [];
+
+        function generateUniqueRandomValue() {
+          let value = Math.floor(Math.random() * 1000);
+          while (randomArray.includes(value)) {
+            value = Math.floor(Math.random() * 1000);
+          }
+          randomArray.push(value);
+          return value;
+        }
+
+        let RandomValue = generateUniqueRandomValue();
+
+        await Minting.create({
+          tokenId: TOTALTOKENCOUNT,
+          name: name,
+          description: description,
+          imgipfshash: imgResult.IpfsHash,
+          jsonipfshash: jsonResult.IpfsHash,
+          from: req.body.from,
+          rank: RandomValue,
+          type: type,
+        });
+      }
+      /////////////////////
+      // web3.eth
+      //   .subscribe("logs", { address: process.env.NFT_CA })
+      //   .on("data", (log) => {
+      //     console.log(log);
+      //     const params = [{ type: "uint", name: "tokenId" }];
+      //     const value = web3.eth.abi.decodeLog(params, log.data, []);
+
+      //     console.log(value);
+      //   })
+      //   .on("error", (error) => {
+      //     console.error(error);
+      //   });
+      res.send(obj);
+    } catch (error) {
+      console.error(error);
+    }
   }
 );
 
 router.post("/create", async (req: Request, res: Response) => {
-  console.log("req.body는:", req.body.from);
-  const saleDeployed = new web3.eth.Contract(
-    SaleAbi as AbiItem[],
-    process.env.SALE_CA
+  const { transactionResult } = req.body;
+  // console.log("transactionResult:", transactionResult);
+  let tokendata = transactionResult.logs[1].data;
+  // let totaldata = transactionResult.logs[2].data;
+  let tokenId = parseInt(tokendata, 16);
+  // let totalsupply = parseInt(totaldata, 16);
+  console.log(tokenId);
+  // console.log(totalsupply);
+  await Minting.update(
+    { tokenId: tokenId },
+    { where: { tokenId: TOTALTOKENCOUNT } }
   );
 
-  let tokenIdGet = await saleDeployed.methods
-    .getLatestToken(req.body.from)
-    .call();
+  // const saleDeployed = new web3.eth.Contract(
+  //   SaleAbi as AbiItem[],
+  //   process.env.SALE_CA
+  // );
 
-  console.log(tokenIdGet);
+  // let tokenIdGet = await saleDeployed.methods.getLatestToken(req.body.from);
+
+  // console.log(tokenIdGet);
   res.send({ msg: "잘가고있다" });
 });
 

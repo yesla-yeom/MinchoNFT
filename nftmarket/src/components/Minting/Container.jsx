@@ -58,11 +58,14 @@ function MintingContainer({ account, web3 }) {
     ).data;
 
     let transactionResult = await web3.eth.sendTransaction(result);
-    let signFrom = transactionResult.from;
-    console.log(signFrom);
+
+    console.log(transactionResult);
+
+    // let signFrom = transactionResult.from;
+    // console.log(signFrom);
     const create = (
       await axios.post("http://localhost:8080/api/mint/create", {
-        from: signFrom,
+        transactionResult,
       })
     ).data;
     console.log(create);
