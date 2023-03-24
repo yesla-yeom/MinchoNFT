@@ -11,7 +11,9 @@ const TokenDetailComponent = ({ detail, buyToken }) => {
         <div>#{detail.tokenId}</div>
         <div>
           <div>컨트랙트 주소(CA) : </div>
-          <div>{detail.ca}</div>
+          <div>
+            {detail.ca && detail.ca.slice(0, 4) + " ... " + detail.ca.slice(-4)}
+          </div>
         </div>
         <div>블록체인 : {detail.blockChain}</div>
         <div>토큰 기반: {detail.tokenBase}</div>
@@ -57,16 +59,18 @@ const DetailBox = styled.div`
     text-decoration: none;
     color: black;
   }
-  & > div {
+  & > div:first-child {
     width: 49%;
     & :first-child {
-      width: 37%;
+      width: 80%;
       & > img {
         width: 100%;
       }
     }
-
-    &:last-child > div {
+  }
+  & > div:last-child {
+    width: 49%;
+    & > div {
       padding: 15px 0;
       & :first-child {
         font-size: 1.5rem;
