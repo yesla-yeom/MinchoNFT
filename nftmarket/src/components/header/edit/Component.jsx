@@ -5,35 +5,38 @@ import { connectors } from "../../utility/connect";
 import { Link } from "react-router-dom";
 
 const HeaderEditComponent = ({ logIn }) => {
-  const { account, activate, active, deactivate } = useWeb3React();
+  const { account, activate, active } = useWeb3React();
 
-  console.log(active);
   const items = [
     {
       key: "1",
       label: <p>{account}</p>,
     },
   ];
+
   return (
     <EditDiv>
       {active ? (
         <>
+          <Link to={"/minting"}>
+            <EditButton>Minting NFT</EditButton>
+          </Link>
           <Dropdown menu={{ items }} placement="bottomLeft">
-            <Button>My Account</Button>
+            <EditButton>My Account</EditButton>
           </Dropdown>
           <Link to={"/myNFT"}>
-            <Button>My NFT</Button>
+            <EditButton>My NFT</EditButton>
           </Link>
         </>
       ) : (
-        <Button
+        <EditButton
           onClick={() => {
             activate(connectors.injected);
             logIn();
           }}
         >
           지갑 연결
-        </Button>
+        </EditButton>
       )}
     </EditDiv>
   );
@@ -44,6 +47,10 @@ const EditDiv = styled.div`
   column-gap: 15px;
   justify-content: center;
   align-items: center;
+  font-weight: 800;
+`;
+const EditButton = styled(Button)`
+  font-weight: 700;
 `;
 
 export default HeaderEditComponent;

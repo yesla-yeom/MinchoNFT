@@ -3,7 +3,6 @@ import styled from "styled-components";
 import CollectItemContainer from "./item/Container";
 
 const CollectComponent = ({ tokenArr, account }) => {
-  console.log(tokenArr);
   return (
     <>
       <CollectDiv>

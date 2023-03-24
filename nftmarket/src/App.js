@@ -13,6 +13,7 @@ import MyNftContainer from "./components/myNFT/Container";
 import CollectionContainer from "./components/collection/Container";
 import QnaContainer from "./components/qna/Container";
 import FooterContainer from "./components/footer/Container";
+import WaitingStatusContainer from "./components/waitingStatus/Container";
 
 import { useWeb3 } from "./components/utility/useWeb3";
 
@@ -28,6 +29,7 @@ function App() {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+
   return (
     <>
       <Layout
@@ -78,9 +80,14 @@ function App() {
               element={<TokenDetailContainer account={account} web3={web3} />}
             />
             <Route path="/myNFT" element={<MyNftContainer />} />
+            <Route
+              path="/collections"
+              element={<div>여기는 컬랙션들이 들어가야됨</div>}
+            />
           </Routes>
         </NftBody>
         <NftFooter>
+          <WaitingStatusContainer />
           <FooterContainer />
         </NftFooter>
       </Layout>
