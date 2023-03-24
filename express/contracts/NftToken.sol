@@ -10,16 +10,31 @@ contract NftToken is ERC721Enumerable, ERC721URIStorage, Ownable {
   using Counters for Counters.Counter;
   Counters.Counter private _tokenId;
 
+  // uint8 public decimals = 18;
+  // uint public totalToken = 1000 * 10 ** decimals;
+  uint public constant totalToken = 1000;
+  // uint public constant MAX_TOKEN_COUNT = 10000;
+
   struct TokenData {
     uint Rank;
     uint Type;
   }
-  mapping(uint => TokenData) public TokenDatas;
+  mapping(uint => TokenData) public tokenDatas;
+
+  uint[4][4] public tokenCount;
 
   constructor(
     string memory _name,
     string memory _symbol
   ) ERC721(_name, _symbol) {}
+
+  // event info(uint tokenId, TokenData tokenData);
+  event info(uint tokenId);
+  event total(uint totalToken);
+
+  function totals() public pure returns (uint) {
+    return totalToken;
+  }
 
   function _beforeTokenTransfer(
     address from,
@@ -32,6 +47,14 @@ contract NftToken is ERC721Enumerable, ERC721URIStorage, Ownable {
 
   function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
     super._burn(tokenId);
+  }
+
+  function name() public view override(ERC721) returns (string memory) {
+    return super.name();
+  }
+
+  function symbol() public view override(ERC721) returns (string memory) {
+    return super.symbol();
   }
 
   function supportsInterface(
@@ -50,71 +73,16 @@ contract NftToken is ERC721Enumerable, ERC721URIStorage, Ownable {
     return "https://gateway.pinata.cloud/ipfs/";
   }
 
-  function safeMint(string memory uri) public {
+  function safeMint(string memory uri) public returns (uint) {
     uint tokenId = _tokenId.current();
+    require(totalToken >= tokenId);
 
     _tokenId.increment();
     _safeMint(msg.sender, tokenId);
     _setTokenURI(tokenId, uri);
-  }
+    emit info(tokenId);
+    emit total(totalToken);
 
-  function getRandomTokenData(
-    address _owner,
-    uint tokenId
-  ) private pure returns (TokenData memory) {
-    uint randomNum = uint(keccak256(abi.encodePacked(_owner, tokenId))) % 100;
-
-    TokenData memory data;
-
-    if (randomNum < 5) {
-      data.Rank = 4;
-      if (randomNum == 1) {
-        data.Type = 1;
-      } else if (randomNum == 2) {
-        data.Type = 2;
-      } else if (randomNum == 3) {
-        data.Type = 3;
-      } else {
-        data.Type = 4;
-      }
-    } else if (randomNum < 13) {
-      data.Rank = 3;
-      if (randomNum < 7) {
-        data.Type = 1;
-      } else if (randomNum < 9) {
-        data.Type = 2;
-      } else if (randomNum < 11) {
-        data.Type = 3;
-      } else {
-        data.Type = 4;
-      }
-    } else if (randomNum < 37) {
-      data.Rank = 2;
-      if (randomNum < 19) {
-        data.Type = 1;
-      } else if (randomNum < 25) {
-        data.Type = 2;
-      } else if (randomNum < 31) {
-        data.Type = 3;
-      } else {
-        data.Type = 4;
-      }
-    } else {
-      data.Rank = 1;
-      if (randomNum < 52) {
-        data.Type = 1;
-      } else if (randomNum < 68) {
-        data.Type = 2;
-      } else if (randomNum < 84) {
-        data.Type = 3;
-      } else {
-        data.Type = 4;
-      }
-    }
-    return data;
-  }
-
-  function getTokenRank(uint tokenId) public view returns (uint) {
-    return TokenDatas[tokenId].Rank;
+    return tokenId;
   }
 }
