@@ -237,13 +237,21 @@ router.post("/create", async (req: Request, res: Response) => {
   let totaldata = transactionResult.logs[2].data;
   let tokenId = parseInt(tokendata, 16);
   let totalsupply = parseInt(totaldata, 16);
+  console.log(tokenId);
+
   if (tokenId) {
     await Minting.update(
       { tokenId: tokenId },
       { where: { tokenId: TOTALTOKENCOUNT } }
     );
+    res.send({ msg: "잘가고있다" });
+  } else {
+    await Minting.update(
+      { tokenId: 0 },
+      { where: { tokenId: TOTALTOKENCOUNT } }
+    );
+    res.send({ msg: "No update" });
   }
-  res.send({ msg: "잘가고있다" });
 });
 router.post("/destroy", async (req: Request, res: Response) => {
   await Minting.destroy({
