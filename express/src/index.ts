@@ -47,6 +47,7 @@ const app: Express = express();
 
 dotenv.config();
 
+app.use("/upload", express.static("upload"));
 app.use(cors({ origin: true, credential: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

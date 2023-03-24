@@ -58,9 +58,18 @@ const CollectionItemComponent = ({
           </div>
         </div>
         {check ? (
-          <>
-            <div>{notFount}</div>
-          </>
+          <section>
+            <div>
+              <img
+                src="https://media.giphy.com/media/wp2rA9gXbKXo0KzTjD/giphy.gif"
+                alt=""
+              />
+            </div>
+            <div>
+              <div>No Results</div>
+              <div>There is no icon name or alias similar to "{notFount}"</div>
+            </div>
+          </section>
         ) : (
           <>
             <div>{collectionArr.length} 개의 NFT</div>
@@ -149,6 +158,31 @@ const ItemBox = styled.div`
         & > img {
           width: 100%;
         }
+      }
+    }
+  }
+
+  & > section {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    padding: 0 0 0 6%;
+
+    & > div:first-child {
+      width: 5%;
+      padding: 0 10px;
+      img {
+        width: 100%;
+      }
+    }
+    & > div:last-child {
+      & > div:first-child {
+        font-weight: 850;
+        font-size: 1.3rem;
+      }
+      & > div:last-child {
+        font-weight: 750;
       }
     }
   }

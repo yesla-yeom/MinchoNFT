@@ -6,31 +6,47 @@ import dotenv from "dotenv";
 import { Readable } from "stream";
 import Web3 from "web3";
 import { AbiItem } from "web3-utils";
+import fs from "fs";
 
 import db from "../models/index";
+
+import { abi as NftAbi } from "../contracts/artifacts/NftToken.json";
 
 dotenv.config();
 
 const router = Router();
-const upload: multer.Multer = multer();
 const { Minting } = db;
+
+const storage = multer.diskStorage({
+  destination: (req, res, cb) => {
+    cb(null, "./upload/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  },
+});
+
 const pinata = new pinataSDK(process.env.API_Key, process.env.API_Secret);
+const upload: multer.Multer = multer({
+  storage: storage,
+  limits: { fileSize: 5 * 1024 * 1024 },
+});
 
 const web3 = new Web3(
   "wss://goerli.infura.io/ws/v3/2ca09ab04a7c44dcb6f886deeba97502"
 );
 
-import { abi as NftAbi } from "../contracts/artifacts/NftToken.json";
-
 router.post("/", upload.single("file"), async (req: Request, res: Response) => {
   const { name, description }: { name: string; description: string } = req.body;
+
+  let imgBuffer = fs.createReadStream(`./upload/${req.file.filename}`);
 
   const imgResult: {
     IpfsHash: string;
     PinSize: number;
     Timestamp: string;
     isDuplicate?: boolean;
-  } = await pinata.pinFileToIPFS(Readable.from(req.file.buffer), {
+  } = await pinata.pinFileToIPFS(Readable.from(imgBuffer), {
     pinataMetadata: {
       name: Date.now().toString(),
     },
@@ -41,13 +57,12 @@ router.post("/", upload.single("file"), async (req: Request, res: Response) => {
   if (imgResult.isDuplicate) {
     console.log("같은 이미지!");
   }
-  console.log(imgResult);
+  console.log("imgResult", imgResult);
 
   const jsonResult = await pinata.pinJSONToIPFS(
     {
       name,
       description,
-      //   image: "https://gateway.pinata.cloud/ipfs/" + imgResult.IpfsHash,
       image: `https://gateway.pinata.cloud/ipfs/${imgResult.IpfsHash}`,
 
       attributes: [

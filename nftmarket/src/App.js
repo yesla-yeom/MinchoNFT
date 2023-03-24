@@ -2,19 +2,19 @@ import { Layout, theme } from "antd";
 import styled from "styled-components";
 import { Route, Routes } from "react-router-dom";
 import axios from "axios";
+import { useEffect } from "react";
 
 import HeaderContainer from "./components/header/Container";
 import TokenDetailContainer from "./components/tokenDetail/Container";
 import MintingContainer from "./components/Minting/Container";
 import CollectContainer from "./components/body/collect/Container";
-
 import BannerContainer from "./components/body/banner/Container";
-import { useWeb3 } from "./components/utility/useWeb3";
 import MyNftContainer from "./components/myNFT/Container";
 import CollectionContainer from "./components/collection/Container";
-import { useEffect } from "react";
 import QnaContainer from "./components/qna/Container";
 import FooterContainer from "./components/footer/Container";
+
+import { useWeb3 } from "./components/utility/useWeb3";
 
 const { Header, Content, Footer } = Layout;
 
