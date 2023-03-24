@@ -2,6 +2,7 @@ import { Layout, theme } from "antd";
 import styled from "styled-components";
 import { Route, Routes } from "react-router-dom";
 import axios from "axios";
+import { useState } from "react";
 
 import HeaderContainer from "./components/header/Container";
 import TokenDetailContainer from "./components/tokenDetail/Container";
@@ -14,6 +15,7 @@ import MyNftContainer from "./components/myNFT/Container";
 import CollectionContainer from "./components/collection/Container";
 import { useEffect } from "react";
 import FooterContainer from "./components/footer/Container";
+import WaitingStatusContainer from "./components/waitingStatus/Container";
 
 const { Header, Content, Footer } = Layout;
 
@@ -27,6 +29,7 @@ function App() {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+
   return (
     <>
       <Layout
@@ -64,9 +67,14 @@ function App() {
               element={<TokenDetailContainer account={account} web3={web3} />}
             />{" "}
             <Route path="/myNFT" element={<MyNftContainer />} />
+            <Route
+              path="/collections"
+              element={<div>여기는 컬랙션들이 들어가야됨</div>}
+            />
           </Routes>
         </NftBody>
         <NftFooter>
+          <WaitingStatusContainer />
           <FooterContainer />
         </NftFooter>
       </Layout>

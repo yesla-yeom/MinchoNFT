@@ -4,7 +4,6 @@ import CollectItemContainer from "./item/Container";
 import { Link } from "react-router-dom";
 
 const CollectComponent = ({ tokenArr, account }) => {
-  console.log(tokenArr);
   return (
     <>
       <CollectDiv>

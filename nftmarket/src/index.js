@@ -12,7 +12,6 @@ import { Web3Provider } from "@ethersproject/providers";
 // 를 할 때 우리의 web3가 이더리움 네트워크의 어떤 노드와 소통 해야하는지 지정하는 역할을 한다.
 // 메타마스크가 설치되어있으면 메타마스크를 web3 공급자로 사용한다.
 const getLibrary = (provider) => {
-  console.log(provider, "나는 프로바이더임");
   return new Web3Provider(provider);
 };
 // 인스턴스화 된 정보를 보내기 위해 함수를 선언해서 값을 반환 할 수 있도록 했음.
