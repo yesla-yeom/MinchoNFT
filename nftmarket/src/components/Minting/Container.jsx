@@ -12,6 +12,7 @@ function MintingContainer({ account, web3 }) {
   const [NftDescription, setDescription] = useState("");
   const [file, setFile] = useState();
   const [img, setImg] = useState("");
+
   // const { account, activate, deactivate, active } = useWeb3React();
 
   const nameInput = useCallback((e) => {
@@ -45,6 +46,7 @@ function MintingContainer({ account, web3 }) {
 
   const mint = async () => {
     console.log(account);
+
     if (!NftName || !NftDescription || !file || !account) return;
     const formData = new FormData();
     formData.append("file", file);
@@ -53,22 +55,32 @@ function MintingContainer({ account, web3 }) {
     formData.append("from", account);
     // console.log(formData);
 
-    const result = (
-      await axios.post("http://localhost:8080/api/mint/minting", formData)
-    ).data;
+    //메타마스크 거절눌렀을때 조건
+    try {
+      const result = (
+        await axios.post("http://localhost:8080/api/mint/minting", formData)
+      ).data;
 
-    let transactionResult = await web3.eth.sendTransaction(result);
+      let transactionResult = await web3.eth.sendTransaction(result);
 
-    console.log(transactionResult);
+      console.log(transactionResult);
+      const create = (
+        await axios.post("http://localhost:8080/api/mint/create", {
+          transactionResult,
+        })
+      ).data;
+
+      console.log(create);
+    } catch (error) {
+      const cancle = (
+        await axios.post("http://localhost:8080/api/mint/destroy", {
+          error,
+        })
+      ).data;
+    }
 
     // let signFrom = transactionResult.from;
     // console.log(signFrom);
-    const create = (
-      await axios.post("http://localhost:8080/api/mint/create", {
-        transactionResult,
-      })
-    ).data;
-    console.log(create);
   };
 
   return (

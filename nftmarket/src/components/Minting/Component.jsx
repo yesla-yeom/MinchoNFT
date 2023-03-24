@@ -6,6 +6,9 @@ function MintingComponent({
   discriptionInput,
   nameInput,
   img,
+
+  NftName,
+  NftDescription,
 }) {
   return (
     <MintingBox>
@@ -19,7 +22,12 @@ function MintingComponent({
 
       <div>Name</div>
       <div>
-        <input type="text" onInput={nameInput} placeholder="NFT name"></input>
+        <input
+          type="text"
+          value={NftName}
+          onInput={nameInput}
+          placeholder="NFT name"
+        ></input>
       </div>
       <div>
         <Discription>Description</Discription>
@@ -30,6 +38,7 @@ function MintingComponent({
         <div>
           <DescriptionInput
             type="text"
+            value={NftDescription}
             onInput={discriptionInput}
             placeholder="Provide a detailed description of your item."
           ></DescriptionInput>

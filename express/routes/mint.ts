@@ -4,13 +4,14 @@ import pinataSDK from "@pinata/sdk";
 import multer from "multer";
 import Web3 from "web3";
 // import WebsocketProvider from "web3-providers-ws";
+import fs from "fs";
 
 // import axios from "axios";
 import dotenv from "dotenv";
 import db from "../models/index";
 import { Readable } from "stream";
 const router = Router();
-const upload: multer.Multer = multer();
+
 import { AbiItem } from "web3-utils";
 import NftContract from "../contracts/artifacts/NftToken.json";
 
@@ -50,16 +51,32 @@ const web3 = new Web3(
 const pinata = new pinataSDK(process.env.API_Key, process.env.API_Secret);
 let randomnum = Math.floor(Math.random() * 100);
 
+const storage = multer.diskStorage({
+  destination: (req, res, cb) => {
+    cb(null, "./upload/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  },
+});
+
+const upload: multer.Multer = multer({
+  storage: storage,
+  limits: { fileSize: 5 * 1024 * 1024 },
+});
+
 // let rankvalue = Math.floor(Math.random() * 10001);
 // console.log(rankvalue);
-let type = "";
+let type: string = "";
 // 형이 현재 있는 토큰들의 rank를 전부 받아서 배열로 만든다.
 // let randomCorr =  rankArr.filter((item)=> item==randomnum)
 // 길이가 0 아니면 1이 무조건 나온다.
 // 길이가 0이면 => 아에 없는것 => 추가해도 되는 숫자
 // 길이가 1이면 =>추가하면 안됨
 // 길이가 1이면 =>다시 뽑는다
-let rank = 0;
+let rank: number = 0;
+let lastRandomValue: number;
+let price: number = 0;
 
 // Minting.findAll({
 //   where: { id: req.body.id },
@@ -88,15 +105,18 @@ router.post(
   upload.single("file"),
   async (req: Request, res: Response) => {
     try {
+      console.log(req.file.filename);
+
       const { name, description }: { name: string; description: string } =
         req.body;
+      let imgBuffer = fs.createReadStream(`./upload/${req.file.filename}`);
 
       const imgResult: {
         IpfsHash: string;
         PinSize: number;
         Timestamp: string;
         isDuplicate?: boolean;
-      } = await pinata.pinFileToIPFS(Readable.from(req.file.buffer), {
+      } = await pinata.pinFileToIPFS(Readable.from(imgBuffer), {
         pinataMetadata: {
           name: Date.now().toString(),
         },
@@ -113,6 +133,7 @@ router.post(
         {
           name,
           description,
+
           //   image: "https://gateway.pinata.cloud/ipfs/" + imgResult.IpfsHash,
           image: `https://gateway.pinata.cloud/ipfs/${imgResult.IpfsHash}`,
 
@@ -220,28 +241,64 @@ router.post(
         //   where: {},
         // });
 
-        let randomArray = [];
+        let dbTable = await Minting.findAll({
+          order: [["tokenId", "DESC"]],
+        });
+        console.log("testtemp:", dbTable);
 
-        function generateUniqueRandomValue() {
-          let value = Math.floor(Math.random() * 1000);
-          while (randomArray.includes(value)) {
-            value = Math.floor(Math.random() * 1000);
+        if (dbTable.length == 0) {
+          console.log("1");
+          let randomArray = [];
+
+          function generateUniqueRandomValue() {
+            let value = Math.floor(Math.random() * 1000);
+            while (randomArray.includes(value)) {
+              value = Math.floor(Math.random() * 1000);
+            }
+            randomArray.push(value);
+            return value;
           }
-          randomArray.push(value);
-          return value;
+
+          let RandomValue = generateUniqueRandomValue();
+          lastRandomValue = RandomValue;
+        } else {
+          console.log("2");
+
+          let randomArray = [];
+
+          function generateUniqueRandomValue() {
+            let value = Math.floor(Math.random() * 1000);
+            while (randomArray.includes(value)) {
+              value = Math.floor(Math.random() * 1000);
+            }
+            randomArray.push(value);
+            return value;
+          }
+          let RandomValue = generateUniqueRandomValue();
+
+          for (let i = 0; i < dbTable.length; i++) {
+            console.log(dbTable[i].rank);
+            if (dbTable[i].rank != RandomValue) {
+              lastRandomValue = RandomValue;
+            } else {
+              generateUniqueRandomValue();
+            }
+          }
         }
 
-        let RandomValue = generateUniqueRandomValue();
-
         await Minting.create({
+          blockChain: "Ethereum",
+          tokenName: tokenName,
           tokenId: TOTALTOKENCOUNT,
+          tokenImgName: req.file.filename,
           name: name,
           description: description,
-          imgipfshash: imgResult.IpfsHash,
-          jsonipfshash: jsonResult.IpfsHash,
+          imgIpfsHash: imgResult.IpfsHash,
+          jsonIpfsHash: jsonResult.IpfsHash,
           from: req.body.from,
-          rank: RandomValue,
+          rank: lastRandomValue,
           type: type,
+          price: price,
         });
       }
       /////////////////////
@@ -268,15 +325,17 @@ router.post("/create", async (req: Request, res: Response) => {
   const { transactionResult } = req.body;
   // console.log("transactionResult:", transactionResult);
   let tokendata = transactionResult.logs[1].data;
-  // let totaldata = transactionResult.logs[2].data;
+  let totaldata = transactionResult.logs[2].data;
   let tokenId = parseInt(tokendata, 16);
-  // let totalsupply = parseInt(totaldata, 16);
+  let totalsupply = parseInt(totaldata, 16);
   console.log(tokenId);
-  // console.log(totalsupply);
-  await Minting.update(
-    { tokenId: tokenId },
-    { where: { tokenId: TOTALTOKENCOUNT } }
-  );
+  console.log(totalsupply);
+  if (tokenId) {
+    await Minting.update(
+      { tokenId: tokenId },
+      { where: { tokenId: TOTALTOKENCOUNT } }
+    );
+  }
 
   // const saleDeployed = new web3.eth.Contract(
   //   SaleAbi as AbiItem[],
@@ -288,5 +347,12 @@ router.post("/create", async (req: Request, res: Response) => {
   // console.log(tokenIdGet);
   res.send({ msg: "잘가고있다" });
 });
-
+router.post("/destroy", async (req: Request, res: Response) => {
+  await Minting.destroy({
+    where: {
+      tokenId: 1000,
+    },
+  });
+  res.send("cancle");
+});
 export default router;
