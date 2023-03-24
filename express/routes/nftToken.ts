@@ -7,8 +7,8 @@ import { Buffer } from "buffer";
 
 import { abi } from "../contracts/artifacts/NftToken.json";
 import dummyDataList from "../data/dummyData.json";
-import AllToken from "../models/allToken";
-import BuyToken from "../models/buyToken";
+import AllToken from "../models/token";
+import BuyToken from "../models/saleToken";
 
 const web3 = new Web3("http://127.0.0.1:8545");
 // const web3 = new Web3("http://ganache.test.errorcode.help:8545");

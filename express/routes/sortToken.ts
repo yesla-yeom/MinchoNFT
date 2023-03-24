@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import AllToken from "../models/allToken";
+import AllToken from "../models/token";
 
 const router = Router();
 

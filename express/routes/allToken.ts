@@ -3,7 +3,7 @@ import pinataSDK from "@pinata/sdk";
 import { Op } from "sequelize";
 
 import dummyDataList from "../data/dummyData.json";
-import AllToken from "../models/allToken";
+import AllToken from "../models/token";
 
 const pinata = new pinataSDK(
   "4c64f4e382099ae14866",
