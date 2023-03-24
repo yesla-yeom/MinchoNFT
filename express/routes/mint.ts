@@ -2,15 +2,10 @@ import { Router, Request, Response } from "express";
 import pinataSDK from "@pinata/sdk";
 import multer from "multer";
 import Web3 from "web3";
-// import WebsocketProvider from "web3-providers-ws";
 import fs from "fs";
-
-// import axios from "axios";
 import dotenv from "dotenv";
 import { Readable } from "stream";
-import Web3 from "web3";
 import { AbiItem } from "web3-utils";
-import fs from "fs";
 
 import db from "../models/index";
 
@@ -21,13 +16,6 @@ const TOTALTOKENCOUNT: number = 1000;
 const web3 = new Web3(
   "wss://goerli.infura.io/ws/v3/417c70b502174e5cb15ef580dae6b3d8"
 );
-// const web3 = new Web3("http://ganache.test.errorcode.help:8545");
-// const web3 = new Web3("http://127.0.0.1:8545");
-
-// wss://goerli-light.eth.linkpool.io/ws
-// const web3 = new Web3(
-//   new Web3.providers.HttpProvider("https://goerli.infura.io/v3")
-// );
 
 dotenv.config();
 
@@ -50,28 +38,6 @@ const upload: multer.Multer = multer({
   limits: { fileSize: 5 * 1024 * 1024 },
 });
 
-const web3 = new Web3(
-  "wss://goerli.infura.io/ws/v3/2ca09ab04a7c44dcb6f886deeba97502"
-);
-const web3 = new Web3(
-  "wss://goerli.infura.io/ws/v3/2ca09ab04a7c44dcb6f886deeba97502"
-);
-const storage = multer.diskStorage({
-  destination: (req, res, cb) => {
-    cb(null, "./upload/");
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.originalname);
-  },
-});
-
-const upload: multer.Multer = multer({
-  storage: storage,
-  limits: { fileSize: 5 * 1024 * 1024 },
-});
-
-// let rankvalue = Math.floor(Math.random() * 10001);
-// console.log(rankvalue);
 let type: string = "";
 // 형이 현재 있는 토큰들의 rank를 전부 받아서 배열로 만든다.
 // let randomCorr =  rankArr.filter((item)=> item==randomnum)
@@ -82,53 +48,6 @@ let type: string = "";
 let rank: number = 0;
 let lastRandomValue: number;
 let price: number = 0;
-
-// Minting.findAll({
-//   where: { id: req.body.id },
-//   include: [
-//     {
-//       model: Individualuser_Info,
-//       as: "RecruitInfo",
-//     },
-//   ],
-// }).then((data) => {
-//   res.send(data);
-// });
-
-  let imgBuffer = fs.createReadStream(`./upload/${req.file.filename}`);
-
-  const imgResult: {
-    IpfsHash: string;
-    PinSize: number;
-    Timestamp: string;
-    isDuplicate?: boolean;
-  } = await pinata.pinFileToIPFS(Readable.from(imgBuffer), {
-    pinataMetadata: {
-      name: Date.now().toString(),
-    },
-    pinataOptions: {
-      cidVersion: 0,
-    },
-  });
-  if (imgResult.isDuplicate) {
-    console.log("같은 이미지!");
-  }
-  console.log("imgResult", imgResult);
-if (randomnum < 6) {
-  type = "Legendary";
-} else if (randomnum < 18) {
-  type = "Epic";
-} else if (randomnum < 36) {
-  type = "Rare";
-} else if (randomnum < 60) {
-  type = "Uncommon";
-} else type = "Common";
-  const jsonResult = await pinata.pinJSONToIPFS(
-    {
-      name,
-      description,
-      image: `https://gateway.pinata.cloud/ipfs/${imgResult.IpfsHash}`,
-
 
 router.post(
   "/minting",
@@ -159,62 +78,91 @@ router.post(
       }
       console.log(imgResult);
 
+      const jsonResult = await pinata.pinJSONToIPFS(
+        {
+          name,
+          description,
 
+          //   image: "https://gateway.pinata.cloud/ipfs/" + imgResult.IpfsHash,
+          image: `https://gateway.pinata.cloud/ipfs/${imgResult.IpfsHash}`,
 
-  console.log("test");
-  console.log(req.body.from);
-  obj.nonce = await web3.eth.getTransactionCount(req.body.from);
-  console.log("test2");
-  obj.to = process.env.NFT_CA;
-  obj.from = req.body.from;
-  obj.data = deployed.methods.safeMint(jsonResult.IpfsHash).encodeABI();
+          attributes: [
+            { trait_type: "Rank", value: rank },
+            { trait_type: "type", value: type },
+            // {
+            //   trait_type: "BackGround",
+            //   value: "Off White A",
+            // },
+            // {
+            //   trait_type: "CLOTHING",
+            //   value: "Azuki Tech Jacket",
+            // },
+            // { trait_type: "EYES", value: "Closed" },
+            // {
+            //   trait_type: "Level",
+            //   value: 5,
+            // },
+            // {
+            //   trait_type: "Stamina",
+            //   value: 1.4,
+            // },
+            // {
+            //   trait_type: "Personality",
+            //   value: "Sad",
+            // },
+            // {
+            //   display_type: "boost_number",
+            //   trait_type: "Aqua Power",
+            //   value: 40,
+            // },
+            // {
+            //   display_type: "boost_percentage",
+            //   trait_type: "Stamina Increase",
+            //   value: 10,
+            // },
+            // {
+            //   display_type: "number",
+            //   trait_type: "Generation",
+            //   value: 2,
+            // },
+            // {
+            //   display_type: "date",
+            //   trait_type: "birthday",
+            //   value: 1546360800,
+            // },
+          ],
+        },
+        {
+          pinataMetadata: {
+            name: Date.now().toString() + ".json",
+            //json파일이름
+          },
+          pinataOptions: {
+            cidVersion: 0,
+          },
+        }
+      );
 
       const deployed = new web3.eth.Contract(
         NftAbi as AbiItem[],
         process.env.NFT_CA
       );
-
       const obj: {
-        // nonce: number;
         to: string;
         from: string;
         data: string;
       } = {
-        // nonce: 0,
         to: "",
         from: "",
         data: "",
       };
-
-      // let test = await web3.eth.getTransactionCount(req.body.from);
-      // console.log(test);
-
-      //   //   console.log("test2");
       obj.to = process.env.NFT_CA;
       obj.from = req.body.from;
       obj.data = deployed.methods.safeMint(jsonResult.IpfsHash).encodeABI();
-
-      // let dd = web3.eth.abi.decodeParameter(testdecode, "");
-      // console.log(dd);
-      // let testone = await deployed.methods.totals().call();
-      // console.log(testone);
-
       console.log(obj);
-      // console.log("2");
-      //   //   res.send(obj);
-      //////////////////////////////
       let tokenName = await deployed.methods.name().call();
       console.log(tokenName);
       if (imgResult && jsonResult) {
-        // console.log(name);
-        // console.log(description);
-        // console.log(imgResult.IpfsHash);
-        // console.log(jsonResult.IpfsHash);
-        // console.log(req.body.from);
-        // let randomArray = await Minting.findAll({
-        //   where: {},
-        // });
-
         let dbTable = await Minting.findAll({
           order: [["tokenId", "DESC"]],
         });
@@ -275,19 +223,6 @@ router.post(
           price: price,
         });
       }
-      /////////////////////
-      // web3.eth
-      //   .subscribe("logs", { address: process.env.NFT_CA })
-      //   .on("data", (log) => {
-      //     console.log(log);
-      //     const params = [{ type: "uint", name: "tokenId" }];
-      //     const value = web3.eth.abi.decodeLog(params, log.data, []);
-
-      //     console.log(value);
-      //   })
-      //   .on("error", (error) => {
-      //     console.error(error);
-      //   });
       res.send(obj);
     } catch (error) {
       console.error(error);
@@ -302,37 +237,13 @@ router.post("/create", async (req: Request, res: Response) => {
   let totaldata = transactionResult.logs[2].data;
   let tokenId = parseInt(tokendata, 16);
   let totalsupply = parseInt(totaldata, 16);
-  console.log(tokenId);
-  console.log(totalsupply);
   if (tokenId) {
     await Minting.update(
       { tokenId: tokenId },
       { where: { tokenId: TOTALTOKENCOUNT } }
     );
   }
-
-  // const saleDeployed = new web3.eth.Contract(
-  //   SaleAbi as AbiItem[],
-  //   process.env.SALE_CA
-  // );
-
-  // let tokenIdGet = await saleDeployed.methods.getLatestToken(req.body.from);
-
-  // console.log(tokenIdGet);
   res.send({ msg: "잘가고있다" });
-  // if (imgResult && jsonResult) {
-  //   console.log(name);
-  //   console.log(description);
-  //   console.log(imgResult.IpfsHash);
-  //   console.log(jsonResult.IpfsHash);
-  //   await Minting.create({
-  //     tokenId: 1,
-  //     name: name,
-  //     description: description,
-  //     imgipfshash: imgResult.IpfsHash,
-  //     jsonipfshash: jsonResult.IpfsHash,
-  //   });
-  // }
 });
 router.post("/destroy", async (req: Request, res: Response) => {
   await Minting.destroy({
