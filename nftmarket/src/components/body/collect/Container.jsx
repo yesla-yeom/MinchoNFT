@@ -4,7 +4,6 @@ import axios from "axios";
 
 const CollectContainer = ({ type, account }) => {
   const [tokenArr, setTokenArr] = useState([]);
-  console.log(account, "나는 받아주는애임");
 
   // const tokenArr = await axios.post(`/api/allToken/latestToken`);
 
@@ -18,7 +17,6 @@ const CollectContainer = ({ type, account }) => {
   useEffect(() => {
     tokenData();
   }, [type]);
-  console.log(tokenArr.data);
 
   return <CollectComponent tokenArr={tokenArr} account={account} />;
 };
