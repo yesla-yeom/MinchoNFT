@@ -34,7 +34,7 @@ interface tokenData {
 
 router.post("/detail", async (req: Request, res: Response) => {
   const { tokenId }: { tokenId: number } = req.body;
-  const tempData: tokenData = await AllToken.findOne({ where: { tokenId } });
+  const tempData: any = await AllToken.findOne({ where: { tokenId } });
   res.send(tempData);
 });
 

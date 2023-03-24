@@ -20,7 +20,7 @@ const web3 = new Web3(
 dotenv.config();
 
 const router = Router();
-const { Minting } = db;
+const { Token } = db;
 // const _web3 = new Web3(window.ethereum);
 
 const storage = multer.diskStorage({
@@ -48,6 +48,18 @@ let type: string = "";
 let rank: number = 0;
 let lastRandomValue: number;
 let price: number = 0;
+
+let randomnum = Math.floor(Math.random() * 100);
+
+if (randomnum < 6) {
+  type = "Legendary";
+} else if (randomnum < 18) {
+  type = "Epic";
+} else if (randomnum < 36) {
+  type = "Rare";
+} else if (randomnum < 60) {
+  type = "Uncommon";
+} else type = "Common";
 
 router.post(
   "/minting",
@@ -78,6 +90,51 @@ router.post(
       }
       console.log(imgResult);
 
+      let dbTable = await Token.findAll({
+        order: [["tokenId", "DESC"]],
+      });
+      console.log("testtemp:", dbTable);
+
+      if (dbTable.length == 0) {
+        console.log("1");
+        let randomArray = [];
+
+        function generateUniqueRandomValue() {
+          let value = Math.floor(Math.random() * 1000);
+          while (randomArray.includes(value)) {
+            value = Math.floor(Math.random() * 1000);
+          }
+          randomArray.push(value);
+          return value;
+        }
+
+        let RandomValue = generateUniqueRandomValue();
+        lastRandomValue = RandomValue;
+      } else {
+        console.log("2");
+
+        let randomArray = [];
+
+        function generateUniqueRandomValue() {
+          let value = Math.floor(Math.random() * 1000);
+          while (randomArray.includes(value)) {
+            value = Math.floor(Math.random() * 1000);
+          }
+          randomArray.push(value);
+          return value;
+        }
+        let RandomValue = generateUniqueRandomValue();
+
+        for (let i = 0; i < dbTable.length; i++) {
+          console.log(dbTable[i].rank);
+          if (dbTable[i].rank != RandomValue) {
+            lastRandomValue = RandomValue;
+          } else {
+            generateUniqueRandomValue();
+          }
+        }
+      }
+
       const jsonResult = await pinata.pinJSONToIPFS(
         {
           name,
@@ -87,7 +144,7 @@ router.post(
           image: `https://gateway.pinata.cloud/ipfs/${imgResult.IpfsHash}`,
 
           attributes: [
-            { trait_type: "Rank", value: rank },
+            { trait_type: "Rank", value: lastRandomValue },
             { trait_type: "type", value: type },
             // {
             //   trait_type: "BackGround",
@@ -163,64 +220,25 @@ router.post(
       let tokenName = await deployed.methods.name().call();
       console.log(tokenName);
       if (imgResult && jsonResult) {
-        let dbTable = await Minting.findAll({
-          order: [["tokenId", "DESC"]],
-        });
-        console.log("testtemp:", dbTable);
-
-        if (dbTable.length == 0) {
-          console.log("1");
-          let randomArray = [];
-
-          function generateUniqueRandomValue() {
-            let value = Math.floor(Math.random() * 1000);
-            while (randomArray.includes(value)) {
-              value = Math.floor(Math.random() * 1000);
-            }
-            randomArray.push(value);
-            return value;
-          }
-
-          let RandomValue = generateUniqueRandomValue();
-          lastRandomValue = RandomValue;
-        } else {
-          console.log("2");
-
-          let randomArray = [];
-
-          function generateUniqueRandomValue() {
-            let value = Math.floor(Math.random() * 1000);
-            while (randomArray.includes(value)) {
-              value = Math.floor(Math.random() * 1000);
-            }
-            randomArray.push(value);
-            return value;
-          }
-          let RandomValue = generateUniqueRandomValue();
-
-          for (let i = 0; i < dbTable.length; i++) {
-            console.log(dbTable[i].rank);
-            if (dbTable[i].rank != RandomValue) {
-              lastRandomValue = RandomValue;
-            } else {
-              generateUniqueRandomValue();
-            }
-          }
-        }
-
-        await Minting.create({
-          blockChain: "Ethereum",
+        console.log("####", req.file.filename);
+        await Token.create({
+          blockChainNetwork: "Ethereum",
           tokenName: tokenName,
           tokenId: TOTALTOKENCOUNT,
-          tokenImgName: req.file.filename,
+          ca: process.env.NFT_CA,
+          tokenImage: req.file.filename,
           name: name,
           description: description,
-          imgIpfsHash: imgResult.IpfsHash,
-          jsonIpfsHash: jsonResult.IpfsHash,
+          // imgIpfsHash: imgResult.IpfsHash,
+          // jsonIpfsHash: jsonResult.IpfsHash,
           from: req.body.from,
           rank: lastRandomValue,
           type: type,
           price: price,
+          tokenOwner: req.body.from,
+          tokenBase: "ERC721",
+          saleState: 0,
+          tokenAuthor: req.body.from,
         });
       }
       res.send(obj);
@@ -240,21 +258,18 @@ router.post("/create", async (req: Request, res: Response) => {
   console.log(tokenId);
 
   if (tokenId) {
-    await Minting.update(
+    await Token.update(
       { tokenId: tokenId },
       { where: { tokenId: TOTALTOKENCOUNT } }
     );
     res.send({ msg: "잘가고있다" });
   } else {
-    await Minting.update(
-      { tokenId: 0 },
-      { where: { tokenId: TOTALTOKENCOUNT } }
-    );
+    await Token.update({ tokenId: 0 }, { where: { tokenId: TOTALTOKENCOUNT } });
     res.send({ msg: "No update" });
   }
 });
 router.post("/destroy", async (req: Request, res: Response) => {
-  await Minting.destroy({
+  await Token.destroy({
     where: {
       tokenId: 1000,
     },
