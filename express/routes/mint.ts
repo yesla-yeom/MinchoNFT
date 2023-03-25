@@ -22,12 +22,15 @@ dotenv.config();
 const router = Router();
 const { Token } = db;
 // const _web3 = new Web3(window.ethereum);
-
+//res->file
 const storage = multer.diskStorage({
-  destination: (req, res, cb) => {
+  destination: (req, file, cb) => {
     cb(null, "./upload/");
   },
   filename: (req, file, cb) => {
+    file.originalname = Buffer.from(file.originalname, "latin1").toString(
+      "utf8"
+    );
     cb(null, file.originalname);
   },
 });
@@ -199,6 +202,7 @@ router.post(
           },
         }
       );
+      console.log(jsonResult);
 
       const deployed = new web3.eth.Contract(
         NftAbi as AbiItem[],
@@ -220,7 +224,6 @@ router.post(
       let tokenName = await deployed.methods.name().call();
       console.log(tokenName);
       if (imgResult && jsonResult) {
-        console.log("####", req.file.filename);
         await Token.create({
           blockChainNetwork: "Ethereum",
           tokenName: tokenName,
