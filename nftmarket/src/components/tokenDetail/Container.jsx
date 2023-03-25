@@ -18,10 +18,23 @@ const TokenDetailContainer = ({ account, web3 }) => {
     setDetail(data);
   }, [params, account]);
 
-  const buyToken = async (_tokenId) => {
-    const result = await axios.post("http://localhost:8080/api/nftToken/buy", {
-      tokenId: _tokenId,
-      from: account,
+  const buyToken = async (_tokenId, _tokenOwner) => {
+    const result = (
+      await axios.post("http://localhost:8080/api/nftToken/buyToken", {
+        tokenId: _tokenId,
+        from: account,
+        tokenOwner: _tokenOwner,
+      })
+    ).data;
+
+    let transactionResult = await web3.eth.sendTransaction({
+      from: result.obj.from,
+      to: result.obj.to,
+      value: result.price,
+    });
+    console.log(transactionResult);
+    web3.eth.subscribe("logs", { address: result.ca }).on("data", (log) => {
+      console.log("front", log);
     });
   };
 

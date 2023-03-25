@@ -32,8 +32,8 @@ const CollectionComponent = ({
           </div>
           <div>
             네트워크 :
-            {collectionInfo.blockChain && (
-              <span>{collectionInfo.blockChain}</span>
+            {collectionInfo.blockChainNetwork && (
+              <span>{collectionInfo.blockChainNetwork}</span>
             )}
           </div>
         </div>

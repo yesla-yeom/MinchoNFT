@@ -76,15 +76,21 @@ const CollectionItemComponent = ({
             <div>
               {collectionArr.map((item, index) => (
                 <Link
-                  to={`/${collectionArr[0].tokenName}/${index}`}
+                  to={`/${collectionArr[0].tokenName}/${item.tokenId}`}
                   key={`collectionItemLink-${index}`}
                 >
                   <div key={`collectionItemBox-${index}`}>
-                    <img
-                      key={`collectionArr-image-${index}`}
-                      src={item.image}
-                      alt=""
-                    />
+                    {item.tokenImage && (
+                      <img
+                        key={`collectionArr-image-${index}`}
+                        src={
+                          item.tokenImage.includes("imgs")
+                            ? item.tokenImage
+                            : `http://localhost:8080/upload/${item.tokenImage}`
+                        }
+                        alt=""
+                      />
+                    )}
                     <div key={`collectionArr-tokenId-${index}`}>
                       {item.tokenId}
                     </div>

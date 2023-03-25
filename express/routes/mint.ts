@@ -233,23 +233,67 @@ router.post(
       // let tokenName = await deployed.methods.name().call();
       // console.log(tokenName);
       if (imgResult && jsonResult) {
+        let dbTable = await Token.findAll({
+          order: [["tokenId", "DESC"]],
+        });
+        console.log("testtemp:", dbTable);
+
+        if (dbTable.length == 0) {
+          console.log("1");
+          let randomArray = [];
+
+          function generateUniqueRandomValue() {
+            let value = Math.floor(Math.random() * 1000);
+            while (randomArray.includes(value)) {
+              value = Math.floor(Math.random() * 1000);
+            }
+            randomArray.push(value);
+            return value;
+          }
+
+          let RandomValue = generateUniqueRandomValue();
+          lastRandomValue = RandomValue;
+        } else {
+          console.log("2");
+
+          let randomArray = [];
+
+          function generateUniqueRandomValue() {
+            let value = Math.floor(Math.random() * 1000);
+            while (randomArray.includes(value)) {
+              value = Math.floor(Math.random() * 1000);
+            }
+            randomArray.push(value);
+            return value;
+          }
+          let RandomValue = generateUniqueRandomValue();
+
+          for (let i = 0; i < dbTable.length; i++) {
+            console.log(dbTable[i].rank);
+            if (dbTable[i].rank != RandomValue) {
+              lastRandomValue = RandomValue;
+            } else {
+              generateUniqueRandomValue();
+            }
+          }
+        }
+
         await Token.create({
           blockChainNetwork: "Ethereum",
           tokenName: tokenName,
           tokenId: TOTALTOKENCOUNT,
-          ca: process.env.NFT_CA,
           tokenImage: req.file.filename,
           name: name,
           description: description,
-          // imgIpfsHash: imgResult.IpfsHash,
-          // jsonIpfsHash: jsonResult.IpfsHash,
-          from: req.body.from,
+          imgIpfsHash: imgResult.IpfsHash,
+          jsonIpfsHash: jsonResult.IpfsHash,
+          tokenOwner: req.body.from,
+          tokenBase: "ERC-721",
           rank: lastRandomValue,
+          saleState: 0,
+          ca: process.env.NFT_CA,
           type: type,
           price: price,
-          tokenOwner: req.body.from,
-          tokenBase: "ERC721",
-          saleState: 0,
           tokenAuthor: req.body.from,
         });
       }
