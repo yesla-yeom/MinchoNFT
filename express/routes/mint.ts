@@ -236,7 +236,6 @@ router.post(
         let dbTable = await Token.findAll({
           order: [["tokenId", "DESC"]],
         });
-        console.log("testtemp:", dbTable);
 
         if (dbTable.length == 0) {
           console.log("1");

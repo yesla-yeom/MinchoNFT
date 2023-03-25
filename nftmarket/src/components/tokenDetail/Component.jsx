@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-const TokenDetailComponent = ({ detail, buyToken }) => {
+const TokenDetailComponent = ({ detail, buyToken, approvedFunc }) => {
   return (
     <DetailBox>
       <div>
@@ -27,6 +27,13 @@ const TokenDetailComponent = ({ detail, buyToken }) => {
         <div>토큰 소유자 : {detail.tokenOwner}</div>
         <div>가격 : {detail.price} Goerli</div>
         <div>
+          <button
+            onClick={() => {
+              approvedFunc(detail.tokenId, detail.tokenOwner);
+            }}
+          >
+            승인해보기
+          </button>
           <button
             onClick={() => {
               buyToken(detail.tokenId, detail.tokenOwner);
