@@ -16,6 +16,7 @@ import FooterContainer from "./components/footer/Container";
 import WaitingStatusContainer from "./components/waitingStatus/Container";
 
 import { useWeb3 } from "./components/utility/useWeb3";
+import SellContainer from "./components/sell/Container";
 
 const { Header, Content, Footer } = Layout;
 
@@ -43,6 +44,10 @@ function App() {
 
         <NftBody className="site-layout">
           <Routes>
+            <Route
+              path="/sell"
+              element={<SellContainer account={account} web3={web3} />}
+            />
             <Route
               path="/minting"
               element={<MintingContainer account={account} web3={web3} />}

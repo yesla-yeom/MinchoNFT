@@ -52,7 +52,6 @@ function MintingContainer({ account, web3 }) {
     formData.append("name", NftName);
     formData.append("description", NftDescription);
     formData.append("from", account);
-    console.log(formData);
 
     //메타마스크 거절눌렀을때 조건
     try {
