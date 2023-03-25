@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.18+commit.87f61d96"
+		"version": "0.8.19+commit.7dd6d404"
 	},
 	"language": "Solidity",
 	"output": {
@@ -670,11 +670,11 @@
 	},
 	"sources": {
 		"contracts/NftToken.sol": {
-			"keccak256": "0x1325e440caf45710d6b85bb2fc73acc9c705559469329471c4a822be81940e8d",
+			"keccak256": "0x9fba6d70f12c932dcd29c41ee291442e67106abf68ec03e971472bf8e1218c7a",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://d657fdb6dba289ac04cab54a1980a997d67f356cfb1bf61f637b87d9951f1056",
-				"dweb:/ipfs/Qma9TZxs3wexRAbti4cDgH8Khuz69EWL8r1q1fDvGfojyy"
+				"bzz-raw://5ef414e5de9e2b05c250113c05ac6f3a3160d538a611d3bced3d9ed0bec877c1",
+				"dweb:/ipfs/QmUAoLvqwbHoZdfa9Guy71DXuGwri6DVmrSR4EwB18eLX3"
 			]
 		},
 		"node_modules/@openzeppelin/contracts/access/Ownable.sol": {

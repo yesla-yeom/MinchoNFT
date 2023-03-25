@@ -28,21 +28,44 @@ const TokenDetailContainer = ({ account, web3 }) => {
     ).data;
 
     let transactionResult = await web3.eth.sendTransaction({
-      from: result.obj.from,
-      to: result.obj.to,
+      from: result.from,
+      to: result.to,
       value: result.price,
     });
-    console.log(transactionResult);
-    web3.eth.subscribe("logs", { address: result.ca }).on("data", (log) => {
-      console.log("front", log);
+    console.log("transactionResult", transactionResult);
+
+    await axios.post("http://localhost:8080/api/nftToken/updateList", {
+      tokenId: _tokenId,
+      from: account,
+      tokenOwner: _tokenOwner,
     });
   };
 
+  const approvedFunc = async (_tokenId, _tokenOwner) => {
+    const approved = (
+      await axios.post("http://localhost:8080/api/nftToken/approve", {
+        tokenOwner: _tokenOwner,
+      })
+    ).data;
+
+    // let transactionApprove = await web3.eth.sendTransaction({
+    //   from: approved.from,
+    //   data: approved.data,
+    //   gas: 2000000,
+    // });
+    console.log("해치웠나?", approved);
+  };
   useEffect(() => {
     tokenDetail();
   }, [params, account]);
 
-  return <TokenDetailComponent detail={detail} buyToken={buyToken} />;
+  return (
+    <TokenDetailComponent
+      detail={detail}
+      buyToken={buyToken}
+      approvedFunc={approvedFunc}
+    />
+  );
 };
 
 export default TokenDetailContainer;
