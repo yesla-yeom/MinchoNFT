@@ -5,7 +5,14 @@ const TokenDetailComponent = ({ detail, buyToken }) => {
   return (
     <DetailBox>
       <div>
-        <img src={detail.image} alt="" />
+        <img
+          src={
+            detail.tokenImage && detail.tokenImage.includes("imgs")
+              ? detail.tokenImage
+              : `http://localhost:8080/upload/${detail.tokenImage}`
+          }
+          alt=""
+        />
       </div>
       <div>
         <div>#{detail.tokenId}</div>
@@ -15,14 +22,14 @@ const TokenDetailComponent = ({ detail, buyToken }) => {
             {detail.ca && detail.ca.slice(0, 4) + " ... " + detail.ca.slice(-4)}
           </div>
         </div>
-        <div>블록체인 : {detail.blockChain}</div>
+        <div>블록체인 : {detail.blockChainNetwork}</div>
         <div>토큰 기반: {detail.tokenBase}</div>
         <div>토큰 소유자 : {detail.tokenOwner}</div>
         <div>가격 : {detail.price} Goerli</div>
         <div>
           <button
             onClick={() => {
-              buyToken(detail.tokenId);
+              buyToken(detail.tokenId, detail.tokenOwner);
             }}
           >
             구매하기
@@ -30,10 +37,10 @@ const TokenDetailComponent = ({ detail, buyToken }) => {
         </div>
         <div>
           <div>아이템 특성</div>
-          {detail.value && (
+          {detail.rank && detail.type && (
             <>
-              <div>Rank : {detail.value} </div>
-              <div>Type : {detail.value}</div>
+              <div>Rank : {detail.rank} </div>
+              <div>Type : {detail.type}</div>
             </>
           )}
         </div>

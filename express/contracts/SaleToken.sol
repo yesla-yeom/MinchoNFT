@@ -112,4 +112,7 @@ contract SaleToken {
 
     return TokenInfo(tokenId, price, tokenURI);
   }
+  function setApprovalForAll(address operator, bool approved) public virtual {
+      Token.setApprovalForAll(operator, approved);
+    }
 }

@@ -13,6 +13,8 @@ export default class Token extends Model {
   public saleState!: number;
   public tokenName!: string;
   public tokenAuthor!: string;
+  public rank!: number;
+  public type!: string;
 
   public static initModel(sequelize: Sequelize) {
     return Token.init(
@@ -63,6 +65,14 @@ export default class Token extends Model {
           allowNull: false,
         },
         tokenAuthor: {
+          type: DataTypes.STRING(255),
+          allowNull: true,
+        },
+        rank: {
+          type: DataTypes.INTEGER.UNSIGNED,
+          allowNull: false,
+        },
+        type: {
           type: DataTypes.STRING(255),
           allowNull: true,
         },

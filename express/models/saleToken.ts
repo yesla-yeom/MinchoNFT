@@ -5,6 +5,7 @@ export default class SaleToken extends Model {
   public to!: string;
   public price!: number;
   public ca!: string;
+  public tokenId!: number;
 
   public static initModel(sequelize: Sequelize) {
     return SaleToken.init(
@@ -23,6 +24,10 @@ export default class SaleToken extends Model {
         },
         ca: {
           type: DataTypes.STRING(255),
+          allowNull: false,
+        },
+        tokenId: {
+          type: DataTypes.INTEGER.UNSIGNED,
           allowNull: false,
         },
       },

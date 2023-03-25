@@ -197,6 +197,24 @@
 			{
 				"inputs": [
 					{
+						"internalType": "address",
+						"name": "operator",
+						"type": "address"
+					},
+					{
+						"internalType": "bool",
+						"name": "approved",
+						"type": "bool"
+					}
+				],
+				"name": "setApprovalForAll",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
 						"internalType": "uint256",
 						"name": "",
 						"type": "uint256"
@@ -250,11 +268,11 @@
 			]
 		},
 		"contracts/SaleToken.sol": {
-			"keccak256": "0xc6118ace6bf4cbf122efa2af76eaa7ee671703aad949d5d5a8ed4982652ba666",
+			"keccak256": "0x767ebc2e25c643c076a6b59722d0571a75b245e9a5d39532911802200036f64b",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://bdbcb8a226d6e4513bf0aa747ae20b249eaafc2b71648c16692cb885b26f4ae5",
-				"dweb:/ipfs/QmSsn2bFEaWNuu6EvdZxAovXU88XfKtaJnihwSQeTV6w4k"
+				"bzz-raw://73fc2c8804f2099f495205c9c7706f31e53726730b9e058a85db783a9883f5d4",
+				"dweb:/ipfs/QmPSnjpTtGo449rS7ovY4bZqCSCj1BRNcHcezQDieL7ESN"
 			]
 		},
 		"node_modules/@openzeppelin/contracts/access/Ownable.sol": {

@@ -20,7 +20,7 @@ const web3 = new Web3(
 dotenv.config();
 
 const router = Router();
-const { Minting } = db;
+const { Token } = db;
 // const _web3 = new Web3(window.ethereum);
 
 const storage = multer.diskStorage({
@@ -163,7 +163,7 @@ router.post(
       let tokenName = await deployed.methods.name().call();
       console.log(tokenName);
       if (imgResult && jsonResult) {
-        let dbTable = await Minting.findAll({
+        let dbTable = await Token.findAll({
           order: [["tokenId", "DESC"]],
         });
         console.log("testtemp:", dbTable);
@@ -208,17 +208,20 @@ router.post(
           }
         }
 
-        await Minting.create({
-          blockChain: "Ethereum",
+        await Token.create({
+          blockChainNetwork: "Ethereum",
           tokenName: tokenName,
           tokenId: TOTALTOKENCOUNT,
-          tokenImgName: req.file.filename,
+          tokenImage: req.file.filename,
           name: name,
           description: description,
           imgIpfsHash: imgResult.IpfsHash,
           jsonIpfsHash: jsonResult.IpfsHash,
-          from: req.body.from,
+          tokenOwner: req.body.from,
+          tokenBase: "ERC-721",
           rank: lastRandomValue,
+          saleState: 0,
+          ca: process.env.NFT_CA,
           type: type,
           price: price,
         });
@@ -240,21 +243,18 @@ router.post("/create", async (req: Request, res: Response) => {
   console.log(tokenId);
 
   if (tokenId) {
-    await Minting.update(
+    await Token.update(
       { tokenId: tokenId },
       { where: { tokenId: TOTALTOKENCOUNT } }
     );
     res.send({ msg: "잘가고있다" });
   } else {
-    await Minting.update(
-      { tokenId: 0 },
-      { where: { tokenId: TOTALTOKENCOUNT } }
-    );
+    await Token.update({ tokenId: 0 }, { where: { tokenId: TOTALTOKENCOUNT } });
     res.send({ msg: "No update" });
   }
 });
 router.post("/destroy", async (req: Request, res: Response) => {
-  await Minting.destroy({
+  await Token.destroy({
     where: {
       tokenId: 1000,
     },
