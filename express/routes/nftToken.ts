@@ -51,8 +51,7 @@ router.post("/detail", async (req: Request, res: Response) => {
 });
 
 router.post("/buyToken", async (req: Request, res: Response) => {
-  const { from, tokenId, tokenOwner } = req.body;
-
+  const { account, tokenId, tokenOwner } = req.body;
   const checkToken = await SaleToken.findOne({ where: { tokenId } });
   if (checkToken) return res.status(202).send({ msg: "already Bought Token" });
 
@@ -61,44 +60,60 @@ router.post("/buyToken", async (req: Request, res: Response) => {
     process.env.SALE_CA
   );
 
-  obj.from = tokenOwner;
-  obj.to = from;
+  obj.from = account;
+  obj.to = process.env.SALE_CA;
   obj.data = saleDeployed.methods.PurchaseToken(tokenId).encodeABI();
-  obj.price = web3.utils.toWei("0.00001", "ether");
-  obj.ca = process.env.SALE_CA;
 
   res.send(obj);
 });
 
 router.post("/approve", async (req: Request, res: Response) => {
-  const { tokenOwner, price, tokenId } = req.body;
-  const saleDeployed = new web3.eth.Contract(
+  const { tokenOwner, tokenId } = req.body;
+  const deployed = new web3.eth.Contract(
     SaleAbi as AbiItem[],
     process.env.SALE_CA
   );
 
-  await saleDeployed.methods
+  let tempPrice: number = 1000000000000000;
+
+  obj.from = tokenOwner;
+  obj.to = process.env.SALE_CA;
+  obj.data = deployed.methods
     .setApprovalForAll(process.env.SALE_CA, true)
-    .send({ from: tokenOwner });
+    .encodeABI();
 
-  await saleDeployed.methods.SalesToken(tokenId, price).call();
-
-  res.end();
+  res.send(obj);
 });
 
 router.post("/updateList", async (req: Request, res: Response) => {
-  const { tokenId, from, tokenOwner } = req.body;
+  const { tokenId, account, tokenOwner } = req.body;
 
   const tempToken = await Token.findOne({ where: { tokenId } });
 
   await SaleToken.create({
     from: tokenOwner,
-    to: from,
+    to: account,
     price: tempToken.price,
     ca: tempToken.ca,
     tokenId,
   });
 
   res.end();
+});
+
+router.post("/sale", async (req: Request, res: Response) => {
+  const { tokenOwner, tokenId } = req.body;
+  const deployed = new web3.eth.Contract(
+    SaleAbi as AbiItem[],
+    process.env.SALE_CA
+  );
+
+  let tempPrice: number = 1000000000000000;
+
+  obj.from = tokenOwner;
+  obj.to = process.env.SALE_CA;
+  obj.data = deployed.methods.saleToken(tokenId, tempPrice).encodeABI();
+
+  res.send(obj);
 });
 export default router;

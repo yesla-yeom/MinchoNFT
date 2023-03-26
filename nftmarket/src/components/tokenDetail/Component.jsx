@@ -24,22 +24,29 @@ const TokenDetailComponent = ({ detail, buyToken, approvedFunc }) => {
         </div>
         <div>블록체인 : {detail.blockChainNetwork}</div>
         <div>토큰 기반: {detail.tokenBase}</div>
-        <div>토큰 소유자 : {detail.tokenOwner}</div>
+        <div>
+          토큰 소유자 :{" "}
+          {detail.tokenOwner &&
+            detail.tokenOwner.slice(0, 2) +
+              detail.tokenOwner.slice(2, 5).toUpperCase() +
+              "..." +
+              detail.tokenOwner.slice(-5)}
+        </div>
         <div>가격 : {detail.price} Goerli</div>
         <div>
-          <button
-            onClick={() => {
-              approvedFunc(detail.tokenId, detail.tokenOwner);
-            }}
-          >
-            승인해보기
-          </button>
           <button
             onClick={() => {
               buyToken(detail.tokenId, detail.tokenOwner);
             }}
           >
             구매하기
+          </button>
+          <button
+            onClick={() => {
+              approvedFunc(detail.tokenId, detail.tokenOwner);
+            }}
+          >
+            테스트용 승인버튼
           </button>
         </div>
         <div>
@@ -100,11 +107,15 @@ const DetailBox = styled.div`
       }
 
       &:nth-child(7) {
-        width: fit-content;
+        width: 95%;
         margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         & > button {
           width: 100%;
-          padding: 10px 200px;
+          padding: 2% 5%;
+          margin: 0 10px;
           background-color: rgba(176, 222, 219, 1);
           border: none;
           border-radius: 10px;
