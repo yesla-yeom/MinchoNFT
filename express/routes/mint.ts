@@ -137,6 +137,12 @@ router.post(
           }
         }
       }
+      const deployed = new web3.eth.Contract(
+        NftAbi as AbiItem[],
+        process.env.NFT_CA
+      );
+      let tokenName = await deployed.methods.name().call();
+      console.log(tokenName);
 
       const jsonResult = await pinata.pinJSONToIPFS(
         {
@@ -149,6 +155,9 @@ router.post(
           attributes: [
             { trait_type: "Rank", value: lastRandomValue },
             { trait_type: "type", value: type },
+            { trait_type: "price", value: price },
+            { trait_type: "tokenName", value: tokenName },
+
             // {
             //   trait_type: "BackGround",
             //   value: "Off White A",
@@ -204,10 +213,10 @@ router.post(
       );
       console.log(jsonResult);
 
-      const deployed = new web3.eth.Contract(
-        NftAbi as AbiItem[],
-        process.env.NFT_CA
-      );
+      // const deployed = new web3.eth.Contract(
+      //   NftAbi as AbiItem[],
+      //   process.env.NFT_CA
+      // );
       const obj: {
         to: string;
         from: string;
@@ -221,8 +230,8 @@ router.post(
       obj.from = req.body.from;
       obj.data = deployed.methods.safeMint(jsonResult.IpfsHash).encodeABI();
       console.log(obj);
-      let tokenName = await deployed.methods.name().call();
-      console.log(tokenName);
+      // let tokenName = await deployed.methods.name().call();
+      // console.log(tokenName);
       if (imgResult && jsonResult) {
         await Token.create({
           blockChainNetwork: "Ethereum",

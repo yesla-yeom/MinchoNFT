@@ -48,6 +48,7 @@ function App() {
               path="/sell"
               element={<SellContainer account={account} web3={web3} />}
             />
+
             <Route
               path="/minting"
               element={<MintingContainer account={account} web3={web3} />}
