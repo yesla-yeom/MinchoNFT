@@ -11,43 +11,49 @@ function MintingComponent({
   NftDescription,
 }) {
   return (
-    <MintingBox>
-      <div>Create New NFT</div>
-      <ImageTitle>Image</ImageTitle>
-      <ImageDetail>File types supported: JPG,PNG,SVG</ImageDetail>
-      <FileAdd>
-        <input type="file" onInput={fileChange}></input>
-        <FileImg src={img} alt="" />
-      </FileAdd>
+    <>
+      <MintingBox>
+        <div>Create New NFT</div>
+        <ImageTitle>Image</ImageTitle>
+        <ImageDetail>File types supported: JPG,PNG,SVG</ImageDetail>
 
-      <div>Name</div>
-      <div>
-        <input
-          type="text"
-          value={NftName}
-          onInput={nameInput}
-          placeholder="NFT name"
-        ></input>
-      </div>
-      <div>
-        <Discription>Description</Discription>
-        <DiscriptionDetail>
-          The description will be inculded on the item's detail page underneath
-          its NFT
-        </DiscriptionDetail>
+        <FileAdd>
+          <label className="file-label" htmlFor="chooseFile">
+            Choose File
+          </label>
+          <input id="chooseFile" type="file" onInput={fileChange}></input>
+          <FileImg src={img} alt="" />
+        </FileAdd>
+
+        <div>Name</div>
         <div>
-          <DescriptionInput
+          <input
             type="text"
-            value={NftDescription}
-            onInput={discriptionInput}
-            placeholder="Provide a detailed description of your item."
-          ></DescriptionInput>
+            value={NftName}
+            onInput={nameInput}
+            placeholder="NFT name"
+          ></input>
         </div>
-      </div>
-      <CreateDiv>
-        <CreateButton onClick={mint}>Create</CreateButton>
-      </CreateDiv>
-    </MintingBox>
+        <div>
+          <Discription>Description</Discription>
+          <DiscriptionDetail>
+            The description will be inculded on the item's detail page
+            underneath its NFT
+          </DiscriptionDetail>
+          <div>
+            <DescriptionInput
+              type="text"
+              value={NftDescription}
+              onInput={discriptionInput}
+              placeholder="Provide a detailed description of your item."
+            ></DescriptionInput>
+          </div>
+        </div>
+        <CreateDiv>
+          <CreateButton onClick={mint}>Create</CreateButton>
+        </CreateDiv>
+      </MintingBox>
+    </>
   );
 }
 
@@ -99,6 +105,29 @@ const FileAdd = styled.div`
   font-size: 20px;
   padding: 10px 0px;
   color: rgba(88, 49, 49, 1);
+  .file-label {
+    background-color: rgba(176, 222, 219, 1);
+    border: 1px solid;
+    padding: 5px;
+    color: rgba(252, 110, 94, 1);
+    text-align: center;
+    margin-right: 20px;
+
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  & > input[type="file"] {
+    display: none;
+    /* position: absolute; */
+    /* width: 0; */
+    /* height: 0; */
+    /* padding: 0; */
+    /* margin: -1px; */
+    /* overflow: hidden; */
+    /* clip: rect(0, 0, 0, 0); */
+    /* border: 0; */
+  }
 `;
 
 const Discription = styled.div``;

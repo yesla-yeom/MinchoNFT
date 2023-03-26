@@ -1,44 +1,92 @@
 import styled from "styled-components";
 import { useState } from "react";
 
-const SellMordalComponent = ({ SetMordal, account, web3, item, tokendata }) => {
-  console.log(tokendata.tokenImage);
+const SellMordalComponent = ({
+  SetMordal,
+  account,
+  web3,
+  item,
+  tokendata,
+  setEthValue,
+  ethValue,
+  ethInput,
+  listing,
+  cancle,
+}) => {
+  console.log(tokendata);
   return (
-    <MordalBox>
-      <Test>
-        <Search>List item</Search>
-        <Imgtest>
-          <ImgX
-            onClick={(e) => {
-              SetMordal(false);
-            }}
-            src="https://media.giphy.com/media/KFtoeyGbuENeJrnv2j/giphy.gif"
-          ></ImgX>
-        </Imgtest>
-      </Test>
-      <ERRor>
-        <div>
-          {tokendata.tokenImage && (
-            <Mainimg
-              src={`http://localhost:8080/upload/${tokendata.tokenImage}`}
-              alt=""
-            />
-          )}
+    <ModalBackground>
+      <MordalBox>
+        <Test>
+          <Search>List item</Search>
+          <Imgtest>
+            <ImgX
+              onClick={(e) => {
+                SetMordal(false);
+              }}
+              src="https://media.giphy.com/media/KFtoeyGbuENeJrnv2j/giphy.gif"
+            ></ImgX>
+          </Imgtest>
+        </Test>
+        <ERRor>
+          <div>
+            {tokendata.tokenImage && (
+              <Mainimg
+                src={`http://localhost:8080/upload/${tokendata.tokenImage}`}
+                alt=""
+              />
+            )}
+          </div>
+          <Testtext>
+            <div>
+              <div>{tokendata.name}</div>
+            </div>
+            <div>
+              <div>{tokendata.tokenName}</div>
+            </div>
+          </Testtext>
+        </ERRor>
+        <Pricetext>Set a price</Pricetext>
+        <div style={{ paddingLeft: 20 }}>
+          <Setinput
+            value={ethValue}
+            onInput={ethInput}
+            placeholder="ETH Amount"
+            type="Number"
+          />
         </div>
-        <Testtext>
+        <Listingprice>
+          <div>listing price</div>
+          {ethValue ? <div>{ethValue}ETH</div> : <div>--ETH</div>}
+        </Listingprice>
+        <ButtonBox>
           <div>
-            <div>{tokendata.name}</div>
+            <Completelist onClick={listing}>Complete listing</Completelist>
           </div>
           <div>
-            <div>{tokendata.tokenName}</div>
+            <CancleList onClick={cancle}>Cancle listing</CancleList>
           </div>
-        </Testtext>
-      </ERRor>
-    </MordalBox>
+        </ButtonBox>
+      </MordalBox>
+    </ModalBackground>
   );
 };
 
 export default SellMordalComponent;
+
+const ModalBackground = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.8);
+`;
+const ButtonBox = styled.div`
+  display: flex;
+  justify-content: space-around;
+`;
+
 const Imgtest = styled.div`
   /* margin-left: 20px; */
   /* position: absolute; */
@@ -62,7 +110,7 @@ const Testtext = styled.div`
   justify-content: space-around;
   flex-direction: column;
   font-size: 20px;
-  padding-left: 20px;
+  padding-left: 80px;
 `;
 const Mainimg = styled.img`
   width: 200px;
@@ -71,6 +119,52 @@ const Mainimg = styled.img`
 
 const ImgX = styled.img`
   width: 50px;
+  cursor: pointer;
+`;
+
+const Pricetext = styled.div`
+  font-size: 20px;
+  padding-left: 20px;
+  padding-top: 10px;
+  color: rgb(88, 49, 49, 1);
+`;
+
+const Completelist = styled.button`
+  margin-top: 10px;
+  font-size: 25px;
+  color: rgb(252, 110, 94, 1);
+  width: 250px;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: rgb(227, 243, 247);
+  border: 1px solid rgb(88, 49, 49);
+`;
+
+const CancleList = styled.button`
+  margin-top: 10px;
+  font-size: 25px;
+  color: rgb(252, 110, 94, 1);
+  width: 250px;
+  padding: 20px;
+
+  border-radius: 10px;
+  background-color: rgb(227, 243, 247);
+  border: 1px solid rgb(88, 49, 49);
+`;
+
+const Listingprice = styled.div`
+  font-size: 20px;
+  padding-left: 20px;
+  padding-top: 10px;
+  color: rgb(88, 49, 49, 1);
+`;
+
+const Setinput = styled.input`
+  width: 500px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: rgb(227, 243, 247);
+  border: 1px solid rgb(88, 49, 49);
 `;
 
 const MordalBox = styled.div`
@@ -79,24 +173,27 @@ const MordalBox = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
+
   margin: auto;
-  height: 400px;
-  width: 700px;
+  height: 500px;
+  width: 550px;
   border: 2px solid #565d79;
   border-radius: 10px;
   /* background-color: white; */
   background-color: rgba(176, 222, 219, 1);
-  background-repeat: no-repeat;
-  background-position: 10% 1%;
+  /* background-repeat: no-repeat; */
+  /* background-position: 10% 1%; */
+  /* background-color: rgba(0, 0, 0, 0.45); */
+  /* z-index: 1000; */
 
   /* @media (max-width: 650px) {
     width: 80%;
   } */
 
-  /* img {
-    width: 20px;
-    cursor: pointer;
-  } */
+  img {
+    /* width: 20px; */
+    /* cursor: pointer; */
+  }
 
   /* .regist > div:first-child {
     margin-top: 6px;

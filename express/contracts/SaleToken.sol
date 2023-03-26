@@ -23,6 +23,7 @@ contract SaleToken {
     address tokenOwner = Token.ownerOf(_tokenId);
     require(tokenOwner == msg.sender);
     require(_price > 0);
+    // Token.setApprovalForAll(address(this), true);
     require(Token.isApprovedForAll(msg.sender, address(this)));
 
     tokenPrices[_tokenId] = _price;
