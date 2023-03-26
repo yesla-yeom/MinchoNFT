@@ -19,41 +19,54 @@ const TokenDetailContainer = ({ account, web3 }) => {
   }, [params, account]);
 
   const buyToken = async (_tokenId, _tokenOwner) => {
-    const result = (
-      await axios.post("http://localhost:8080/api/nftToken/buyToken", {
-        tokenId: _tokenId,
-        from: account,
-        tokenOwner: _tokenOwner,
-      })
-    ).data;
+    try {
+      const result = (
+        await axios.post("http://localhost:8080/api/nftToken/buyToken", {
+          tokenId: _tokenId,
+          account,
+          tokenOwner: _tokenOwner,
+        })
+      ).data;
 
-    let transactionResult = await web3.eth.sendTransaction({
-      from: result.from,
-      to: result.to,
-      value: result.price,
-    });
-    console.log("transactionResult", transactionResult);
-
-    await axios.post("http://localhost:8080/api/nftToken/updateList", {
-      tokenId: _tokenId,
-      from: account,
-      tokenOwner: _tokenOwner,
-    });
+      let transactionResult = await web3.eth.sendTransaction({
+        from: result.from,
+        to: result.to,
+        data: result.data,
+      });
+      if (transactionResult) {
+        await axios.post("http://localhost:8080/api/nftToken/updateList", {
+          tokenId: _tokenId,
+          account,
+          tokenOwner: _tokenOwner,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const approvedFunc = async (_tokenId, _tokenOwner) => {
     const approved = (
       await axios.post("http://localhost:8080/api/nftToken/approve", {
         tokenOwner: _tokenOwner,
+        tokenId: _tokenId,
       })
     ).data;
+    let transactionApprove = await web3.eth.sendTransaction({
+      from: approved.from,
+      to: approved.to,
+      data: approved.data,
+    });
+    saleTokenFunc();
+  };
 
-    // let transactionApprove = await web3.eth.sendTransaction({
-    //   from: approved.from,
-    //   data: approved.data,
-    //   gas: 2000000,
-    // });
-    console.log("해치웠나?", approved);
+  const saleTokenFunc = async (_tokenId, _tokenOwner) => {
+    const sale = (
+      await axios.post("http://localhost:8080/api/nftToken/sale", {
+        tokenOwner: _tokenOwner,
+        tokenId: _tokenId,
+      })
+    ).data;
   };
   useEffect(() => {
     tokenDetail();

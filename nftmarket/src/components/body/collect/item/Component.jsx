@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 const { Meta } = Card;
 
-const CollectItemComponent = ({ tokenName, price, way }) => {
+const CollectItemComponent = ({ tokenName, price, way, tokenImage }) => {
   return (
     <NewCard
       hoverable
@@ -14,7 +14,11 @@ const CollectItemComponent = ({ tokenName, price, way }) => {
         <Link to={`/${way}`}>
           <img
             alt="example"
-            src="./imgs/brownBear.jpg"
+            src={
+              tokenImage.includes("imgs")
+                ? tokenImage
+                : `http://localhost:8080/upload/${tokenImage}`
+            }
             style={{ width: "240px" }}
           />
         </Link>

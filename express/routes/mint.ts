@@ -221,7 +221,7 @@ router.post(
           rank: lastRandomValue,
           saleState: 0,
           ca: process.env.NFT_CA,
-          type: type,
+          type: type || "common",
           price: price,
         });
       }

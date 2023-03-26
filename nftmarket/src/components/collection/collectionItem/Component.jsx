@@ -18,7 +18,14 @@ const CollectionItemComponent = ({
     <ItemBox>
       <>
         <div>
-          <span>{collectionInfo.tokenOwner}</span> 님의 전체 NFT
+          <span>
+            {collectionInfo.tokenOwner &&
+              collectionInfo.tokenOwner.slice(0, 2) +
+                collectionInfo.tokenOwner.slice(2, 5).toUpperCase() +
+                "..." +
+                collectionInfo.tokenOwner.slice(-5).toUpperCase()}
+          </span>{" "}
+          님의 전체 NFT
         </div>
         <div>
           <div>
@@ -156,6 +163,7 @@ const ItemBox = styled.div`
       width: 30%;
       & > div {
         width: 100%;
+        height: 100%;
         box-shadow: 1px 1px 1px 1px gray;
         border-radius: 10px;
         text-align: center;
@@ -163,6 +171,7 @@ const ItemBox = styled.div`
         padding: 5px;
         & > img {
           width: 100%;
+          height: 80%;
         }
       }
     }
