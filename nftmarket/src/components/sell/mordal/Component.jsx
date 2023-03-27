@@ -39,10 +39,14 @@ const SellMordalComponent = ({
           </div>
           <Testtext>
             <div>
-              <div>{tokendata.name}</div>
+              <div>
+                <span>Name:</span> {tokendata.name}
+              </div>
             </div>
             <div>
-              <div>{tokendata.tokenName}</div>
+              <div>
+                <span>TokenName:</span> {tokendata.tokenName}
+              </div>
             </div>
           </Testtext>
         </ERRor>
@@ -80,7 +84,7 @@ const ModalBackground = styled.div`
   left: 0;
   bottom: 0;
   right: 0;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.3);
 `;
 const ButtonBox = styled.div`
   display: flex;
@@ -105,6 +109,10 @@ const Test = styled.div`
   /* justify-content: space-around; */
 `;
 const Testtext = styled.div`
+  & > div > div > span {
+    color: rgb(88, 49, 49, 1);
+    padding-right: 10px;
+  }
   color: rgba(252, 110, 94, 1);
   display: flex;
   justify-content: space-around;
@@ -130,26 +138,34 @@ const Pricetext = styled.div`
 `;
 
 const Completelist = styled.button`
+  &:hover {
+    background-color: rgb(88, 49, 49, 1);
+  }
   margin-top: 10px;
   font-size: 25px;
   color: rgb(252, 110, 94, 1);
   width: 250px;
   padding: 20px;
   border-radius: 10px;
-  background-color: rgb(227, 243, 247);
-  border: 1px solid rgb(88, 49, 49);
+  background-color: rgba(176, 222, 219, 1);
+  border: 2px solid rgb(88, 49, 49);
+  cursor: pointer;
 `;
 
 const CancleList = styled.button`
+  &:hover {
+    background-color: rgb(88, 49, 49, 1);
+  }
   margin-top: 10px;
   font-size: 25px;
   color: rgb(252, 110, 94, 1);
   width: 250px;
   padding: 20px;
+  cursor: pointer;
 
   border-radius: 10px;
-  background-color: rgb(227, 243, 247);
-  border: 1px solid rgb(88, 49, 49);
+  background-color: rgba(176, 222, 219, 1);
+  border: 2px solid rgb(88, 49, 49);
 `;
 
 const Listingprice = styled.div`

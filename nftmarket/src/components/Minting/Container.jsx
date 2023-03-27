@@ -5,12 +5,14 @@ import { useCallback, useState } from "react";
 // import { connectors } from "../utility/connect";
 import Web3 from "web3";
 import { useWeb3 } from "../utility/useWeb3";
+import SellMordalContainer from "../sell/mordal/Container";
 
 function MintingContainer({ account, web3 }) {
   const [NftName, setName] = useState("");
   const [NftDescription, setDescription] = useState("");
   const [file, setFile] = useState();
   const [img, setImg] = useState("");
+  const [check, setCheck] = useState(false);
 
   // const { account, activate, deactivate, active } = useWeb3React();
 
@@ -37,6 +39,11 @@ function MintingContainer({ account, web3 }) {
     }
   }, []);
 
+  const handleClick = (e) => {
+    setCheck((check) => !check);
+    console.log(check);
+  };
+
   // const test = async () => {
   //   const result = await axios.post("http://localhost:8080/api/mint/network");
   //   console.log(result);
@@ -44,9 +51,7 @@ function MintingContainer({ account, web3 }) {
   // test();
 
   const mint = async () => {
-    console.log(account);
-
-    if (!NftName || !NftDescription || !file || !account) return;
+    if (!NftName || !NftDescription || !file || !account || !check) return;
     const formData = new FormData();
     formData.append("file", file);
     formData.append("name", NftName);
@@ -59,9 +64,12 @@ function MintingContainer({ account, web3 }) {
         await axios.post("http://localhost:8080/api/mint/minting", formData)
       ).data;
 
+      console.log("result:", result);
+      // 여기서 부터 민팅확인 reulst가 있을때꺼주고 없으면 켜주고
       let transactionResult = await web3.eth.sendTransaction(result);
-
       console.log(transactionResult);
+
+      console.log("transactionResult:", transactionResult);
       const create = (
         await axios.post("http://localhost:8080/api/mint/create", {
           transactionResult,
@@ -69,12 +77,14 @@ function MintingContainer({ account, web3 }) {
       ).data;
 
       console.log(create);
+      // 이게나와야 민팅완료
     } catch (error) {
       const cancle = (
         await axios.post("http://localhost:8080/api/mint/destroy", {
           error,
         })
       ).data;
+      console.log("cancle:", cancle);
     }
 
     // let signFrom = transactionResult.from;
@@ -89,6 +99,8 @@ function MintingContainer({ account, web3 }) {
         discriptionInput={discriptionInput}
         nameInput={nameInput}
         img={img}
+        handleClick={handleClick}
+        check={check}
       />
     </div>
   );

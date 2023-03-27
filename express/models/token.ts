@@ -28,7 +28,7 @@ export default class Token extends Model {
           allowNull: false,
         },
         price: {
-          type: DataTypes.INTEGER.UNSIGNED,
+          type: DataTypes.STRING(255),
           allowNull: false,
         },
         blockChainNetwork: {

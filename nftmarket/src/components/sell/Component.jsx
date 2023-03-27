@@ -71,6 +71,10 @@ const Name = styled.div`
   font-weight: 600;
 `;
 const Listbutton = styled.button`
+  &:hover {
+    background-color: rgba(88, 88, 49, 1);
+  }
+  cursor: pointer;
   padding: 10px;
   color: rgba(252, 110, 94, 1);
   border-radius: 10px;

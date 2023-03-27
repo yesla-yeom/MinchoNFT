@@ -4,7 +4,7 @@ import { abi as SaleAbi } from "../contracts/artifacts/SaleToken.json";
 import { abi as NftAbi } from "../contracts/artifacts/NftToken.json";
 import dotenv from "dotenv";
 import { AbiItem } from "web3-utils";
-
+import { BigNumber } from "@ethersproject/bignumber";
 import db from "../models/index";
 import { where } from "sequelize";
 
@@ -82,7 +82,12 @@ router.post("/approve", async (req: Request, res: Response) => {
 router.post("/listing", async (req: Request, res: Response) => {
   try {
     const { ethValue, tokendata, account } = req.body;
-    let ethprice = Number(ethValue);
+    // let ethprice = Number(ethValue);
+    console.log("ethValue:", ethValue);
+    const bigNumberValue = BigNumber.from(
+      Math.floor(ethValue * 10 ** 18).toString()
+    );
+    console.log("bigNumberValue", bigNumberValue);
 
     const saledeployed = new web3.eth.Contract(
       SaleAbi as AbiItem[],
@@ -90,7 +95,7 @@ router.post("/listing", async (req: Request, res: Response) => {
     );
 
     let saletoken = await saledeployed.methods
-      .SalesToken(tokendata.tokenId, ethValue)
+      .SalesToken(tokendata.tokenId, bigNumberValue)
       .encodeABI();
     console.log(saletoken);
     const obj: {
@@ -115,14 +120,15 @@ router.post("/listing", async (req: Request, res: Response) => {
 router.post("/update", async (req: Request, res: Response) => {
   try {
     const { ethValue, tokendata, account } = req.body;
+    console.log("확인용:", ethValue);
 
-    let ethprice = Number(ethValue);
-    console.log(ethprice);
+    // console.log("ethprice:", ethprice);
     console.log(tokendata.tokenId);
     console.log("account:", account);
     let data = await Token.update(
       {
         price: ethValue,
+        saleState: 1,
       },
       { where: { tokenId: tokendata.tokenId } }
     );
@@ -171,6 +177,7 @@ router.post("/cancleUpdate", async (req: Request, res: Response) => {
   let data = await Token.update(
     {
       price: 0,
+      saleState: 0,
     },
     { where: { tokenId: tokenId } }
   );
