@@ -70,22 +70,16 @@ function App() {
                 </>
               }
             />
-            <Route path="/:tokenName" element={<CollectionContainer />} />
             <Route
-              path="/detail"
+              path="/:tokenName"
               element={<CollectionContainer account={account} />}
             />
-
-            <Route
-              path="/detail/:tokenId"
-              element={<TokenDetailContainer account={account} web3={web3} />}
-            />
-            <Route path="/qna" element={<QnaContainer />} />
             <Route
               path="/:tokenName/:tokenId"
               element={<TokenDetailContainer account={account} web3={web3} />}
             />
-            <Route path="/myNFT" element={<MyNftContainer />} />
+            <Route path="/qna" element={<QnaContainer />} />
+            <Route path="/myNFT/:tokenOwner" element={<MyNftContainer />} />
             <Route
               path="/collections"
               element={<div>여기는 컬랙션들이 들어가야됨</div>}

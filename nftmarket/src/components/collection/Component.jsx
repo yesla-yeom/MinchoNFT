@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 import CollectionItemContainer from "./collectionItem/Container";
@@ -11,6 +12,7 @@ const CollectionComponent = ({
   setCollectionInfo,
   check,
   setCheck,
+  account,
 }) => {
   return (
     <CollectionBox>
@@ -27,12 +29,14 @@ const CollectionComponent = ({
           <div>
             소유자 :{" "}
             {collectionInfo.tokenOwner && (
-              <span>
-                {collectionInfo.tokenOwner.slice(0, 2) +
-                  collectionInfo.tokenOwner.slice(2, 5).toUpperCase() +
-                  "..." +
-                  collectionInfo.tokenOwner.slice(-5).toUpperCase()}
-              </span>
+              <Link to={`/myNFT/${collectionInfo.tokenOwner}`}>
+                <span>
+                  {collectionInfo.tokenOwner.slice(0, 2) +
+                    collectionInfo.tokenOwner.slice(2, 5).toUpperCase() +
+                    "..." +
+                    collectionInfo.tokenOwner.slice(-5).toUpperCase()}
+                </span>
+              </Link>
             )}
           </div>
           <div>
@@ -98,6 +102,9 @@ const CollectionBox = styled.div`
       width: 100%;
       & > div {
         padding: 0 10px 0 0;
+        &:first-child > a:hover {
+          color: rgba(176, 222, 219, 1);
+        }
       }
     }
   }

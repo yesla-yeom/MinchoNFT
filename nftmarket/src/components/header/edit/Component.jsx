@@ -24,7 +24,7 @@ const HeaderEditComponent = ({ logIn }) => {
           <Dropdown menu={{ items }} placement="bottomLeft">
             <EditButton>My Account</EditButton>
           </Dropdown>
-          <Link to={"/myNFT"}>
+          <Link to={`/myNFT/${account}`}>
             <EditButton>My NFT</EditButton>
           </Link>
         </>
