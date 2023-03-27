@@ -86,34 +86,44 @@ router.post("/approve", async (req: Request, res: Response) => {
 });
 
 router.post("/updateList", async (req: Request, res: Response) => {
-  const { tokenId, account, tokenOwner } = req.body;
+  try {
+    const { tokenId, account, tokenOwner } = req.body;
 
-  const tempToken = await Token.findOne({ where: { tokenId } });
+    const tempToken = await Token.findOne({ where: { tokenId } });
 
-  await SaleToken.create({
-    from: tokenOwner,
-    to: account,
-    price: tempToken.price,
-    ca: tempToken.ca,
-    tokenId,
-  });
+    await SaleToken.create({
+      from: tokenOwner,
+      to: account,
+      price: tempToken.price,
+      ca: tempToken.ca,
+      tokenId,
+    });
 
-  res.end();
+    res.end();
+  } catch (err) {
+    console.log(err);
+    res.send(err);
+  }
 });
 
 router.post("/sale", async (req: Request, res: Response) => {
-  const { tokenOwner, tokenId } = req.body;
-  const deployed = new web3.eth.Contract(
-    SaleAbi as AbiItem[],
-    process.env.SALE_CA
-  );
+  try {
+    const { tokenOwner, tokenId } = req.body;
+    const deployed = new web3.eth.Contract(
+      SaleAbi as AbiItem[],
+      process.env.SALE_CA
+    );
 
-  let tempPrice: number = 1000000000000000;
+    let tempPrice: number = 1000000000000000;
 
-  obj.from = tokenOwner;
-  obj.to = process.env.SALE_CA;
-  obj.data = deployed.methods.saleToken(tokenId, tempPrice).encodeABI();
+    obj.from = tokenOwner;
+    obj.to = process.env.SALE_CA;
+    obj.data = deployed.methods.saleToken(tokenId, tempPrice).encodeABI();
 
-  res.send(obj);
+    res.send(obj);
+  } catch (err) {
+    console.log(err);
+    res.send(err);
+  }
 });
 export default router;
