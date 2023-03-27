@@ -1,6 +1,6 @@
 import { Model, DataTypes, Sequelize } from "sequelize";
 
-export default class SaleToken extends Model {
+export default class TransactionLog extends Model {
   public from!: string;
   public to!: string;
   public price!: number;
@@ -8,7 +8,7 @@ export default class SaleToken extends Model {
   public tokenId!: number;
 
   public static initModel(sequelize: Sequelize) {
-    return SaleToken.init(
+    return TransactionLog.init(
       {
         from: {
           type: DataTypes.STRING(255),
@@ -36,8 +36,8 @@ export default class SaleToken extends Model {
         timestamps: true,
         underscored: true,
         paranoid: false,
-        modelName: "SaleToken",
-        tableName: "saleToken",
+        modelName: "TransactionLog",
+        tableName: "transactionLog",
         charset: "utf8mb4",
         collate: "utf8mb4_general_ci",
       }

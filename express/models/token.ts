@@ -6,7 +6,7 @@ export default class Token extends Model {
   public price!: number;
   public blockChainNetwork!: string;
   public tokenOwner!: string;
-  public tokenBase!: string;
+  public tokenStandard!: string;
   public name!: string;
   public description!: string;
   public TokenImage!: string;
@@ -39,7 +39,7 @@ export default class Token extends Model {
           type: DataTypes.STRING(255),
           allowNull: false,
         },
-        tokenBase: {
+        tokenStandard: {
           type: DataTypes.STRING(45),
           allowNull: false,
         },

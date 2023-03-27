@@ -8,7 +8,7 @@ import { abi as NftAbi } from "../contracts/artifacts/NftToken.json";
 import { abi as SaleAbi } from "../contracts/artifacts/SaleToken.json";
 import dummyDataList from "../data/dummyData.json";
 import Token from "../models/token";
-import SaleToken from "../models/saleToken";
+import TransactionLog from "../models/transactionLog";
 
 dotenv.config();
 
@@ -52,7 +52,7 @@ router.post("/detail", async (req: Request, res: Response) => {
 
 router.post("/buyToken", async (req: Request, res: Response) => {
   const { account, tokenId, tokenOwner } = req.body;
-  const checkToken = await SaleToken.findOne({ where: { tokenId } });
+  const checkToken = await TransactionLog.findOne({ where: { tokenId } });
   if (checkToken) return res.status(202).send({ msg: "already Bought Token" });
 
   const saleDeployed = new web3.eth.Contract(
@@ -91,7 +91,7 @@ router.post("/updateList", async (req: Request, res: Response) => {
 
     const tempToken = await Token.findOne({ where: { tokenId } });
 
-    await SaleToken.create({
+    await TransactionLog.create({
       from: tokenOwner,
       to: account,
       price: tempToken.price,

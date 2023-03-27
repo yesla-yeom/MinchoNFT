@@ -14,7 +14,7 @@ import { abi as SaleAbi } from "../contracts/artifacts/SaleToken.json";
 
 const TOTALTOKENCOUNT: number = 1000;
 const web3 = new Web3(
-  "wss://goerli.infura.io/ws/v3/417c70b502174e5cb15ef580dae6b3d8"
+  "wss://goerli.infura.io/ws/v3/2ca09ab04a7c44dcb6f886deeba97502"
 );
 
 dotenv.config();
@@ -142,7 +142,7 @@ router.post(
         process.env.NFT_CA
       );
       let tokenName = await deployed.methods.name().call();
-      console.log(tokenName);
+      // console.log(tokenName);
 
       const jsonResult = await pinata.pinJSONToIPFS(
         {

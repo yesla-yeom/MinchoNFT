@@ -670,11 +670,11 @@
 	},
 	"sources": {
 		"contracts/NftToken.sol": {
-			"keccak256": "0x9fba6d70f12c932dcd29c41ee291442e67106abf68ec03e971472bf8e1218c7a",
+			"keccak256": "0xeefe35bc0251a1958833175f7149c80075fd8a3ab2fa7b8650ef6b81411b94e1",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://5ef414e5de9e2b05c250113c05ac6f3a3160d538a611d3bced3d9ed0bec877c1",
-				"dweb:/ipfs/QmUAoLvqwbHoZdfa9Guy71DXuGwri6DVmrSR4EwB18eLX3"
+				"bzz-raw://d693c7263ac6ba60cf9d2bc6d00c8a4a75b5d84946e9f377e1bbdb258ba7683b",
+				"dweb:/ipfs/QmNUL5CTy2EREVGbXKhyz4cQp9LbmcHrs4V2qczBke5Vxb"
 			]
 		},
 		"node_modules/@openzeppelin/contracts/access/Ownable.sol": {
