@@ -19,6 +19,7 @@ const CollectComponent = ({ tokenArr, account }) => {
                       ? `${item.tokenName}/${item.tokenId}`
                       : item.tokenName
                   }
+                  tokenImage={item.tokenImage}
                 />
               </Col>
             );

@@ -22,9 +22,9 @@ const { Header, Content, Footer } = Layout;
 
 function App() {
   useEffect(() => {
-    // (async () => {
-    //   const data = await axios.get("http://localhost:8080/api/allToken/list");
-    // })();
+    (async () => {
+      await axios.get("http://localhost:8080/api/allToken/list");
+    })();
   }, []);
   const { account, logIn, web3 } = useWeb3();
   const {

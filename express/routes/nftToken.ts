@@ -2,119 +2,128 @@ import { Router, Request, Response } from "express";
 import Web3 from "web3";
 import pinataSDK from "@pinata/sdk";
 import { AbiItem } from "web3-utils";
-import { Readable } from "stream";
-import { Buffer } from "buffer";
+import dotenv from "dotenv";
 
-import { abi } from "../contracts/artifacts/NftToken.json";
+import { abi as NftAbi } from "../contracts/artifacts/NftToken.json";
+import { abi as SaleAbi } from "../contracts/artifacts/SaleToken.json";
 import dummyDataList from "../data/dummyData.json";
-import AllToken from "../models/token";
-import BuyToken from "../models/saleToken";
+import Token from "../models/token";
+import SaleToken from "../models/saleToken";
 
-const web3 = new Web3("http://127.0.0.1:8545");
-// const web3 = new Web3("http://ganache.test.errorcode.help:8545");
-const pinata = new pinataSDK(
-  "4c64f4e382099ae14866",
-  "a7b9d3c02c40095d07400a5a82fb09c6b201d0259faf79bfe21d5f0f51b4dc7c"
+dotenv.config();
+
+const web3 = new Web3(
+  "wss://goerli.infura.io/ws/v3/2ca09ab04a7c44dcb6f886deeba97502"
 );
 
 const router = Router();
 
 interface tokenData {
   tokenId: number;
-  CA?: string;
-  price?: number;
+  ca?: string;
+  tokenImage?: string;
   blockChain?: string;
   tokenOwner?: string;
   tokenBase?: string;
   name: string;
   description: string;
-  image: string;
   atrributes?: Array<{ trait_type: string; value: number }>;
 }
 
+let obj: {
+  to?: string;
+  from?: string;
+  data?: string;
+  ca?: string;
+  price?: number | string;
+} = {
+  to: "",
+  from: "",
+  data: "",
+  ca: "",
+  price: 0,
+};
+
 router.post("/detail", async (req: Request, res: Response) => {
   const { tokenId }: { tokenId: number } = req.body;
-  const tempData: any = await AllToken.findOne({ where: { tokenId } });
+  const tempData: tokenData = await Token.findOne({ where: { tokenId } });
   res.send(tempData);
 });
 
-router.post("/buy", async (req: Request, res: Response) => {
+router.post("/buyToken", async (req: Request, res: Response) => {
+  const { account, tokenId, tokenOwner } = req.body;
+  const checkToken = await SaleToken.findOne({ where: { tokenId } });
+  if (checkToken) return res.status(202).send({ msg: "already Bought Token" });
+
+  const saleDeployed = new web3.eth.Contract(
+    SaleAbi as AbiItem[],
+    process.env.SALE_CA
+  );
+
+  obj.from = account;
+  obj.to = process.env.SALE_CA;
+  obj.data = saleDeployed.methods.PurchaseToken(tokenId).encodeABI();
+
+  res.send(obj);
+});
+
+router.post("/approve", async (req: Request, res: Response) => {
+  const { tokenOwner, tokenId } = req.body;
+  const deployed = new web3.eth.Contract(
+    SaleAbi as AbiItem[],
+    process.env.SALE_CA
+  );
+
+  let tempPrice: number = 1000000000000000;
+
+  obj.from = tokenOwner;
+  obj.to = process.env.SALE_CA;
+  obj.data = deployed.methods
+    .setApprovalForAll(process.env.SALE_CA, true)
+    .encodeABI();
+
+  res.send(obj);
+});
+
+router.post("/updateList", async (req: Request, res: Response) => {
   try {
-    const {
+    const { tokenId, account, tokenOwner } = req.body;
+
+    const tempToken = await Token.findOne({ where: { tokenId } });
+
+    await SaleToken.create({
+      from: tokenOwner,
+      to: account,
+      price: tempToken.price,
+      ca: tempToken.ca,
       tokenId,
-      name,
-      description,
-      imgSrc,
-      CA,
-      price,
-      blockChain,
-      tokenOwner,
-      tokenBase,
-    } = dummyDataList[req.body.tokenId];
-    const checkToken = await BuyToken.findOne({ where: { tokenId } });
-    if (checkToken) return res.status(202).send({ msg: "already Buy Token" });
-    let tempBuf = Buffer.from(imgSrc, "utf-8");
-
-    const tempResult: {
-      IpfsHash: string;
-      PinSize: number;
-      Timestamp: string;
-      isDuplicate?: boolean;
-    } = await pinata.pinFileToIPFS(Readable.from(tempBuf), {
-      pinataMetadata: { name: Date.now().toString() },
-      pinataOptions: { cidVersion: 0 },
-    });
-    console.log(tempResult);
-    if (tempResult.isDuplicate) console.log("img dupli");
-
-    const jsonResult = await pinata.pinJSONToIPFS(
-      dummyDataList[req.body.tokenId],
-      {
-        pinataMetadata: { name: Date.now().toString() + ".json" },
-        pinataOptions: { cidVersion: 0 },
-      }
-    );
-    const deployed = new web3.eth.Contract(
-      abi as AbiItem[],
-      process.env.Nft_CA
-    );
-
-    const obj: { nonce: number; to: string; from: string; data: string } = {
-      nonce: 0,
-      to: "",
-      from: "",
-      data: "",
-    };
-    // obj.nonce = await web3.eth.getTransactionCount(req.body.from);
-    obj.to = process.env.NFT_CA;
-    obj.from = req.body.from;
-    obj.data = deployed.methods.safeMint(jsonResult.IpfsHash).encodeABI();
-
-    const tempData = await AllToken.findOne({
-      where: {
-        tokenId: req.body.tokenId,
-      },
-    });
-    if (!tempData) return res.status(201).send({ msg: "No this token" });
-
-    await BuyToken.create({
-      tokenId,
-      name,
-      description,
-      image: imgSrc,
-      ca: CA,
-      price,
-      blockChain,
-      tokenOwner,
-      tokenBase,
-      value: 1,
     });
 
-    res.send({ msg: "success buy Token", obj });
+    res.end();
   } catch (err) {
     console.log(err);
-    res.send({ err });
+    res.send(err);
   }
 });
 
+router.post("/sale", async (req: Request, res: Response) => {
+  try {
+    const { tokenOwner, tokenId } = req.body;
+    const deployed = new web3.eth.Contract(
+      SaleAbi as AbiItem[],
+      process.env.SALE_CA
+    );
+
+    let tempPrice: number = 1000000000000000;
+
+    obj.from = tokenOwner;
+    obj.to = process.env.SALE_CA;
+    obj.data = deployed.methods.saleToken(tokenId, tempPrice).encodeABI();
+
+    res.send(obj);
+  } catch (err) {
+    console.log(err);
+    res.send(err);
+  }
+});
 export default router;

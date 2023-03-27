@@ -1,20 +1,20 @@
 import { Router, Request, Response } from "express";
-import AllToken from "../models/token";
+import Token from "../models/token";
 
 const router = Router();
 
 router.post("/latestToken", async (req: Request, res: Response) => {
-  const tempTokenArr = await AllToken.findAll({
-    attributes: ["image", "price", "name", "tokenName"],
+  const tempTokenArr = await Token.findAll({
+    attributes: ["tokenImage", "price", "name", "tokenName"],
     order: [["createdAt", "DESC"]],
   });
   res.send(tempTokenArr);
   // 빠른거 기준으로 다 가져온다.
 });
 router.post("/ownToken", async (req: Request, res: Response) => {
-  const tempTokenArr = await AllToken.findAll({
+  const tempTokenArr = await Token.findAll({
     where: { tokenOwner: req.body.userAccount },
-    attributes: ["image", "price", "name", "tokenName", "tokenId"],
+    attributes: ["tokenImage", "price", "name", "tokenName", "tokenId"],
     order: [["createdAt", "DESC"]],
   });
 
@@ -22,8 +22,8 @@ router.post("/ownToken", async (req: Request, res: Response) => {
   res.send(tempTokenArr);
 });
 router.post("/mintToken", async (req: Request, res: Response) => {
-  const tempTokenArr = await AllToken.findAll({
-    attributes: ["image", "price", "name", "tokenName", "tokenId"],
+  const tempTokenArr = await Token.findAll({
+    attributes: ["tokenImage", "price", "name", "tokenName", "tokenId"],
     order: [["createdAt", "DESC"]],
   });
   console.log("mint", req.body);
@@ -31,9 +31,9 @@ router.post("/mintToken", async (req: Request, res: Response) => {
   res.send(tempTokenArr);
 });
 router.post("/salesToken", async (req: Request, res: Response) => {
-  const tempTokenArr = await AllToken.findAll({
+  const tempTokenArr = await Token.findAll({
     where: { tokenOwner: req.body.userAccount, sale: 1 },
-    attributes: ["image", "price", "name"],
+    attributes: ["tokenImage", "price", "name"],
     order: [["createdAt", "DESC"]],
   });
   // 해당 지갑 주소를 기준으로(소유하고있는) 판매중인 토큰을 불러온다.

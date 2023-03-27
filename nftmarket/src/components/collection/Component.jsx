@@ -27,13 +27,18 @@ const CollectionComponent = ({
           <div>
             소유자 :{" "}
             {collectionInfo.tokenOwner && (
-              <span>{collectionInfo.tokenOwner}</span>
+              <span>
+                {collectionInfo.tokenOwner.slice(0, 2) +
+                  collectionInfo.tokenOwner.slice(2, 5).toUpperCase() +
+                  "..." +
+                  collectionInfo.tokenOwner.slice(-5).toUpperCase()}
+              </span>
             )}
           </div>
           <div>
             네트워크 :
-            {collectionInfo.blockChain && (
-              <span>{collectionInfo.blockChain}</span>
+            {collectionInfo.blockChainNetwork && (
+              <span>{collectionInfo.blockChainNetwork}</span>
             )}
           </div>
         </div>
@@ -82,7 +87,7 @@ const CollectionBox = styled.div`
   & > div:last-child {
     width: 80%;
     margin: 0 auto;
-    padding: 3% 0 0 0;
+    padding: 5% 0 0 0;
     & > div {
       padding: 10px 0;
     }
