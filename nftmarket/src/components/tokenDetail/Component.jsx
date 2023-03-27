@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-const TokenDetailComponent = ({ detail, buyToken, approvedFunc }) => {
+const TokenDetailComponent = ({ detail, buyToken, txLog }) => {
   return (
     <DetailBox>
       <div>
@@ -26,27 +26,24 @@ const TokenDetailComponent = ({ detail, buyToken, approvedFunc }) => {
         <div>토큰 기반: {detail.tokenBase}</div>
         <div>
           토큰 소유자 :{" "}
-          {detail.tokenOwner &&
-            detail.tokenOwner.slice(0, 2) +
-              detail.tokenOwner.slice(2, 5).toUpperCase() +
-              "..." +
-              detail.tokenOwner.slice(-5)}
+          <Link to={`/myNFT`}>
+            <span>
+              {detail.tokenOwner &&
+                detail.tokenOwner.slice(0, 2) +
+                  detail.tokenOwner.slice(2, 5).toUpperCase() +
+                  "..." +
+                  detail.tokenOwner.slice(-5)}
+            </span>
+          </Link>
         </div>
         <div>가격 : {detail.price} Goerli</div>
         <div>
           <button
             onClick={() => {
-              buyToken(detail.tokenId, detail.tokenOwner);
+              buyToken(detail.tokenId, detail.tokenOwner, detail.price);
             }}
           >
             구매하기
-          </button>
-          <button
-            onClick={() => {
-              approvedFunc(detail.tokenId, detail.tokenOwner);
-            }}
-          >
-            테스트용 승인버튼
           </button>
         </div>
         <div>
@@ -58,7 +55,20 @@ const TokenDetailComponent = ({ detail, buyToken, approvedFunc }) => {
             </>
           )}
         </div>
-        <div>거래내역</div>
+        <div>
+          <div>거래내역</div>
+          {txLog.tokenId && (
+            <div>
+              <div>
+                <div>{txLog.price} Georli</div>
+                <div>
+                  From :{txLog.from} - To:{txLog.to}
+                </div>
+              </div>
+              <div>{txLog.createdAt}</div>
+            </div>
+          )}
+        </div>
         <div>
           <Link to={"/"}>전체 목록 보기</Link>
         </div>
@@ -76,14 +86,10 @@ const DetailBox = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  a {
-    text-decoration: none;
-    color: black;
-  }
+
   & > div:first-child {
-    width: 49%;
-    & :first-child {
-      width: 80%;
+    width: 39%;
+    &:first-child {
       & > img {
         width: 100%;
       }
@@ -93,7 +99,7 @@ const DetailBox = styled.div`
     width: 49%;
     & > div {
       padding: 15px 0;
-      & :first-child {
+      &:first-child {
         font-size: 1.5rem;
         font-weight: 750;
       }
@@ -104,6 +110,9 @@ const DetailBox = styled.div`
         & > div {
           padding: 0 5px 0 0;
         }
+      }
+      &:nth-child(5) > a:hover {
+        color: rgba(176, 222, 219, 1);
       }
 
       &:nth-child(7) {

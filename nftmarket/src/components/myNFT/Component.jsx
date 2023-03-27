@@ -5,6 +5,7 @@ import { useState } from "react";
 
 const MyNftComponent = ({ account }) => {
   const [selected, setSelectd] = useState("ownToken");
+
   const onChange = (key) => {
     if (key == 1) {
       setSelectd("ownToken");

@@ -6,6 +6,7 @@ import TokenDetailComponent from "./Component";
 
 const TokenDetailContainer = ({ account, web3 }) => {
   const [detail, setDetail] = useState({});
+  const [txLog, setTxLog] = useState({});
 
   const params = useParams();
 
@@ -16,28 +17,26 @@ const TokenDetailContainer = ({ account, web3 }) => {
       })
     ).data;
     setDetail(data);
+    transactionLog(params.tokenId);
   }, [params, account]);
 
-  const buyToken = async (_tokenId, _tokenOwner) => {
+  const buyToken = async (_tokenId, _tokenOwner, _price) => {
     try {
       const result = (
         await axios.post("http://localhost:8080/api/nftToken/buyToken", {
           tokenId: _tokenId,
           account,
           tokenOwner: _tokenOwner,
+          price: _price,
         })
       ).data;
-
       let transactionResult = await web3.eth.sendTransaction({
-        from: result.from,
-        to: result.to,
-        data: result.data,
+        ...result,
       });
       if (transactionResult) {
         await axios.post("http://localhost:8080/api/nftToken/updateList", {
           tokenId: _tokenId,
           account,
-          tokenOwner: _tokenOwner,
         });
       }
     } catch (err) {
@@ -45,39 +44,21 @@ const TokenDetailContainer = ({ account, web3 }) => {
     }
   };
 
-  const approvedFunc = async (_tokenId, _tokenOwner) => {
-    const approved = (
-      await axios.post("http://localhost:8080/api/nftToken/approve", {
-        tokenOwner: _tokenOwner,
+  const transactionLog = async (_tokenId) => {
+    const txLog = (
+      await axios.post("http://localhost:8080/api/nftToken/txLog", {
         tokenId: _tokenId,
       })
     ).data;
-    let transactionApprove = await web3.eth.sendTransaction({
-      from: approved.from,
-      to: approved.to,
-      data: approved.data,
-    });
-    saleTokenFunc();
+    if (txLog.status == 200) setTxLog(txLog.txLogInfo);
   };
 
-  const saleTokenFunc = async (_tokenId, _tokenOwner) => {
-    const sale = (
-      await axios.post("http://localhost:8080/api/nftToken/sale", {
-        tokenOwner: _tokenOwner,
-        tokenId: _tokenId,
-      })
-    ).data;
-  };
   useEffect(() => {
     tokenDetail();
   }, [params, account]);
 
   return (
-    <TokenDetailComponent
-      detail={detail}
-      buyToken={buyToken}
-      approvedFunc={approvedFunc}
-    />
+    <TokenDetailComponent detail={detail} buyToken={buyToken} txLog={txLog} />
   );
 };
 
