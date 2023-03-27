@@ -30,6 +30,8 @@ function SellMordalContainer({ account, web3, SetMordal, item, tokendata }) {
 
       // console.log(account);
       if (transactionResult) {
+        console.log(typeof ethValue);
+        // console.log("ethValue:", ethValue);
         const result = (
           await axios.post("http://localhost:8080/api/sellToken/listing", {
             ethValue,
@@ -37,7 +39,7 @@ function SellMordalContainer({ account, web3, SetMordal, item, tokendata }) {
             account,
           })
         ).data;
-        console.log(result);
+        console.log("result:", result);
         let saleResult = await web3.eth.sendTransaction({
           to: result.to,
           from: result.from,

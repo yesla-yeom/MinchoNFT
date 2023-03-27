@@ -6,7 +6,7 @@ function MintingComponent({
   discriptionInput,
   nameInput,
   img,
-
+  handleClick,
   NftName,
   NftDescription,
 }) {
@@ -49,6 +49,11 @@ function MintingComponent({
             ></DescriptionInput>
           </div>
         </div>
+        <div>
+          <Checkbox type="checkbox" onChange={handleClick}></Checkbox>
+          [Terms and Conditions] I agree to provide a service fee of 2.5% to
+          'Mintcho' in this transaction.
+        </div>
         <CreateDiv>
           <CreateButton onClick={mint}>Create</CreateButton>
         </CreateDiv>
@@ -56,6 +61,10 @@ function MintingComponent({
     </>
   );
 }
+
+const Checkbox = styled.input`
+  width: 40px;
+`;
 
 const MintingBox = styled.div`
   box-sizing: border-box;
@@ -146,12 +155,16 @@ const DescriptionInput = styled.input`
 `;
 
 const CreateButton = styled.button`
+  &:hover {
+    background-color: rgba(252, 110, 94, 1);
+  }
   width: 300px;
   padding: 10px;
   border-radius: 10px;
   border-color: white;
   background-color: rgba(176, 222, 219, 1);
   color: rgba(88, 49, 49, 1);
+  cursor: pointer;
 `;
 
 const CreateDiv = styled.div`

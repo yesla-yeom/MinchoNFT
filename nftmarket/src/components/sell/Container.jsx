@@ -18,6 +18,7 @@ function SellContainer({ account, web3 }) {
         })
       ).data;
       if (result.status == 201) return;
+      console.log(result);
       setItems(result.data);
     } catch (error) {
       console.log(error);
@@ -31,7 +32,7 @@ function SellContainer({ account, web3 }) {
           tokenId: item,
         })
       ).data;
-
+      console.log("이거", result);
       setTokendata(result.data);
     } catch (error) {
       console.log(error);

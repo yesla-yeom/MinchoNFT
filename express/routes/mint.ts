@@ -96,7 +96,7 @@ router.post(
       let dbTable = await Token.findAll({
         order: [["tokenId", "DESC"]],
       });
-      console.log("testtemp:", dbTable);
+      // console.log("testtemp:", dbTable);
 
       if (dbTable.length == 0) {
         console.log("1");
@@ -114,7 +114,7 @@ router.post(
         let RandomValue = generateUniqueRandomValue();
         lastRandomValue = RandomValue;
       } else {
-        console.log("2");
+        // console.log("2");
 
         let randomArray = [];
 
@@ -129,7 +129,7 @@ router.post(
         let RandomValue = generateUniqueRandomValue();
 
         for (let i = 0; i < dbTable.length; i++) {
-          console.log(dbTable[i].rank);
+          // console.log(dbTable[i].rank);
           if (dbTable[i].rank != RandomValue) {
             lastRandomValue = RandomValue;
           } else {
@@ -211,7 +211,7 @@ router.post(
           },
         }
       );
-      console.log(jsonResult);
+      // console.log(jsonResult);
 
       // const deployed = new web3.eth.Contract(
       //   NftAbi as AbiItem[],
@@ -229,7 +229,7 @@ router.post(
       obj.to = process.env.NFT_CA;
       obj.from = req.body.from;
       obj.data = deployed.methods.safeMint(jsonResult.IpfsHash).encodeABI();
-      console.log(obj);
+      // console.log(obj);
       // let tokenName = await deployed.methods.name().call();
       // console.log(tokenName);
       if (imgResult && jsonResult) {
@@ -238,7 +238,7 @@ router.post(
         });
 
         if (dbTable.length == 0) {
-          console.log("1");
+          // console.log("1");
           let randomArray = [];
 
           function generateUniqueRandomValue() {
@@ -253,7 +253,7 @@ router.post(
           let RandomValue = generateUniqueRandomValue();
           lastRandomValue = RandomValue;
         } else {
-          console.log("2");
+          // console.log("2");
 
           let randomArray = [];
 
@@ -268,7 +268,7 @@ router.post(
           let RandomValue = generateUniqueRandomValue();
 
           for (let i = 0; i < dbTable.length; i++) {
-            console.log(dbTable[i].rank);
+            // console.log(dbTable[i].rank);
             if (dbTable[i].rank != RandomValue) {
               lastRandomValue = RandomValue;
             } else {
@@ -291,7 +291,7 @@ router.post(
           rank: lastRandomValue,
           saleState: 0,
           ca: process.env.NFT_CA,
-          type: type || "common",
+          type: type,
           price: price,
           tokenAuthor: req.body.from,
         });
