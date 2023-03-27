@@ -163,7 +163,7 @@ const ItemBox = styled.div`
       width: 30%;
       & > div {
         width: 100%;
-        height: 100%;
+        height: 90%;
         box-shadow: 1px 1px 1px 1px gray;
         border-radius: 10px;
         text-align: center;

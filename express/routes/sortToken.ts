@@ -25,6 +25,7 @@ router.post("/mintToken", async (req: Request, res: Response) => {
   const tempTokenArr = await Token.findAll({
     attributes: ["tokenImage", "price", "name", "tokenName", "tokenId"],
     order: [["createdAt", "DESC"]],
+    where: { tokenAuthor: req.body.userAccount },
   });
   console.log("mint", req.body);
   // 제작자를 넣고 수정을 하면 되는 부분
@@ -32,7 +33,7 @@ router.post("/mintToken", async (req: Request, res: Response) => {
 });
 router.post("/salesToken", async (req: Request, res: Response) => {
   const tempTokenArr = await Token.findAll({
-    where: { tokenOwner: req.body.userAccount, sale: 1 },
+    where: { tokenOwner: req.body.userAccount, saleState: 1 },
     attributes: ["tokenImage", "price", "name"],
     order: [["createdAt", "DESC"]],
   });

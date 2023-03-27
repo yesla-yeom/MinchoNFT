@@ -46,7 +46,7 @@ router.get("/list", async (req: Request, res: Response) => {
         })
       );
     }
-    res.send({ jsonResultArr, result });
+    res.end();
   } catch (err) {
     console.log(err);
     res.send(err);
@@ -56,13 +56,13 @@ router.get("/list", async (req: Request, res: Response) => {
 router.post("/collectionList", async (req: Request, res: Response) => {
   try {
     let list = [];
-    let tempInfo = {};
+    let searchInfo = {};
     const {
       search,
       order,
       tokenName,
     }: { search: string; order: string; tokenName: string } = req.body;
-    tempInfo = await Token.findOne({ where: { tokenName } });
+    searchInfo = await Token.findOne({ where: { tokenName } });
     if (!search) {
       if (!order) {
         list = await Token.findAll({ order: [["tokenId", "ASC"]] });
@@ -74,7 +74,7 @@ router.post("/collectionList", async (req: Request, res: Response) => {
         where: { name: { [Op.like]: "%" + search + "%" } },
       });
       if (!tempSearch) {
-        return res.send({ msg: "No search result", status: 401, tempInfo });
+        return res.send({ msg: "No search result", status: 401, searchInfo });
       }
       list = await Token.findAll({
         where: { name: { [Op.like]: "%" + search + "%" } },
@@ -82,7 +82,7 @@ router.post("/collectionList", async (req: Request, res: Response) => {
       });
     }
 
-    res.send({ list, status: 200, tempInfo });
+    res.send({ list, status: 200, searchInfo });
   } catch (err) {
     console.log(err);
     res.send(err);
