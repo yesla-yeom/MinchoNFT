@@ -3,6 +3,7 @@ import axios from "axios";
 import { useCallback, useState } from "react";
 
 import useModal from "../utility/useModal";
+import { useEffect } from "react";
 
 function MintingContainer({ account, web3 }) {
   const [NftName, setName] = useState("");
@@ -49,6 +50,7 @@ function MintingContainer({ account, web3 }) {
 
     try {
       setMintState("WAITING");
+
       const result = (
         await axios.post("http://localhost:8080/api/mint/minting", formData)
       ).data;

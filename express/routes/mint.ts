@@ -66,109 +66,34 @@ router.post(
       const { name, description }: { name: string; description: string } =
         req.body;
 
-      let checkname = await Token.findAll({});
-
-      let imgBuffer = fs.createReadStream(`./upload/${req.file.filename}`);
-
-      const imgResult: {
-        IpfsHash: string;
-        PinSize: number;
-        Timestamp: string;
-        isDuplicate?: boolean;
-      } = await pinata.pinFileToIPFS(Readable.from(imgBuffer), {
-        pinataMetadata: {
-          name: Date.now().toString(),
-        },
-        pinataOptions: {
-          cidVersion: 0,
-        },
+      let checkname = await Token.findAll({
+        where: { name },
       });
-      if (imgResult.isDuplicate) {
-      }
+      console.log("길이:", checkname.length);
 
-      let dbTable = await Token.findAll({
-        order: [["tokenId", "DESC"]],
-      });
-
-      if (dbTable.length == 0) {
-        let randomArray = [];
-
-        function generateUniqueRandomValue() {
-          let value = Math.floor(Math.random() * 1000);
-          while (randomArray.includes(value)) {
-            value = Math.floor(Math.random() * 1000);
-          }
-          randomArray.push(value);
-          return value;
-        }
-
-        let RandomValue = generateUniqueRandomValue();
-        lastRandomValue = RandomValue;
+      if (checkname.length > 0) {
+        res.send("same name");
       } else {
-        let randomArray = [];
+        let imgBuffer = fs.createReadStream(`./upload/${req.file.filename}`);
 
-        function generateUniqueRandomValue() {
-          let value = Math.floor(Math.random() * 1000);
-          while (randomArray.includes(value)) {
-            value = Math.floor(Math.random() * 1000);
-          }
-          randomArray.push(value);
-          return value;
-        }
-        let RandomValue = generateUniqueRandomValue();
-
-        for (let i = 0; i < dbTable.length; i++) {
-          if (dbTable[i].rank != RandomValue) {
-            lastRandomValue = RandomValue;
-          } else {
-            generateUniqueRandomValue();
-          }
-        }
-      }
-      const deployed = new web3.eth.Contract(
-        NftAbi as AbiItem[],
-        process.env.NFT_CA
-      );
-      let tokenName = await deployed.methods.name().call();
-
-      const jsonResult = await pinata.pinJSONToIPFS(
-        {
-          name,
-          description,
-
-          image: `https://gateway.pinata.cloud/ipfs/${imgResult.IpfsHash}`,
-
-          attributes: [
-            { trait_type: "Rank", value: lastRandomValue },
-            { trait_type: "type", value: type },
-            { trait_type: "price", value: price },
-            { trait_type: "tokenName", value: tokenName },
-          ],
-        },
-        {
+        const imgResult: {
+          IpfsHash: string;
+          PinSize: number;
+          Timestamp: string;
+          isDuplicate?: boolean;
+        } = await pinata.pinFileToIPFS(Readable.from(imgBuffer), {
           pinataMetadata: {
-            name: Date.now().toString() + ".json",
+            name: Date.now().toString(),
           },
           pinataOptions: {
             cidVersion: 0,
           },
+        });
+        if (imgResult.isDuplicate) {
+          console.log("같은 이미지!");
         }
-      );
+        console.log(imgResult);
 
-      const obj: {
-        to: string;
-        from: string;
-        data: string;
-      } = {
-        to: "",
-        from: "",
-        data: "",
-      };
-      obj.to = process.env.NFT_CA;
-      obj.from = req.body.from;
-      obj.data = deployed.methods.safeMint(jsonResult.IpfsHash).encodeABI();
-
-      if (imgResult && jsonResult) {
         let dbTable = await Token.findAll({
           order: [["tokenId", "DESC"]],
         });
@@ -208,27 +133,116 @@ router.post(
             }
           }
         }
+        const deployed = new web3.eth.Contract(
+          NftAbi as AbiItem[],
+          process.env.NFT_CA
+        );
+        let tokenName = await deployed.methods.name().call();
+        // console.log(tokenName);
 
-        await Token.create({
-          blockChainNetwork: "Ethereum",
-          tokenName: tokenName,
-          tokenId: TOTALTOKENCOUNT,
-          tokenImage: req.file.filename,
-          name: name,
-          description: description,
-          imgIpfsHash: imgResult.IpfsHash,
-          jsonIpfsHash: jsonResult.IpfsHash,
-          tokenOwner: req.body.from,
-          tokenStandard: "ERC-721",
-          rank: lastRandomValue,
-          saleState: 0,
-          ca: process.env.NFT_CA,
-          type: type,
-          price: price,
-          tokenAuthor: req.body.from,
-        });
+        const jsonResult = await pinata.pinJSONToIPFS(
+          {
+            name,
+            description,
+
+            image: `https://gateway.pinata.cloud/ipfs/${imgResult.IpfsHash}`,
+
+            attributes: [
+              { trait_type: "Rank", value: lastRandomValue },
+              { trait_type: "type", value: type },
+              { trait_type: "price", value: price },
+              { trait_type: "tokenName", value: tokenName },
+            ],
+          },
+          {
+            pinataMetadata: {
+              name: Date.now().toString() + ".json",
+              //json파일이름
+            },
+            pinataOptions: {
+              cidVersion: 0,
+            },
+          }
+        );
+
+        const obj: {
+          to: string;
+          from: string;
+          data: string;
+        } = {
+          to: "",
+          from: "",
+          data: "",
+        };
+        obj.to = process.env.NFT_CA;
+        obj.from = req.body.from;
+        obj.data = deployed.methods.safeMint(jsonResult.IpfsHash).encodeABI();
+        if (imgResult && jsonResult) {
+          // let dbTable = await Token.findAll({
+          //   order: [["tokenId", "DESC"]],
+          // });
+
+          // if (dbTable.length == 0) {
+          //   // console.log("1");
+          //   let randomArray = [];
+
+          //   function generateUniqueRandomValue() {
+          //     let value = Math.floor(Math.random() * 1000);
+          //     while (randomArray.includes(value)) {
+          //       value = Math.floor(Math.random() * 1000);
+          //     }
+          //     randomArray.push(value);
+          //     return value;
+          //   }
+
+          //   let RandomValue = generateUniqueRandomValue();
+          //   lastRandomValue = RandomValue;
+          // } else {
+          //   // console.log("2");
+
+          //   let randomArray = [];
+
+          //   function generateUniqueRandomValue() {
+          //     let value = Math.floor(Math.random() * 1000);
+          //     while (randomArray.includes(value)) {
+          //       value = Math.floor(Math.random() * 1000);
+          //     }
+          //     randomArray.push(value);
+          //     return value;
+          //   }
+          //   let RandomValue = generateUniqueRandomValue();
+
+          //   for (let i = 0; i < dbTable.length; i++) {
+          //     // console.log(dbTable[i].rank);
+          //     if (dbTable[i].rank != RandomValue) {
+          //       lastRandomValue = RandomValue;
+          //     } else {
+          //       generateUniqueRandomValue();
+          //     }
+          //   }
+          // }
+
+          await Token.create({
+            blockChainNetwork: "Ethereum",
+            tokenName: tokenName,
+            tokenId: TOTALTOKENCOUNT,
+            tokenImage: req.file.filename,
+            name: name,
+            description: description,
+            imgIpfsHash: imgResult.IpfsHash,
+            jsonIpfsHash: jsonResult.IpfsHash,
+            tokenOwner: req.body.from,
+            tokenStandard: "ERC-721",
+            rank: lastRandomValue,
+            saleState: 0,
+            ca: process.env.NFT_CA,
+            type: type,
+            price: price,
+            tokenAuthor: req.body.from,
+          });
+        }
+        res.send(obj);
       }
-      res.send(obj);
     } catch (error) {
       console.error(error);
     }
