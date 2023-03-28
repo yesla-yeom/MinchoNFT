@@ -82,7 +82,7 @@ const TokenDetailComponent = ({
           <div>
             가격 :{" "}
             <span>
-              {detail.price} Goerli &#40; {detail.price * 250}원 &#41;
+              {detail.price} ETH &#40; {detail.price * 250}원 &#41;
             </span>
           </div>
           <div>
@@ -115,7 +115,7 @@ const TokenDetailComponent = ({
                   <div>
                     <div>
                       <span>
-                        {txLog.price} Georli &#40; {txLog.price * 250}원 &#41;
+                        {txLog.price} ETH &#40; {txLog.price * 250}원 &#41;
                       </span>
                     </div>
                     <div>
@@ -155,6 +155,8 @@ const TokenDetailComponent = ({
 export default TokenDetailComponent;
 
 const DetailBox = styled.div`
+  font-family: var(--font-Dovemayo_gothic);
+
   width: 70%;
   margin: 0 auto;
   padding: 3% 0 0 0;

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
@@ -10,12 +10,10 @@ const CollectionItemContainer = ({
   order,
   setOrder,
   collectionInfo,
-  setCollectionInfo,
   check,
   setCheck,
 }) => {
   const [search, setSearch] = useState("");
-
   const [notFount, setNotFount] = useState("");
   const params = useParams();
 
@@ -24,9 +22,7 @@ const CollectionItemContainer = ({
       "http://localhost:8080/api/allToken/collectionList",
       { search: _search, order: _order, tokenName: params.tokenName }
     );
-    if (data.data.status == 401) {
-      setCheck(true);
-    }
+    if (data.data.status == 401) setCheck(true);
     setCollection(data.data.list);
   };
 

@@ -12,6 +12,7 @@ const TokenDetailContainer = ({ account, web3 }) => {
   const [boolenstat, setBoolenstat] = useState(true);
   const [heart, setHeart] = useState();
 
+  console.log("이거랑 같나", account);
   const params = useParams();
 
   const tokenDetail = useCallback(async () => {

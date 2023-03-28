@@ -12,7 +12,6 @@ const CollectionComponent = ({
   setCollectionInfo,
   check,
   setCheck,
-  account,
 }) => {
   return (
     <CollectionBox>

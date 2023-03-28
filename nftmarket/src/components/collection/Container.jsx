@@ -9,7 +9,6 @@ const CollectionContainer = ({ account }) => {
   const [collectionInfo, setCollectionInfo] = useState({});
   const [check, setCheck] = useState(false);
   const params = useParams();
-  console.log(params);
 
   const findCollection = async () => {
     const data = await axios.post(
@@ -18,7 +17,6 @@ const CollectionContainer = ({ account }) => {
     );
     setCollectionInfo(data.data.searchInfo);
     setCollection(data.data.list);
-    console.log(collectionInfo);
   };
 
   useEffect(() => {
