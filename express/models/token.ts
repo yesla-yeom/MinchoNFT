@@ -75,6 +75,11 @@ export default class Token extends Model {
           type: DataTypes.STRING(255),
           allowNull: true,
         },
+        likeCount: {
+          type: DataTypes.INTEGER.UNSIGNED,
+          allowNull: false,
+          defaultValue: 0,
+        },
       },
       {
         sequelize,
