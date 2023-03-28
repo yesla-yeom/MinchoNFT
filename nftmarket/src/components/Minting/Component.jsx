@@ -9,7 +9,14 @@ function MintingComponent({
   handleClick,
   NftName,
   NftDescription,
+  mintState,
+  useModal,
+  boolenstat,
+
+  setBoolenstat,
 }) {
+  console.log(boolenstat, "너상태가뭐냐");
+
   return (
     <>
       <MintingBox>
@@ -55,9 +62,17 @@ function MintingComponent({
           'Mintcho' in this transaction.
         </div>
         <CreateDiv>
-          <CreateButton onClick={mint}>Create</CreateButton>
+          <CreateButton
+            onClick={() => {
+              mint();
+              setBoolenstat(true);
+            }}
+          >
+            Create
+          </CreateButton>
         </CreateDiv>
       </MintingBox>
+      {useModal("Minting", mintState, boolenstat, setBoolenstat)}
     </>
   );
 }

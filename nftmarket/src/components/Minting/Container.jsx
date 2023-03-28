@@ -6,6 +6,7 @@ import { useCallback, useState } from "react";
 import Web3 from "web3";
 import { useWeb3 } from "../utility/useWeb3";
 import SellMordalContainer from "../sell/mordal/Container";
+import useModal from "../utility/useModal";
 
 function MintingContainer({ account, web3 }) {
   const [NftName, setName] = useState("");
@@ -13,6 +14,8 @@ function MintingContainer({ account, web3 }) {
   const [file, setFile] = useState();
   const [img, setImg] = useState("");
   const [check, setCheck] = useState(false);
+  const [mintState, setMintState] = useState("");
+  const [boolenstat, setBoolenstat] = useState(true);
 
   // const { account, activate, deactivate, active } = useWeb3React();
 
@@ -59,11 +62,12 @@ function MintingContainer({ account, web3 }) {
     formData.append("from", account);
 
     //메타마스크 거절눌렀을때 조건
+
     try {
+      setMintState("WAITING");
       const result = (
         await axios.post("http://localhost:8080/api/mint/minting", formData)
       ).data;
-
       console.log("result:", result);
       // 여기서 부터 민팅확인 reulst가 있을때꺼주고 없으면 켜주고
       let transactionResult = await web3.eth.sendTransaction(result);
@@ -78,6 +82,7 @@ function MintingContainer({ account, web3 }) {
 
       console.log(create);
       // 이게나와야 민팅완료
+      setMintState("SUCCESS");
     } catch (error) {
       const cancle = (
         await axios.post("http://localhost:8080/api/mint/destroy", {
@@ -85,6 +90,7 @@ function MintingContainer({ account, web3 }) {
         })
       ).data;
       console.log("cancle:", cancle);
+      setMintState("SUCCESS");
     }
 
     // let signFrom = transactionResult.from;
@@ -101,6 +107,10 @@ function MintingContainer({ account, web3 }) {
         img={img}
         handleClick={handleClick}
         check={check}
+        mintState={mintState}
+        useModal={useModal}
+        boolenstat={boolenstat}
+        setBoolenstat={setBoolenstat}
       />
     </div>
   );

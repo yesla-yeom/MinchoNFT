@@ -79,7 +79,10 @@ function App() {
               element={<TokenDetailContainer account={account} web3={web3} />}
             />
             <Route path="/qna" element={<QnaContainer />} />
-            <Route path="/myNFT/:tokenOwner" element={<MyNftContainer />} />
+            <Route
+              path="/myNFT/:tokenOwner"
+              element={<MyNftContainer web3={web3} />}
+            />
             <Route
               path="/collections"
               element={<div>여기는 컬랙션들이 들어가야됨</div>}
@@ -87,7 +90,6 @@ function App() {
           </Routes>
         </NftBody>
         <NftFooter>
-          <WaitingStatusContainer />
           <FooterContainer />
         </NftFooter>
       </Layout>

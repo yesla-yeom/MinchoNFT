@@ -12,6 +12,10 @@ const SellMordalComponent = ({
   ethInput,
   listing,
   cancle,
+  useModal,
+  booleanState,
+  setBooleanState,
+  saleState,
 }) => {
   console.log(tokendata);
   return (
@@ -65,13 +69,21 @@ const SellMordalComponent = ({
         </Listingprice>
         <ButtonBox>
           <div>
-            <Completelist onClick={listing}>Complete listing</Completelist>
+            <Completelist
+              onClick={() => {
+                listing();
+                setBooleanState(true);
+              }}
+            >
+              Complete listing
+            </Completelist>
           </div>
           <div>
             <CancleList onClick={cancle}>Cancle listing</CancleList>
           </div>
         </ButtonBox>
       </MordalBox>
+      {useModal("Price", saleState, booleanState, setBooleanState)}
     </ModalBackground>
   );
 };
@@ -84,7 +96,8 @@ const ModalBackground = styled.div`
   left: 0;
   bottom: 0;
   right: 0;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 999;
 `;
 const ButtonBox = styled.div`
   display: flex;
@@ -197,6 +210,7 @@ const MordalBox = styled.div`
   border-radius: 10px;
   /* background-color: white; */
   background-color: rgba(176, 222, 219, 1);
+
   /* background-repeat: no-repeat; */
   /* background-position: 10% 1%; */
   /* background-color: rgba(0, 0, 0, 0.45); */
