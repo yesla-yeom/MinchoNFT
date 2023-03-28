@@ -3,7 +3,7 @@ import styled from "styled-components";
 import CollectContainer from "../body/collect/Container";
 import { useState } from "react";
 
-const MyNftComponent = ({ account }) => {
+const MyNftComponent = ({ account, web3 }) => {
   const [selected, setSelectd] = useState("ownToken");
 
   const onChange = (key) => {
@@ -35,7 +35,7 @@ const MyNftComponent = ({ account }) => {
   return (
     <>
       <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
-      <CollectContainer type={selected} account={account} />
+      <CollectContainer type={selected} account={account} web3={web3} />
     </>
   );
 };

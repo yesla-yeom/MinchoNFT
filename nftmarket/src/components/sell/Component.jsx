@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import SellMordalContainer from "./mordal/Container";
+import CollectItemContainer from "../body/collect/item/Container";
 
 function SellComponent({
   mordal,
@@ -7,40 +8,25 @@ function SellComponent({
   web3,
   account,
   findItem,
-  item,
+
   tokendata,
+  name,
 }) {
-  console.log(item);
   return (
     <div>
-      <div>
-        <div>
-          <div>
-            <TokenImg
-              src={`http://localhost:8080/upload/${item.tokenImage}`}
-              alt=""
-            />
-          </div>
-          <Name>{item.name}</Name>
-          <TokenName>{item.tokenName}</TokenName>
-          <ListingPrice>LISTING PRICE :{item.price} ETH</ListingPrice>
-
-          <div style={{ paddingLeft: 40 }}>
-            <Listbutton
-              style={{ width: 100 }}
-              onClick={() => {
-                SetMordal(true);
-                findItem(item.tokenId);
-              }}
-            >
-              List for sale
-            </Listbutton>
-          </div>
-        </div>
+      <div style={{ paddingLeft: 40 }}>
+        <Listbutton
+          style={{ width: 100 }}
+          onClick={() => {
+            SetMordal(true);
+            findItem(name);
+          }}
+        >
+          List for sale
+        </Listbutton>
       </div>
       {mordal ? (
         <SellMordalContainer
-          item={item}
           web3={web3}
           account={account}
           SetMordal={SetMordal}

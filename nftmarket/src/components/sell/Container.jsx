@@ -3,33 +3,33 @@ import { useCallback, useState, useEffect } from "react";
 import Web3 from "web3";
 import SellComponent from "./Component";
 
-function SellContainer({ account, web3 }) {
+function SellContainer({ web3, name, account }) {
   console.log(account);
   const [mordal, SetMordal] = useState(false);
-  const [items, setItems] = useState([]);
-  const [image, SetImage] = useState("");
+  // const [items, setItems] = useState([]);
+  // const [image, SetImage] = useState("");
   const [tokendata, setTokendata] = useState("");
 
-  const find = async () => {
-    try {
-      const result = (
-        await axios.post("http://localhost:8080/api/sellToken/find", {
-          account: account,
-        })
-      ).data;
-      if (result.status == 201) return;
-      console.log(result);
-      setItems(result.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const find = async () => {
+  //   try {
+  //     const result = (
+  //       await axios.post("http://localhost:8080/api/sellToken/find", {
+  //         name: name,
+  //       })
+  //     ).data;
+  //     if (result.status == 201) return;
+  //     console.log(result);
+  //     setItems(result.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
-  const findItem = async (item) => {
+  const findItem = async (name) => {
     try {
       const result = (
         await axios.post("http://localhost:8080/api/sellToken/tokendata", {
-          tokenId: item,
+          name: name,
         })
       ).data;
       console.log("이거", result);
@@ -39,26 +39,20 @@ function SellContainer({ account, web3 }) {
     }
   };
 
-  useEffect(() => {
-    find();
-  }, [account]);
+  // useEffect(() => {
+  //   find();
+  // }, [account]);
 
   return (
-    <>
-      {account &&
-        items?.map((item, index) => (
-          <SellComponent
-            key={`list-${index}`}
-            item={item}
-            findItem={findItem}
-            account={account}
-            web3={web3}
-            mordal={mordal}
-            SetMordal={SetMordal}
-            tokendata={tokendata}
-          />
-        ))}
-    </>
+    <SellComponent
+      findItem={findItem}
+      account={account}
+      web3={web3}
+      mordal={mordal}
+      SetMordal={SetMordal}
+      tokendata={tokendata}
+      name={name}
+    />
   );
 }
 

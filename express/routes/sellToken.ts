@@ -20,11 +20,11 @@ const { Token } = db;
 
 router.post("/find", async (req: Request, res: Response) => {
   try {
-    const { account } = req.body;
-    console.log("게정지갑:", account);
-    let data = await Token.findAll({
+    const { name } = req.body;
+    console.log("name:", name);
+    let data = await Token.findOne({
       where: {
-        tokenOwner: account,
+        name: name,
       },
     });
 
@@ -42,11 +42,11 @@ router.post("/find", async (req: Request, res: Response) => {
 
 router.post("/tokendata", async (req: Request, res: Response) => {
   try {
-    const { tokenId } = req.body;
+    const { name } = req.body;
 
     let data = await Token.findOne({
       where: {
-        tokenId: tokenId,
+        name: name,
       },
     });
 

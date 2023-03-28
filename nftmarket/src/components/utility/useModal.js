@@ -2,13 +2,11 @@ import styled from "styled-components";
 import { Button } from "antd";
 import { useState } from "react";
 
-const useModal = (content, state) => {
-  const [modalStatus, setModalStatus] = useState(true);
-  console.log(modalStatus);
+const useModal = (content, state, modalStat, setBoolenstat) => {
   console.log(state, "나는 받고있는 거래 상태임");
 
-  return (modalStatus && state == "WAITING") ||
-    (modalStatus && state == "SUCCESS") ? (
+  return (modalStat && state == "WAITING") ||
+    (modalStat && state == "SUCCESS") ? (
     <MyModalMask>
       <MyModalLine>
         <div>
@@ -21,10 +19,10 @@ const useModal = (content, state) => {
           {state == "SUCCESS" ? (
             <EditButton
               onClick={() => {
-                setModalStatus(!state);
+                setBoolenstat(!state);
               }}
             >
-              {content}
+              확인
             </EditButton>
           ) : (
             <EditButton loading>{content}</EditButton>
