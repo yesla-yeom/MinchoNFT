@@ -74,7 +74,9 @@ router.post(
       const { name, description }: { name: string; description: string } =
         req.body;
 
-      console.log(name);
+      let checkname = await Token.findAll({
+        // order: [["name", "DESC"]],
+      });
 
       let imgBuffer = fs.createReadStream(`./upload/${req.file.filename}`);
 
