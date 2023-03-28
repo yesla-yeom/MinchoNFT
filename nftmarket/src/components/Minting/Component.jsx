@@ -15,8 +15,6 @@ function MintingComponent({
 
   setBoolenstat,
 }) {
-  console.log(boolenstat, "너상태가뭐냐");
-
   return (
     <>
       <MintingBox>
