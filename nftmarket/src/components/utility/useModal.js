@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { Button } from "antd";
-import { useState } from "react";
 
 const useModal = (content, state, modalStat, setBoolenstat) => {
   console.log(state, "나는 받고있는 거래 상태임");
