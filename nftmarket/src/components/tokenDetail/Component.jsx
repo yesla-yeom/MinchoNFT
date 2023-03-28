@@ -54,7 +54,6 @@ const TokenDetailComponent = ({
             </div>
           </div>
           <div>
-            <div>#{detail.tokenId}</div>
             <div>
               <span>
                 {detail.ca &&
