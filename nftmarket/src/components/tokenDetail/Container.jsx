@@ -3,10 +3,13 @@ import { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 
 import TokenDetailComponent from "./Component";
+import useModal from "../utility/useModal";
 
 const TokenDetailContainer = ({ account, web3 }) => {
   const [detail, setDetail] = useState({});
   const [txLog, setTxLog] = useState({});
+  const [buyState, setBuyState] = useState("");
+  const [boolenstat, setBoolenstat] = useState(true);
 
   const params = useParams();
 
@@ -21,6 +24,7 @@ const TokenDetailContainer = ({ account, web3 }) => {
   }, [params, account]);
 
   const buyToken = async (_tokenId, _tokenOwner, _price) => {
+    setBuyState("WAITING");
     try {
       const result = (
         await axios.post("http://localhost:8080/api/nftToken/buyToken", {
@@ -30,6 +34,7 @@ const TokenDetailContainer = ({ account, web3 }) => {
           price: _price,
         })
       ).data;
+      console.log(result);
       let transactionResult = await web3.eth.sendTransaction({
         ...result,
       });
@@ -39,8 +44,10 @@ const TokenDetailContainer = ({ account, web3 }) => {
           account,
         });
       }
+      setBuyState("SUCCESS");
     } catch (err) {
       console.log(err);
+      setBuyState("SUCCESS");
     }
   };
 
@@ -58,7 +65,15 @@ const TokenDetailContainer = ({ account, web3 }) => {
   }, [params, account]);
 
   return (
-    <TokenDetailComponent detail={detail} buyToken={buyToken} txLog={txLog} />
+    <TokenDetailComponent
+      detail={detail}
+      buyToken={buyToken}
+      txLog={txLog}
+      useModal={useModal}
+      boolenstat={boolenstat}
+      setBoolenstat={setBoolenstat}
+      buyState={buyState}
+    />
   );
 };
 

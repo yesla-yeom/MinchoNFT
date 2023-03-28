@@ -37,7 +37,7 @@ router.get("/list", async (req: Request, res: Response) => {
           price: dummyDataList[i].price,
           blockChainNetwork: dummyDataList[i].blockChainNetwork,
           tokenOwner: dummyDataList[i].tokenOwner,
-          tokenBase: dummyDataList[i].tokenBase,
+          tokenStandard: dummyDataList[i].tokenStandard,
           tokenName: dummyDataList[i].tokenName,
           saleState: dummyDataList[i].saleState,
           tokenAuthor: dummyDataList[i].tokenAuthor,

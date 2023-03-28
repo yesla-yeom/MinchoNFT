@@ -287,7 +287,7 @@ router.post(
           imgIpfsHash: imgResult.IpfsHash,
           jsonIpfsHash: jsonResult.IpfsHash,
           tokenOwner: req.body.from,
-          tokenBase: "ERC-721",
+          tokenStandard: "ERC-721",
           rank: lastRandomValue,
           saleState: 0,
           ca: process.env.NFT_CA,

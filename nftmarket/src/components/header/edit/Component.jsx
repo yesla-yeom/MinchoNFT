@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useWeb3React } from "@web3-react/core";
 import { connectors } from "../../utility/connect";
 import { Link } from "react-router-dom";
+import { WalletOutlined } from "@ant-design/icons";
 
 const HeaderEditComponent = ({ logIn }) => {
   const { account, activate, active } = useWeb3React();
@@ -35,7 +36,7 @@ const HeaderEditComponent = ({ logIn }) => {
             logIn();
           }}
         >
-          지갑 연결
+          <WalletOutlined />
         </EditButton>
       )}
     </EditDiv>

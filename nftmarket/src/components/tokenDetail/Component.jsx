@@ -1,79 +1,92 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-const TokenDetailComponent = ({ detail, buyToken, txLog }) => {
+const TokenDetailComponent = ({
+  detail,
+  buyToken,
+  txLog,
+  useModal,
+  boolenstat,
+  setBoolenstat,
+  buyState,
+}) => {
   return (
-    <DetailBox>
-      <div>
-        <img
-          src={
-            detail.tokenImage && detail.tokenImage.includes("imgs")
-              ? detail.tokenImage
-              : `http://localhost:8080/upload/${detail.tokenImage}`
-          }
-          alt=""
-        />
-      </div>
-      <div>
-        <div>#{detail.tokenId}</div>
+    <>
+      <DetailBox>
         <div>
-          <div>컨트랙트 주소(CA) : </div>
+          <img
+            src={
+              detail.tokenImage && detail.tokenImage.includes("imgs")
+                ? detail.tokenImage
+                : `http://localhost:8080/upload/${detail.tokenImage}`
+            }
+            alt=""
+          />
+        </div>
+        <div>
+          <div>#{detail.tokenId}</div>
           <div>
-            {detail.ca && detail.ca.slice(0, 4) + " ... " + detail.ca.slice(-4)}
+            <div>컨트랙트 주소(CA) : </div>
+            <div>
+              {detail.ca &&
+                detail.ca.slice(0, 4) + " ... " + detail.ca.slice(-4)}
+            </div>
+          </div>
+          <div>블록체인 : {detail.blockChainNetwork}</div>
+          <div>토큰 기반: {detail.tokenStandard}</div>
+          <div>
+            토큰 소유자 :{" "}
+            <Link to={`/myNFT`}>
+              <span>
+                {detail.tokenOwner &&
+                  detail.tokenOwner.slice(0, 2) +
+                    detail.tokenOwner.slice(2, 5).toUpperCase() +
+                    "..." +
+                    detail.tokenOwner.slice(-5)}
+              </span>
+            </Link>
+          </div>
+          <div>가격 : {detail.price} Goerli</div>
+          <div>
+            <button
+              onClick={() => {
+                buyToken(detail.tokenId, detail.tokenOwner, detail.price);
+                setBoolenstat(true);
+              }}
+            >
+              구매하기
+            </button>
+          </div>
+          <div>
+            <div>아이템 특성</div>
+            {detail.rank && detail.type && (
+              <>
+                <div>Rank : {detail.rank} </div>
+                <div>Type : {detail.type}</div>
+              </>
+            )}
+          </div>
+          <div>
+            <div>거래내역</div>
+            {txLog.tokenId && (
+              <div>
+                <div>
+                  <div>{txLog.price} Georli</div>
+                  <div>
+                    From :{txLog.from} - To:{txLog.to}
+                  </div>
+                </div>
+                <div>{txLog.createdAt}</div>
+              </div>
+            )}
+          </div>
+          <div>
+            <Link to={"/"}>전체 목록 보기</Link>
           </div>
         </div>
-        <div>블록체인 : {detail.blockChainNetwork}</div>
-        <div>토큰 기반: {detail.tokenBase}</div>
-        <div>
-          토큰 소유자 :{" "}
-          <Link to={`/myNFT`}>
-            <span>
-              {detail.tokenOwner &&
-                detail.tokenOwner.slice(0, 2) +
-                  detail.tokenOwner.slice(2, 5).toUpperCase() +
-                  "..." +
-                  detail.tokenOwner.slice(-5)}
-            </span>
-          </Link>
-        </div>
-        <div>가격 : {detail.price} Goerli</div>
-        <div>
-          <button
-            onClick={() => {
-              buyToken(detail.tokenId, detail.tokenOwner, detail.price);
-            }}
-          >
-            구매하기
-          </button>
-        </div>
-        <div>
-          <div>아이템 특성</div>
-          {detail.rank && detail.type && (
-            <>
-              <div>Rank : {detail.rank} </div>
-              <div>Type : {detail.type}</div>
-            </>
-          )}
-        </div>
-        <div>
-          <div>거래내역</div>
-          {txLog.tokenId && (
-            <div>
-              <div>
-                <div>{txLog.price} Georli</div>
-                <div>
-                  From :{txLog.from} - To:{txLog.to}
-                </div>
-              </div>
-              <div>{txLog.createdAt}</div>
-            </div>
-          )}
-        </div>
-        <div>
-          <Link to={"/"}>전체 목록 보기</Link>
-        </div>
-      </div>
-    </DetailBox>
+      </DetailBox>
+      {useModal("buying", buyState, boolenstat, setBoolenstat)}
+    </>
   );
 };
 

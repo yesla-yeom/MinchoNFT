@@ -32,7 +32,7 @@ import routes from "../routes/index";
 //         price: dummyDataList[i].price,
 //         blockChain: dummyDataList[i].blockChain,
 //         tokenOwner: "0xc317B903788744922c227ab197A01444cEC742EE",
-//         tokenBase: dummyDataList[i].tokenBase,
+//         tokenStandard: dummyDataList[i].tokenStandard,
 //         value: 1,
 //         tokenName: "장정현토큰",
 //         sale: 1,

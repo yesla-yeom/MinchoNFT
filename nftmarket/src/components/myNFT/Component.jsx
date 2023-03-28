@@ -1,11 +1,13 @@
 import { Segmented, Tabs } from "antd";
 import styled from "styled-components";
 import CollectContainer from "../body/collect/Container";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const MyNftComponent = ({ account, web3 }) => {
   const [selected, setSelectd] = useState("ownToken");
-
+  useEffect(() => {
+    console.log(account, "지갑이 변해버렷다");
+  }, [account]);
   const onChange = (key) => {
     if (key == 1) {
       setSelectd("ownToken");

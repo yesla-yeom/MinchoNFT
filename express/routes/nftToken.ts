@@ -23,7 +23,7 @@ interface tokenData {
   tokenImage?: string;
   blockChainNetwork?: string;
   tokenOwner?: string;
-  tokenBase?: string;
+  tokenStandard?: string;
   name: string;
   description: string;
   type?: string;
@@ -51,8 +51,9 @@ router.post("/detail", async (req: Request, res: Response) => {
 
 router.post("/buyToken", async (req: Request, res: Response) => {
   const { account, tokenId, price } = req.body;
-  const checkToken = await TransactionLog.findOne({ where: { tokenId } });
-  if (checkToken) return res.status(202).send({ msg: "already Bought Token" });
+  console.log(account);
+  // const checkToken = await TransactionLog.findOne({ where: { tokenId } });
+  // if (checkToken) return res.status(202).send({ msg: "already Bought Token" });
 
   const saleDeployed = new web3.eth.Contract(
     SaleAbi as AbiItem[],
