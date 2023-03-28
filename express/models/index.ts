@@ -3,10 +3,11 @@ import Config from "../config/config.json";
 
 import TransactionLog from "./transactionLog";
 import Token from "./token";
+import Likes from "./likes";
 
 const env = process.env.NODE_ENV || "development";
 const config = Config[env];
-const db: any = { Token, TransactionLog };
+const db: any = { Token, TransactionLog, Likes };
 
 let sequelize: any = new Sequelize(
   config.database,
@@ -23,6 +24,7 @@ Object.keys(db).forEach((modelName) => {
 
 db.TransactionLog = TransactionLog.initModel(sequelize);
 db.Token = Token.initModel(sequelize);
+db.Likes = Likes.initModel(sequelize);
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

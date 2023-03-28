@@ -10,6 +10,7 @@ const TokenDetailContainer = ({ account, web3 }) => {
   const [txLog, setTxLog] = useState({});
   const [buyState, setBuyState] = useState("");
   const [boolenstat, setBoolenstat] = useState(true);
+  const [heart, setHeart] = useState();
 
   const params = useParams();
 
@@ -21,6 +22,14 @@ const TokenDetailContainer = ({ account, web3 }) => {
     ).data;
     setDetail(data);
     transactionLog(params.tokenId);
+    const status = (
+      await axios.post("http://localhost:8080/api/nftToken/likeState", {
+        account,
+        tokenId: params.tokenId,
+      })
+    ).data;
+    if (status.status == 202) setHeart(false);
+    else setHeart(true);
   }, [params, account]);
 
   const buyToken = async (_tokenId, _tokenOwner, _price) => {
@@ -60,6 +69,18 @@ const TokenDetailContainer = ({ account, web3 }) => {
     if (txLog.status == 200) setTxLog(txLog.txLogInfo);
   };
 
+  const handleHeart = async (_tokenId) => {
+    const likeResult = (
+      await axios.post("http://localhost:8080/api/nftToken/like", {
+        heart,
+        account,
+        tokenId: _tokenId,
+      })
+    ).data;
+    if (likeResult.status == 201) setHeart(false);
+    else setHeart(true);
+  };
+
   useEffect(() => {
     tokenDetail();
   }, [params, account]);
@@ -73,6 +94,9 @@ const TokenDetailContainer = ({ account, web3 }) => {
       boolenstat={boolenstat}
       setBoolenstat={setBoolenstat}
       buyState={buyState}
+      heart={heart}
+      setHeart={setHeart}
+      handleHeart={handleHeart}
     />
   );
 };
