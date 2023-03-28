@@ -7,6 +7,7 @@ import Web3 from "web3";
 import { useWeb3 } from "../utility/useWeb3";
 import SellMordalContainer from "../sell/mordal/Container";
 import useModal from "../utility/useModal";
+import { useEffect } from "react";
 
 function MintingContainer({ account, web3 }) {
   const [NftName, setName] = useState("");
@@ -65,10 +66,14 @@ function MintingContainer({ account, web3 }) {
 
     try {
       setMintState("WAITING");
+
       const result = (
         await axios.post("http://localhost:8080/api/mint/minting", formData)
       ).data;
       console.log("result:", result);
+      if (result == "same name") {
+        // alert("같은이름");
+      }
       // 여기서 부터 민팅확인 reulst가 있을때꺼주고 없으면 켜주고
       let transactionResult = await web3.eth.sendTransaction(result);
       console.log(transactionResult);
