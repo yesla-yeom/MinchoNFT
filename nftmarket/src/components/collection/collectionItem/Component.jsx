@@ -99,12 +99,12 @@ const CollectionItemComponent = ({
                       />
                     )}
                     <div key={`collectionArr-tokenId-${index}`}>
-                      {item.tokenId}
+                      ID : #{item.tokenId}
                     </div>
-                    <div key={`collectionArr-name-${index}`}>{item.name}</div>
+                    {/* <div key={`collectionArr-name-${index}`}>{item.name}</div>
                     <div key={`collectionArr-description-${index}`}>
                       {item.description}
-                    </div>
+                    </div> */}
                   </div>
                 </Link>
               ))}
@@ -172,6 +172,14 @@ const ItemBox = styled.div`
         & > img {
           width: 100%;
           height: 80%;
+        }
+        & > div {
+          height: 20%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-weight: 750;
+          font-size: 1.2rem;
         }
       }
     }

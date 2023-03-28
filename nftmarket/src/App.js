@@ -116,10 +116,12 @@ const NftBody = styled(Content)`
   padding: 0 50px;
   margin: 16px 0;
   background-color: rgba(227, 243, 247, 1);
+  font-family: var(--font-IBMPlexSansKR-Regular);
 `;
 const NftFooter = styled(Footer)`
   text-align: center;
   background-color: rgba(176, 222, 219, 1);
+  font-family: var(--font-Dovemayo_gothic);
 `;
 
 export default App;
