@@ -23,7 +23,7 @@ interface tokenData {
   tokenImage?: string;
   blockChainNetwork?: string;
   tokenOwner?: string;
-  tokenBase?: string;
+  tokenStandard?: string;
   name: string;
   description: string;
   type?: string;

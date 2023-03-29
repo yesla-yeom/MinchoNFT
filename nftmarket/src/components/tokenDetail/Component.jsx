@@ -23,7 +23,7 @@ const TokenDetailComponent = ({ detail, buyToken, txLog }) => {
           </div>
         </div>
         <div>블록체인 : {detail.blockChainNetwork}</div>
-        <div>토큰 기반: {detail.tokenBase}</div>
+        <div>토큰 기반: {detail.tokenStandard}</div>
         <div>
           토큰 소유자 :{" "}
           <Link to={`/myNFT`}>
