@@ -97,6 +97,7 @@ router.post(
         let dbTable = await Token.findAll({
           order: [["tokenId", "DESC"]],
         });
+        // console.log("testtemp:", dbTable);
 
         if (dbTable.length == 0) {
           let randomArray = [];
@@ -164,7 +165,6 @@ router.post(
             },
           }
         );
-
         const obj: {
           to: string;
           from: string;
@@ -177,50 +177,53 @@ router.post(
         obj.to = process.env.NFT_CA;
         obj.from = req.body.from;
         obj.data = deployed.methods.safeMint(jsonResult.IpfsHash).encodeABI();
+        // console.log(obj);
+        // let tokenName = await deployed.methods.name().call();
+        // console.log(tokenName);
         if (imgResult && jsonResult) {
-          // let dbTable = await Token.findAll({
-          //   order: [["tokenId", "DESC"]],
-          // });
+          let dbTable = await Token.findAll({
+            order: [["tokenId", "DESC"]],
+          });
 
-          // if (dbTable.length == 0) {
-          //   // console.log("1");
-          //   let randomArray = [];
+          if (dbTable.length == 0) {
+            // console.log("1");
+            let randomArray = [];
 
-          //   function generateUniqueRandomValue() {
-          //     let value = Math.floor(Math.random() * 1000);
-          //     while (randomArray.includes(value)) {
-          //       value = Math.floor(Math.random() * 1000);
-          //     }
-          //     randomArray.push(value);
-          //     return value;
-          //   }
+            function generateUniqueRandomValue() {
+              let value = Math.floor(Math.random() * 1000);
+              while (randomArray.includes(value)) {
+                value = Math.floor(Math.random() * 1000);
+              }
+              randomArray.push(value);
+              return value;
+            }
 
-          //   let RandomValue = generateUniqueRandomValue();
-          //   lastRandomValue = RandomValue;
-          // } else {
-          //   // console.log("2");
+            let RandomValue = generateUniqueRandomValue();
+            lastRandomValue = RandomValue;
+          } else {
+            // console.log("2");
 
-          //   let randomArray = [];
+            let randomArray = [];
 
-          //   function generateUniqueRandomValue() {
-          //     let value = Math.floor(Math.random() * 1000);
-          //     while (randomArray.includes(value)) {
-          //       value = Math.floor(Math.random() * 1000);
-          //     }
-          //     randomArray.push(value);
-          //     return value;
-          //   }
-          //   let RandomValue = generateUniqueRandomValue();
+            function generateUniqueRandomValue() {
+              let value = Math.floor(Math.random() * 1000);
+              while (randomArray.includes(value)) {
+                value = Math.floor(Math.random() * 1000);
+              }
+              randomArray.push(value);
+              return value;
+            }
+            let RandomValue = generateUniqueRandomValue();
 
-          //   for (let i = 0; i < dbTable.length; i++) {
-          //     // console.log(dbTable[i].rank);
-          //     if (dbTable[i].rank != RandomValue) {
-          //       lastRandomValue = RandomValue;
-          //     } else {
-          //       generateUniqueRandomValue();
-          //     }
-          //   }
-          // }
+            for (let i = 0; i < dbTable.length; i++) {
+              // console.log(dbTable[i].rank);
+              if (dbTable[i].rank != RandomValue) {
+                lastRandomValue = RandomValue;
+              } else {
+                generateUniqueRandomValue();
+              }
+            }
+          }
 
           await Token.create({
             blockChainNetwork: "Ethereum",
