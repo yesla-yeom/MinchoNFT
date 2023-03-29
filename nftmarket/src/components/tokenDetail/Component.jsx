@@ -89,6 +89,7 @@ const TokenDetailComponent = ({
             <button
               onClick={() => {
                 buyToken(detail.tokenId, detail.tokenOwner, detail.price);
+                setBoolenstat(true);
               }}
             >
               구매하기
