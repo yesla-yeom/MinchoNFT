@@ -3,7 +3,7 @@ import { useCallback, useState, useEffect } from "react";
 import Web3 from "web3";
 import SellComponent from "./Component";
 
-function SellContainer({ web3, name, account }) {
+function SellContainer({ web3, name, account, tokenData }) {
   console.log(account);
   const [mordal, SetMordal] = useState(false);
   // const [items, setItems] = useState([]);
@@ -52,6 +52,7 @@ function SellContainer({ web3, name, account }) {
       SetMordal={SetMordal}
       tokendata={tokendata}
       name={name}
+      tokenData={tokenData}
     />
   );
 }

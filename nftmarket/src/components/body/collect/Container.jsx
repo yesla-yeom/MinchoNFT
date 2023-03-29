@@ -27,6 +27,7 @@ const CollectContainer = ({ type, account, web3 }) => {
       type={type}
       web3={web3}
       account={account}
+      tokenData={tokenData}
     />
   );
 };
