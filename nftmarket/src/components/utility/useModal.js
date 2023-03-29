@@ -33,7 +33,6 @@ const useModal = (
               onClick={() => {
                 setBoolenstat(!state);
                 navigate(`/mynft/${account}`);
-                setName("");
               }}
             >
               확인

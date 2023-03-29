@@ -1,8 +1,6 @@
 import { Layout, theme } from "antd";
 import styled from "styled-components";
 import { Route, Routes } from "react-router-dom";
-import axios from "axios";
-import { useEffect } from "react";
 
 import HeaderContainer from "./components/header/Container";
 import TokenDetailContainer from "./components/tokenDetail/Container";
@@ -22,11 +20,6 @@ import SellContainer from "./components/sell/Container";
 const { Header, Content, Footer } = Layout;
 
 function App() {
-  useEffect(() => {
-    (async () => {
-      await axios.get("http://localhost:8080/api/allToken/list");
-    })();
-  }, []);
   const { account, logIn, web3 } = useWeb3();
   const {
     token: { colorBgContainer },
