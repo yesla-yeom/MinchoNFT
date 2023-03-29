@@ -13,7 +13,8 @@ import MyNftContainer from "./components/myNFT/Container";
 import CollectionContainer from "./components/collection/Container";
 import QnaContainer from "./components/qna/Container";
 import FooterContainer from "./components/footer/Container";
-import WaitingStatusContainer from "./components/waitingStatus/Container";
+import SearchContainer from "./components/body/search/Container";
+import CollectionHeaderContainer from "./components/collection/collectionHeader/Container";
 
 import { useWeb3 } from "./components/utility/useWeb3";
 import SellContainer from "./components/sell/Container";
@@ -65,7 +66,11 @@ function App() {
                       backgroundColor: " rgba(227, 243, 247, 1)",
                     }}
                   >
+                    <CollectionHeaderContainer header={"Latest Tokens"} />
                     <CollectContainer type={"latestToken"} />
+
+                    <CollectionHeaderContainer header={"Best Tokens"} />
+                    <CollectContainer type={"bestToken"} />
                   </div>
                 </>
               }
@@ -83,10 +88,7 @@ function App() {
               path="/myNFT/:tokenOwner"
               element={<MyNftContainer web3={web3} />}
             />
-            <Route
-              path="/collections"
-              element={<div>여기는 컬랙션들이 들어가야됨</div>}
-            />
+            <Route path="/search/:query" element={<SearchContainer />} />
           </Routes>
         </NftBody>
         <NftFooter>

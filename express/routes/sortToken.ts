@@ -1,5 +1,6 @@
 import { Router, Request, Response } from "express";
 import Token from "../models/token";
+import { Op } from "sequelize";
 
 const router = Router();
 
@@ -7,6 +8,7 @@ router.post("/latestToken", async (req: Request, res: Response) => {
   const tempTokenArr = await Token.findAll({
     attributes: ["tokenImage", "price", "name", "tokenName"],
     order: [["createdAt", "DESC"]],
+    limit: 8,
   });
   res.send(tempTokenArr);
   // 빠른거 기준으로 다 가져온다.
@@ -38,6 +40,25 @@ router.post("/salesToken", async (req: Request, res: Response) => {
     order: [["createdAt", "DESC"]],
   });
   // 해당 지갑 주소를 기준으로(소유하고있는) 판매중인 토큰을 불러온다.
+  res.send(tempTokenArr);
+});
+
+router.post("/searchName", async (req: Request, res: Response) => {
+  const { name }: { name: string } = req.body;
+  console.log(name);
+  const findName = await Token.findAll({
+    where: { name: { [Op.like]: "%" + name + "%" } },
+  });
+  console.log(findName);
+  res.send(findName);
+});
+
+router.post("/bestToken", async (req: Request, res: Response) => {
+  const tempTokenArr = await Token.findAll({
+    attributes: ["tokenImage", "price", "name", "tokenName"],
+    order: [["likeCount", "DESC"]],
+    limit: 8,
+  });
   res.send(tempTokenArr);
 });
 

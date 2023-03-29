@@ -68,6 +68,7 @@ const CollectComponent = ({ tokenArr, type, account, web3, setTokenArr }) => {
 };
 
 const CollectDiv = styled.div`
+  margin: 0 0 10% 0;
   & > div {
     margin: 20px 0;
     & > img {
@@ -76,11 +77,6 @@ const CollectDiv = styled.div`
       width: 300px;
     }
   }
-`;
-
-const CollectOutterDiv = styled.div`
-  display: flex;
-  justify-content: space-between;
 `;
 
 export default CollectComponent;
