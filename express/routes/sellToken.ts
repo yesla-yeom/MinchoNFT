@@ -21,7 +21,6 @@ const { Token } = db;
 router.post("/find", async (req: Request, res: Response) => {
   try {
     const { name } = req.body;
-    console.log("name:", name);
     let data = await Token.findOne({
       where: {
         name: name,
@@ -36,8 +35,6 @@ router.post("/find", async (req: Request, res: Response) => {
   } catch (error) {
     console.log(error);
   }
-
-  //   console.log(data);
 });
 
 router.post("/tokendata", async (req: Request, res: Response) => {
@@ -82,12 +79,9 @@ router.post("/approve", async (req: Request, res: Response) => {
 router.post("/listing", async (req: Request, res: Response) => {
   try {
     const { ethValue, tokendata, account } = req.body;
-    // let ethprice = Number(ethValue);
-    console.log("ethValue:", ethValue);
     const bigNumberValue = BigNumber.from(
       Math.floor(ethValue * 10 ** 18).toString()
     );
-    console.log("bigNumberValue", bigNumberValue);
 
     const saledeployed = new web3.eth.Contract(
       SaleAbi as AbiItem[],
@@ -97,7 +91,6 @@ router.post("/listing", async (req: Request, res: Response) => {
     let saletoken = await saledeployed.methods
       .SalesToken(tokendata.tokenId, bigNumberValue)
       .encodeABI();
-    console.log(saletoken);
     const obj: {
       to: string;
       from: string;
@@ -120,11 +113,7 @@ router.post("/listing", async (req: Request, res: Response) => {
 router.post("/update", async (req: Request, res: Response) => {
   try {
     const { ethValue, tokendata, account } = req.body;
-    console.log("확인용:", ethValue);
 
-    // console.log("ethprice:", ethprice);
-    console.log(tokendata.tokenId);
-    console.log("account:", account);
     let data = await Token.update(
       {
         price: ethValue,
@@ -140,7 +129,6 @@ router.post("/update", async (req: Request, res: Response) => {
 
 router.post("/cancle", async (req: Request, res: Response) => {
   const { tokenId, tokenOwner } = req.body.tokendata;
-  console.log(tokenId);
 
   const saledeployed = new web3.eth.Contract(
     SaleAbi as AbiItem[],
@@ -149,7 +137,6 @@ router.post("/cancle", async (req: Request, res: Response) => {
   let cancletoken = await saledeployed.methods
     .cancelSaleToken(tokenId)
     .encodeABI();
-  console.log(cancletoken);
   const obj: {
     to: string;
     from: string;

@@ -3,7 +3,6 @@ import MyNftComponent from "./Component";
 
 const MyNftContainer = ({ web3 }) => {
   const { account } = useWeb3React();
-  console.log("이거", account);
 
   return <MyNftComponent account={account} web3={web3} />;
 };

@@ -17,7 +17,6 @@ const SellMordalComponent = ({
   setBooleanState,
   saleState,
 }) => {
-  console.log(tokendata);
   return (
     <ModalBackground>
       <MordalBox>

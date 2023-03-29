@@ -69,8 +69,6 @@ router.post(
   upload.single("file"),
   async (req: Request, res: Response) => {
     try {
-      console.log(req.file.filename);
-
       const { name, description }: { name: string; description: string } =
         req.body;
 
@@ -94,17 +92,13 @@ router.post(
         },
       });
       if (imgResult.isDuplicate) {
-        console.log("같은 이미지!");
       }
-      console.log(imgResult);
 
       let dbTable = await Token.findAll({
         order: [["tokenId", "DESC"]],
       });
-      // console.log("testtemp:", dbTable);
 
       if (dbTable.length == 0) {
-        console.log("1");
         let randomArray = [];
 
         function generateUniqueRandomValue() {
@@ -119,8 +113,6 @@ router.post(
         let RandomValue = generateUniqueRandomValue();
         lastRandomValue = RandomValue;
       } else {
-        // console.log("2");
-
         let randomArray = [];
 
         function generateUniqueRandomValue() {
@@ -134,7 +126,6 @@ router.post(
         let RandomValue = generateUniqueRandomValue();
 
         for (let i = 0; i < dbTable.length; i++) {
-          // console.log(dbTable[i].rank);
           if (dbTable[i].rank != RandomValue) {
             lastRandomValue = RandomValue;
           } else {
@@ -147,14 +138,12 @@ router.post(
         process.env.NFT_CA
       );
       let tokenName = await deployed.methods.name().call();
-      // console.log(tokenName);
 
       const jsonResult = await pinata.pinJSONToIPFS(
         {
           name,
           description,
 
-          //   image: "https://gateway.pinata.cloud/ipfs/" + imgResult.IpfsHash,
           image: `https://gateway.pinata.cloud/ipfs/${imgResult.IpfsHash}`,
 
           attributes: [
@@ -162,66 +151,18 @@ router.post(
             { trait_type: "type", value: type },
             { trait_type: "price", value: price },
             { trait_type: "tokenName", value: tokenName },
-
-            // {
-            //   trait_type: "BackGround",
-            //   value: "Off White A",
-            // },
-            // {
-            //   trait_type: "CLOTHING",
-            //   value: "Azuki Tech Jacket",
-            // },
-            // { trait_type: "EYES", value: "Closed" },
-            // {
-            //   trait_type: "Level",
-            //   value: 5,
-            // },
-            // {
-            //   trait_type: "Stamina",
-            //   value: 1.4,
-            // },
-            // {
-            //   trait_type: "Personality",
-            //   value: "Sad",
-            // },
-            // {
-            //   display_type: "boost_number",
-            //   trait_type: "Aqua Power",
-            //   value: 40,
-            // },
-            // {
-            //   display_type: "boost_percentage",
-            //   trait_type: "Stamina Increase",
-            //   value: 10,
-            // },
-            // {
-            //   display_type: "number",
-            //   trait_type: "Generation",
-            //   value: 2,
-            // },
-            // {
-            //   display_type: "date",
-            //   trait_type: "birthday",
-            //   value: 1546360800,
-            // },
           ],
         },
         {
           pinataMetadata: {
             name: Date.now().toString() + ".json",
-            //json파일이름
           },
           pinataOptions: {
             cidVersion: 0,
           },
         }
       );
-      // console.log(jsonResult);
 
-      // const deployed = new web3.eth.Contract(
-      //   NftAbi as AbiItem[],
-      //   process.env.NFT_CA
-      // );
       const obj: {
         to: string;
         from: string;
@@ -234,16 +175,13 @@ router.post(
       obj.to = process.env.NFT_CA;
       obj.from = req.body.from;
       obj.data = deployed.methods.safeMint(jsonResult.IpfsHash).encodeABI();
-      // console.log(obj);
-      // let tokenName = await deployed.methods.name().call();
-      // console.log(tokenName);
+
       if (imgResult && jsonResult) {
         let dbTable = await Token.findAll({
           order: [["tokenId", "DESC"]],
         });
 
         if (dbTable.length == 0) {
-          // console.log("1");
           let randomArray = [];
 
           function generateUniqueRandomValue() {
@@ -258,8 +196,6 @@ router.post(
           let RandomValue = generateUniqueRandomValue();
           lastRandomValue = RandomValue;
         } else {
-          // console.log("2");
-
           let randomArray = [];
 
           function generateUniqueRandomValue() {
@@ -273,7 +209,6 @@ router.post(
           let RandomValue = generateUniqueRandomValue();
 
           for (let i = 0; i < dbTable.length; i++) {
-            // console.log(dbTable[i].rank);
             if (dbTable[i].rank != RandomValue) {
               lastRandomValue = RandomValue;
             } else {
@@ -310,12 +245,10 @@ router.post(
 
 router.post("/create", async (req: Request, res: Response) => {
   const { transactionResult } = req.body;
-  // console.log("transactionResult:", transactionResult);
   let tokendata = transactionResult.logs[1].data;
   let totaldata = transactionResult.logs[2].data;
   let tokenId = parseInt(tokendata, 16);
   let totalsupply = parseInt(totaldata, 16);
-  console.log(tokenId);
 
   if (tokenId) {
     await Token.update(

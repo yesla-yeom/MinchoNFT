@@ -51,7 +51,6 @@ const TokenDetailContainer = ({ account, web3 }) => {
           price: _price,
         })
       ).data;
-      console.log(result);
       let transactionResult = await web3.eth.sendTransaction({
         ...result,
       });

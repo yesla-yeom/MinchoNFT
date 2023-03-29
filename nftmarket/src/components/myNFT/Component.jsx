@@ -5,9 +5,7 @@ import { useState, useEffect } from "react";
 
 const MyNftComponent = ({ account, web3 }) => {
   const [selected, setSelectd] = useState("ownToken");
-  useEffect(() => {
-    console.log(account, "지갑이 변해버렷다");
-  }, [account]);
+  useEffect(() => {}, [account]);
   const onChange = (key) => {
     if (key == 1) {
       setSelectd("ownToken");
@@ -17,7 +15,6 @@ const MyNftComponent = ({ account, web3 }) => {
       setSelectd("salesToken");
     }
   };
-  console.log(account);
 
   const items = [
     {

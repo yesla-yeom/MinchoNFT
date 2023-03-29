@@ -2,8 +2,6 @@ import styled from "styled-components";
 import { Button } from "antd";
 
 const useModal = (content, state, modalStat, setBoolenstat) => {
-  console.log(state, "나는 받고있는 거래 상태임");
-
   return (modalStat && state == "WAITING") ||
     (modalStat && state == "SUCCESS") ? (
     <MyModalMask>
