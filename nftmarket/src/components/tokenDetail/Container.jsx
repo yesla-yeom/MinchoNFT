@@ -11,8 +11,8 @@ const TokenDetailContainer = ({ account, web3 }) => {
   const [buyState, setBuyState] = useState("");
   const [boolenstat, setBoolenstat] = useState(true);
   const [heart, setHeart] = useState();
+  const [likeCount, setLikeCount] = useState();
 
-  console.log("이거랑 같나", account);
   const params = useParams();
 
   const tokenDetail = useCallback(async () => {
@@ -31,7 +31,14 @@ const TokenDetailContainer = ({ account, web3 }) => {
     ).data;
     if (status.status == 202) setHeart(false);
     else setHeart(true);
-  }, [params, account]);
+
+    const result = (
+      await axios.post("http://localhost:8080/api/nftToken/likeCount", {
+        tokenId: params.tokenId,
+      })
+    ).data;
+    setLikeCount(result.likeCount);
+  }, [params, account, heart, likeCount]);
 
   const buyToken = async (_tokenId, _tokenOwner, _price) => {
     setBuyState("WAITING");
@@ -84,7 +91,7 @@ const TokenDetailContainer = ({ account, web3 }) => {
 
   useEffect(() => {
     tokenDetail();
-  }, [params, account]);
+  }, [params, account, heart, likeCount]);
 
   return (
     <TokenDetailComponent
@@ -98,6 +105,8 @@ const TokenDetailContainer = ({ account, web3 }) => {
       heart={heart}
       setHeart={setHeart}
       handleHeart={handleHeart}
+      account={account}
+      likeCount={likeCount}
     />
   );
 };

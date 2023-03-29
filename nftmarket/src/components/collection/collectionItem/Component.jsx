@@ -34,8 +34,10 @@ const CollectionItemComponent = ({
                 setOrder(e.target.value);
               }}
             >
-              <option value={"DESC"}>가격 높은순</option>
-              <option value={"ASC"}>가격 낮은순</option>
+              <option value={"price/DESC"}>가격 높은순</option>
+              <option value={"price/ASC"}>가격 낮은순</option>
+              <option value={"likeCount/DESC"}>인기 높은순</option>
+              <option value={"likeCount/ASC"}>인기 낮은순</option>
             </select>
           </div>
           <div>

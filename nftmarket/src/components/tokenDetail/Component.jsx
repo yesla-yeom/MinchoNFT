@@ -13,11 +13,15 @@ const TokenDetailComponent = ({
   boolenstat,
   setBoolenstat,
   buyState,
+  account,
+  likeCount,
+  likeCountFunc,
 }) => {
   return (
     <>
       <DetailBox>
         <div>
+          <div>#{detail.tokenId}</div>
           <img
             src={
               detail.tokenImage && detail.tokenImage.includes("imgs")
@@ -26,12 +30,10 @@ const TokenDetailComponent = ({
             }
             alt=""
           />
-        </div>
-        <div>
           <div>
-            <div>#{detail.tokenId}</div>
             <div
               onClick={() => {
+                if (!account) return;
                 setHeart((state) => !state);
                 handleHeart(detail.tokenId);
               }}
@@ -52,9 +54,13 @@ const TokenDetailComponent = ({
                 </>
               )}
             </div>
+            {likeCount}
           </div>
+        </div>
+        <div>
           <div>
             <div>
+              CA :
               <span>
                 {detail.ca &&
                   detail.ca.slice(0, 4) + " ... " + detail.ca.slice(-4)}
@@ -175,9 +181,32 @@ const DetailBox = styled.div`
   }
   & > div:first-child {
     width: 39%;
-    &:first-child {
-      & > img {
-        width: 100%;
+    & > div:first-child {
+      font-size: 1.5rem;
+      font-weight: 750;
+      padding: 0 0 20px 0;
+    }
+    & > img:nth-child(2) {
+      width: 100%;
+    }
+    & > div:last-child {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      font-size: 1.5rem;
+      font-weight: 750;
+      padding: 20px 0 0 0;
+      & > div {
+        cursor: pointer;
+        border-radius: 10px;
+        height: 50px;
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.3);
+        }
+        & img {
+          width: 50px;
+        }
       }
     }
   }
@@ -185,38 +214,13 @@ const DetailBox = styled.div`
     width: 49%;
     & > div {
       padding: 15px 0;
-      &:first-child {
-        font-size: 1.5rem;
-        font-weight: 750;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        & > div:last-child {
-          cursor: pointer;
-          border-radius: 10px;
-          padding: 2px;
-          &:hover {
-            background-color: rgba(0, 0, 0, 0.3);
-          }
-          & img {
-            width: 50px;
-          }
-        }
-      }
-      &:nth-child(2) {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        & > div {
-          padding: 0 5px 0 0;
-        }
-      }
-      &:nth-child(5) > a:hover,
-      &:nth-child(9) a:hover {
+
+      &:nth-child(4) > a:hover,
+      &:nth-child(8) a:hover {
         color: rgba(176, 222, 219, 1);
       }
 
-      &:nth-child(7) {
+      &:nth-child(6) {
         width: 95%;
         margin: 0 auto;
         display: flex;
@@ -239,10 +243,10 @@ const DetailBox = styled.div`
           }
         }
       }
-      &:nth-child(8) > div {
+      &:nth-child(7) > div {
         padding: 10px 0;
       }
-      &:nth-child(9) > div:last-child {
+      &:nth-child(8) > div:last-child {
         display: flex;
         justify-content: space-between;
         align-items: center;
