@@ -15,7 +15,6 @@ const TokenDetailComponent = ({
   buyState,
   account,
   likeCount,
-  likeCountFunc,
 }) => {
   return (
     <>
@@ -94,7 +93,9 @@ const TokenDetailComponent = ({
           <div>
             <button
               onClick={() => {
+                if (!account || detail.price == 0) return;
                 buyToken(detail.tokenId, detail.tokenOwner, detail.price);
+                setBoolenstat(true);
               }}
             >
               구매하기
