@@ -8,15 +8,16 @@ function SellComponent({
   web3,
   account,
   findItem,
+  tokenData,
 
   tokendata,
   name,
 }) {
   return (
     <div>
-      <div style={{ paddingLeft: 40 }}>
+      <div>
         <Listbutton
-          style={{ width: 100 }}
+          style={{ width: 240 }}
           onClick={() => {
             SetMordal(true);
             findItem(name);
@@ -31,6 +32,7 @@ function SellComponent({
           account={account}
           SetMordal={SetMordal}
           tokendata={tokendata}
+          tokenData={tokenData}
         />
       ) : (
         <></>
@@ -62,6 +64,7 @@ const Listbutton = styled.button`
   }
   cursor: pointer;
   padding: 10px;
+  margin-top: 20px;
   color: rgba(252, 110, 94, 1);
   border-radius: 10px;
   border: 1px solid rgb(176, 222, 219, 1);

@@ -2,7 +2,8 @@ import axios from "axios";
 import { useState } from "react";
 import SellComponent from "./Component";
 
-function SellContainer({ web3, name, account }) {
+function SellContainer({ web3, name, account, tokenData }) {
+  console.log(account);
   const [mordal, SetMordal] = useState(false);
   const [tokendata, setTokendata] = useState("");
 
@@ -29,6 +30,7 @@ function SellContainer({ web3, name, account }) {
       SetMordal={SetMordal}
       tokendata={tokendata}
       name={name}
+      tokenData={tokenData}
     />
   );
 }

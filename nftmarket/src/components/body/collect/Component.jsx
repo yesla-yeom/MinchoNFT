@@ -2,7 +2,14 @@ import { Row, Col, Button } from "antd";
 import styled from "styled-components";
 import CollectItemContainer from "./item/Container";
 import SellContainer from "../../sell/Container";
-const CollectComponent = ({ tokenArr, type, account, web3, setTokenArr }) => {
+const CollectComponent = ({
+  tokenArr,
+  type,
+  account,
+  web3,
+  setTokenArr,
+  tokenData,
+}) => {
   return (
     <>
       <CollectDiv>
@@ -26,6 +33,7 @@ const CollectComponent = ({ tokenArr, type, account, web3, setTokenArr }) => {
                           tokenImage={item.tokenImage}
                         />
                         <SellContainer
+                          tokenData={tokenData}
                           web3={web3}
                           name={item.name}
                           account={account}
