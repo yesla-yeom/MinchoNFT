@@ -6,12 +6,11 @@ const BannerComponent = () => {
   return (
     <BannerDiv>
       <div>
-        <div>끼얏호우</div>
-        <div>하하하하</div>
-        <div>오늘은 상목이형 헬스하는날</div>
-        <Link to={"/collections"}>
-          <GotoAllButton>All Collections</GotoAllButton>
-        </Link>
+        <div>NFT가 처음이세요?</div>
+        <div>
+          <p>국내에서 가장 쉬운 NFT 거래소</p> <p>민초</p>
+          <p>와 함께 거래를 시작하세요</p>
+        </div>
       </div>
     </BannerDiv>
   );
@@ -26,11 +25,20 @@ const BannerDiv = styled.div`
   background-image: url("./imgs/bannerImg.jpg");
   border-radius: 20px;
   color: white;
+  font-weight: 700;
+  font-size: 24px;
   & > div {
     text-align: center;
     & > div {
       text-align: center;
       margin: 10px 0;
+    }
+    & > div:nth-child(2) {
+      display: flex;
+      column-gap: 5px;
+      & > p:nth-child(2) {
+        color: rgb(176, 222, 219);
+      }
     }
   }
 `;

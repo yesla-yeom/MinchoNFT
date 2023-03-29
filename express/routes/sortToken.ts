@@ -1,4 +1,5 @@
 import { Router, Request, Response } from "express";
+import { Op } from "sequelize";
 import Token from "../models/token";
 
 const router = Router();
@@ -39,6 +40,16 @@ router.post("/salesToken", async (req: Request, res: Response) => {
   });
   // 해당 지갑 주소를 기준으로(소유하고있는) 판매중인 토큰을 불러온다.
   res.send(tempTokenArr);
+});
+
+router.post("/searchName", async (req: Request, res: Response) => {
+  const { name }: { name: string } = req.body;
+  console.log(name);
+  const findName = await Token.findAll({
+    where: { name: { [Op.like]: "%" + name + "%" } },
+  });
+  console.log(findName);
+  res.send(findName);
 });
 
 export default router;
