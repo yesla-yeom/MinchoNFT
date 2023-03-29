@@ -29,6 +29,7 @@ function SellContainer({ web3, name, account }) {
       SetMordal={SetMordal}
       tokendata={tokendata}
       name={name}
+      tokenData={tokenData}
     />
   );
 }

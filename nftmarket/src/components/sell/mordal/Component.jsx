@@ -16,6 +16,7 @@ const SellMordalComponent = ({
   booleanState,
   setBooleanState,
   saleState,
+  tokenData,
 }) => {
   return (
     <ModalBackground>
@@ -26,6 +27,7 @@ const SellMordalComponent = ({
             <ImgX
               onClick={(e) => {
                 SetMordal(false);
+                tokenData();
               }}
               src="https://media.giphy.com/media/KFtoeyGbuENeJrnv2j/giphy.gif"
             ></ImgX>

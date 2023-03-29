@@ -3,7 +3,13 @@ import { useCallback, useEffect, useState } from "react";
 import SellMordalComponent from "./Component";
 import useModal from "../../utility/useModal";
 
-function SellMordalContainer({ account, web3, SetMordal, tokendata }) {
+function SellMordalContainer({
+  account,
+  web3,
+  SetMordal,
+  tokendata,
+  tokenData,
+}) {
   const [ethValue, setEthValue] = useState("");
   const [change, setChange] = useState("");
   const [saleState, setSaleState] = useState("");
@@ -101,6 +107,7 @@ function SellMordalContainer({ account, web3, SetMordal, tokendata }) {
       booleanState={booleanState}
       setBooleanState={setBooleanState}
       saleState={saleState}
+      tokenData={tokenData}
     />
   );
 }

@@ -12,8 +12,10 @@ function MintingComponent({
   mintState,
   useModal,
   boolenstat,
-
+  setError,
   setBoolenstat,
+  error,
+  setName,
 }) {
   return (
     <>
@@ -70,7 +72,15 @@ function MintingComponent({
           </CreateButton>
         </CreateDiv>
       </MintingBox>
-      {useModal("Minting", mintState, boolenstat, setBoolenstat)}
+      {useModal(
+        "Minting",
+        mintState,
+        boolenstat,
+        setBoolenstat,
+        error,
+        setError,
+        setName
+      )}
     </>
   );
 }
