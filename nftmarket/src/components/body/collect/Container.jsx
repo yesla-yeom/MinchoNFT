@@ -1,18 +1,32 @@
+import { useState, useEffect } from "react";
 import CollectComponent from "./Component";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
-const CollectContainer = () => {
-  const tokenArr = [
-    { tokenId: "tlqkf", price: "1818ETH" },
-    { tokenId: "tlqk", price: "188ETH" },
-    { tokenId: "GLAEMSP", price: "28ETH" },
-    { tokenId: "elwu", price: "54ETH" },
-    { tokenId: "tbqkf", price: "694ETH" },
-    { tokenId: "wlfkf", price: "421ETH" },
-    { tokenId: "dksl", price: "517ETH" },
-    { tokenId: "dlrjf", price: "32154ETH" },
-  ];
+const CollectContainer = ({ type, account, web3 }) => {
+  const [tokenArr, setTokenArr] = useState([]);
+  const params = useParams();
 
-  return <CollectComponent tokenArr={tokenArr} />;
+  const tokenData = async () => {
+    const tokenArr = await axios.post(
+      `http://localhost:8080/api/sortToken/${type}`,
+      { userAccount: params.tokenOwner }
+    );
+    setTokenArr(tokenArr.data);
+  };
+  useEffect(() => {
+    tokenData();
+  }, [type]);
+
+  return (
+    <CollectComponent
+      tokenArr={tokenArr}
+      type={type}
+      web3={web3}
+      account={account}
+      tokenData={tokenData}
+    />
+  );
 };
 
 export default CollectContainer;

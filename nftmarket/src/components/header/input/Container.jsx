@@ -1,7 +1,10 @@
 import HeaderInputComponent from "./Component";
+import { useNavigate } from "react-router-dom";
 
 const HeaderInputContainer = () => {
-  return <HeaderInputComponent />;
+  const navigate = useNavigate();
+
+  return <HeaderInputComponent navigate={navigate} />;
 };
 
 export default HeaderInputContainer;

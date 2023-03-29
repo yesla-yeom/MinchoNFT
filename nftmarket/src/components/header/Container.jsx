@@ -1,7 +1,7 @@
 import HeaderComponent from "./Component";
 
-const HeaderContainer = () => {
-  return <HeaderComponent />;
+const HeaderContainer = ({ logIn }) => {
+  return <HeaderComponent logIn={logIn} />;
 };
 
 export default HeaderContainer;
