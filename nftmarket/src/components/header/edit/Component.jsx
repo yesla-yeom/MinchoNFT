@@ -5,7 +5,7 @@ import { connectors } from "../../utility/connect";
 import { Link } from "react-router-dom";
 import { WalletOutlined } from "@ant-design/icons";
 
-const HeaderEditComponent = ({ logIn }) => {
+const HeaderEditComponent = ({ logIn, handleCopy }) => {
   const { account, activate, active } = useWeb3React();
 
   const items = [
@@ -22,7 +22,13 @@ const HeaderEditComponent = ({ logIn }) => {
           <Link to={"/minting"}>
             <EditButton>Minting NFT</EditButton>
           </Link>
-          <Dropdown menu={{ items }} placement="bottomLeft">
+          <Dropdown
+            menu={{ items }}
+            placement="bottomLeft"
+            onClick={() => {
+              handleCopy(account);
+            }}
+          >
             <EditButton>My Account</EditButton>
           </Dropdown>
           <Link to={`/myNFT/${account}`}>

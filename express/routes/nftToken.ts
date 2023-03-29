@@ -109,39 +109,63 @@ router.post("/txLog", async (req: Request, res: Response) => {
 });
 
 router.post("/like", async (req: Request, res: Response) => {
-  const { account, tokenId }: { account: string; tokenId: number } = req.body;
+  try {
+    const { account, tokenId }: { account: string; tokenId: number } = req.body;
 
-  const tempLike = await Likes.findOne({
-    where: { likeFrom: account, likeTokenId: tokenId },
-  });
-
-  if (tempLike) {
-    await Token.increment("likeCount", {
-      by: -1,
-      where: { tokenId },
-    });
-    await Likes.destroy({
+    const tempLike = await Likes.findOne({
       where: { likeFrom: account, likeTokenId: tokenId },
     });
-    res.send({ status: 201 });
-  } else {
-    await Token.increment("likeCount", {
-      by: 1,
-      where: { tokenId },
-    });
-    await Likes.create({ likeFrom: account, likeTokenId: tokenId });
-    res.send({ status: 200 });
+
+    if (tempLike) {
+      await Token.increment("likeCount", {
+        by: -1,
+        where: { tokenId },
+      });
+      await Likes.destroy({
+        where: { likeFrom: account, likeTokenId: tokenId },
+      });
+      res.send({ status: 201 });
+    } else {
+      await Token.increment("likeCount", {
+        by: 1,
+        where: { tokenId },
+      });
+      await Likes.create({ likeFrom: account, likeTokenId: tokenId });
+      res.send({ status: 200 });
+    }
+  } catch (err) {
+    console.log(err);
+    res.send(err);
   }
 });
 
 router.post("/likeState", async (req: Request, res: Response) => {
-  const { account, tokenId }: { account: string; tokenId: number } = req.body;
+  try {
+    const { account, tokenId }: { account: string; tokenId: number } = req.body;
 
-  const tempLike = await Likes.findOne({
-    where: { likeFrom: account, likeTokenId: tokenId },
-  });
+    const tempLike = await Likes.findOne({
+      where: { likeFrom: account, likeTokenId: tokenId },
+    });
 
-  if (tempLike) res.send({ status: 201 });
-  else res.send({ status: 202 });
+    if (tempLike) res.send({ status: 201 });
+    else res.send({ status: 202 });
+  } catch (err) {
+    console.log(err);
+    res.send(err);
+  }
+});
+
+router.post("/likeCount", async (req: Request, res: Response) => {
+  try {
+    const { tokenId }: { tokenId: number } = req.body;
+    const tempCount = await Token.findOne({
+      where: { tokenId },
+      attributes: ["likeCount"],
+    });
+    res.send(tempCount);
+  } catch (err) {
+    console.log(err);
+    res.send(err);
+  }
 });
 export default router;
