@@ -42,12 +42,6 @@ const upload: multer.Multer = multer({
 });
 
 let type: string = "";
-// 형이 현재 있는 토큰들의 rank를 전부 받아서 배열로 만든다.
-// let randomCorr =  rankArr.filter((item)=> item==randomnum)
-// 길이가 0 아니면 1이 무조건 나온다.
-// 길이가 0이면 => 아에 없는것 => 추가해도 되는 숫자
-// 길이가 1이면 =>추가하면 안됨
-// 길이가 1이면 =>다시 뽑는다
 let rank: number = 0;
 let lastRandomValue: number;
 let price: number = 0;
@@ -72,9 +66,7 @@ router.post(
       const { name, description }: { name: string; description: string } =
         req.body;
 
-      let checkname = await Token.findAll({
-        // order: [["name", "DESC"]],
-      });
+      let checkname = await Token.findAll({});
 
       let imgBuffer = fs.createReadStream(`./upload/${req.file.filename}`);
 

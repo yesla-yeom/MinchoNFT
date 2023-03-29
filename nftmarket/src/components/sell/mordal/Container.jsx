@@ -26,7 +26,6 @@ function SellMordalContainer({ account, web3, SetMordal, tokendata }) {
         to: approve.to,
         from: approve.from,
         data: approve.data,
-        // gas: 1000000,
       });
 
       if (transactionResult) {

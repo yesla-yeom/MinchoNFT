@@ -5,9 +5,6 @@ import { useParams } from "react-router-dom";
 
 const CollectContainer = ({ type, account, web3 }) => {
   const [tokenArr, setTokenArr] = useState([]);
-
-  // const tokenArr = await axios.post(`/api/allToken/latestToken`);
-
   const params = useParams();
 
   const tokenData = async () => {

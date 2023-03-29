@@ -150,12 +150,6 @@ router.post("/cancle", async (req: Request, res: Response) => {
   obj.from = tokenOwner;
   obj.data = cancletoken;
 
-  // let data = await Token.update(
-  //   {
-  //     price: 0,
-  //   },
-  //   { where: { tokenId: tokenId } }
-  // );
   res.send(obj);
 });
 
