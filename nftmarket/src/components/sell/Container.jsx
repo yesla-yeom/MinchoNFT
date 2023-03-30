@@ -3,14 +3,13 @@ import { useState } from "react";
 import SellComponent from "./Component";
 
 function SellContainer({ web3, name, account, tokenData }) {
-  console.log(account);
   const [mordal, SetMordal] = useState(false);
   const [tokendata, setTokendata] = useState("");
 
   const findItem = async (name) => {
     try {
       const result = (
-        await axios.post("http://localhost:8080/api/sellToken/tokendata", {
+        await axios.post("/api/sellToken/tokendata", {
           name: name,
         })
       ).data;

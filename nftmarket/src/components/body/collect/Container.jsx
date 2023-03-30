@@ -8,10 +8,9 @@ const CollectContainer = ({ type, account, web3 }) => {
   const params = useParams();
 
   const tokenData = async () => {
-    const tokenArr = await axios.post(
-      `http://localhost:8080/api/sortToken/${type}`,
-      { userAccount: params.tokenOwner }
-    );
+    const tokenArr = await axios.post(`/api/sortToken/${type}`, {
+      userAccount: params.tokenOwner,
+    });
     setTokenArr(tokenArr.data);
   };
   useEffect(() => {

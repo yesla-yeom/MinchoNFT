@@ -5,7 +5,7 @@ const HeaderLogoComponent = () => {
   return (
     <Link to={"/"}>
       <ImgDiv>
-        <img src="/imgs/mintChoLogo2.png" />
+        <img src="/imgs/MintChoLogo2.png" />
       </ImgDiv>
     </Link>
   );

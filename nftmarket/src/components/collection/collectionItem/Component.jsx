@@ -95,7 +95,7 @@ const CollectionItemComponent = ({
                         src={
                           item.tokenImage.includes("imgs")
                             ? item.tokenImage
-                            : `http://localhost:8080/upload/${item.tokenImage}`
+                            : `upload/${item.tokenImage}`
                         }
                         alt=""
                       />

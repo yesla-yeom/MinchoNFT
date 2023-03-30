@@ -18,10 +18,11 @@ const CollectionItemContainer = ({
   const params = useParams();
 
   const findSearch = async (_search, _order) => {
-    const data = await axios.post(
-      "http://localhost:8080/api/allToken/collectionList",
-      { search: _search, order: _order, tokenName: params.tokenName }
-    );
+    const data = await axios.post("/api/allToken/collectionList", {
+      search: _search,
+      order: _order,
+      tokenName: params.tokenName,
+    });
     if (data.data.status == 401) setCheck(true);
     setCollection(data.data.list);
   };

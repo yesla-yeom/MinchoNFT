@@ -13,10 +13,7 @@ const SearchContainer = () => {
   });
 
   const findNFT = async () => {
-    const searchValue = await axios.post(
-      "http://localhost:8080/api/sortToken/searchName",
-      query
-    );
+    const searchValue = await axios.post("/api/sortToken/searchName", query);
     setTokenArr(searchValue.data);
   };
   useEffect(() => {

@@ -1,28 +1,53 @@
-import { Router, Request, Response } from "express";
+var __awaiter =
+  (this && this.__awaiter) ||
+  function (thisArg, _arguments, P, generator) {
+    function adopt(value) {
+      return value instanceof P
+        ? value
+        : new P(function (resolve) {
+            resolve(value);
+          });
+    }
+    return new (P || (P = Promise))(function (resolve, reject) {
+      function fulfilled(value) {
+        try {
+          step(generator.next(value));
+        } catch (e) {
+          reject(e);
+        }
+      }
+      function rejected(value) {
+        try {
+          step(generator["throw"](value));
+        } catch (e) {
+          reject(e);
+        }
+      }
+      function step(result) {
+        result.done
+          ? resolve(result.value)
+          : adopt(result.value).then(fulfilled, rejected);
+      }
+      step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+  };
+import { Router } from "express";
 import pinataSDK from "@pinata/sdk";
 import multer from "multer";
 import Web3 from "web3";
 import fs from "fs";
 import dotenv from "dotenv";
 import { Readable } from "stream";
-import { AbiItem } from "web3-utils";
-
-import db from "../models/index";
-
-import { abi as NftAbi } from "../contracts/artifacts/NftToken.json";
-import { abi as SaleAbi } from "../contracts/artifacts/SaleToken.json";
-
-const TOTALTOKENCOUNT: number = 1000;
+import db from "../models/index.js";
+import NftToken from "../contracts/artifacts/NftToken.json" assert { "type": "json" };
+const TOTALTOKENCOUNT = 1000;
+const NftAbi = NftToken.abi;
 const web3 = new Web3(
   "wss://goerli.infura.io/ws/v3/2ca09ab04a7c44dcb6f886deeba97502"
 );
-
 dotenv.config();
-
 const router = Router();
 const { Token } = db;
-// const _web3 = new Web3(window.ethereum);
-//res->file
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "./upload/");
@@ -34,20 +59,16 @@ const storage = multer.diskStorage({
     cb(null, file.originalname);
   },
 });
-
 const pinata = new pinataSDK(process.env.API_Key, process.env.API_Secret);
-const upload: multer.Multer = multer({
+const upload = multer({
   storage: storage,
   limits: { fileSize: 5 * 1024 * 1024 },
 });
-
-let type: string = "";
-let rank: number = 0;
-let lastRandomValue: number;
-let price: number = 0;
-
+let type = "";
+let rank = 0;
+let lastRandomValue;
+let price = 0;
 let randomnum = Math.floor(Math.random() * 100);
-
 if (randomnum < 6) {
   type = "Legendary";
 } else if (randomnum < 18) {
@@ -57,30 +78,18 @@ if (randomnum < 6) {
 } else if (randomnum < 60) {
   type = "Uncommon";
 } else type = "Common";
-
-router.post(
-  "/minting",
-  upload.single("file"),
-  async (req: Request, res: Response) => {
+router.post("/minting", upload.single("file"), (req, res) =>
+  __awaiter(void 0, void 0, void 0, function* () {
     try {
-      const { name, description }: { name: string; description: string } =
-        req.body;
-
-      let checkname = await Token.findAll({
+      const { name, description } = req.body;
+      let checkname = yield Token.findAll({
         where: { name },
       });
-
       if (checkname.length > 0) {
         res.send("same name");
       } else {
         let imgBuffer = fs.createReadStream(`./upload/${req.file.filename}`);
-
-        const imgResult: {
-          IpfsHash: string;
-          PinSize: number;
-          Timestamp: string;
-          isDuplicate?: boolean;
-        } = await pinata.pinFileToIPFS(Readable.from(imgBuffer), {
+        const imgResult = yield pinata.pinFileToIPFS(Readable.from(imgBuffer), {
           pinataMetadata: {
             name: Date.now().toString(),
           },
@@ -88,15 +97,13 @@ router.post(
             cidVersion: 0,
           },
         });
-
-        let dbTable = await Token.findAll({
+        if (imgResult.isDuplicate) {
+        }
+        let dbTable = yield Token.findAll({
           order: [["tokenId", "DESC"]],
         });
-        // console.log("testtemp:", dbTable);
-
         if (dbTable.length == 0) {
           let randomArray = [];
-
           function generateUniqueRandomValue() {
             let value = Math.floor(Math.random() * 1000);
             while (randomArray.includes(value)) {
@@ -105,12 +112,10 @@ router.post(
             randomArray.push(value);
             return value;
           }
-
           let RandomValue = generateUniqueRandomValue();
           lastRandomValue = RandomValue;
         } else {
           let randomArray = [];
-
           function generateUniqueRandomValue() {
             let value = Math.floor(Math.random() * 1000);
             while (randomArray.includes(value)) {
@@ -120,7 +125,6 @@ router.post(
             return value;
           }
           let RandomValue = generateUniqueRandomValue();
-
           for (let i = 0; i < dbTable.length; i++) {
             if (dbTable[i].rank != RandomValue) {
               lastRandomValue = RandomValue;
@@ -129,19 +133,13 @@ router.post(
             }
           }
         }
-        const deployed = new web3.eth.Contract(
-          NftAbi as AbiItem[],
-          process.env.NFT_CA
-        );
-        let tokenName = await deployed.methods.name().call();
-
-        const jsonResult = await pinata.pinJSONToIPFS(
+        const deployed = new web3.eth.Contract(NftAbi, process.env.NFT_CA);
+        let tokenName = yield deployed.methods.name().call();
+        const jsonResult = yield pinata.pinJSONToIPFS(
           {
             name,
             description,
-
             image: `https://gateway.pinata.cloud/ipfs/${imgResult.IpfsHash}`,
-
             attributes: [
               { trait_type: "Rank", value: lastRandomValue },
               { trait_type: "type", value: type },
@@ -158,11 +156,7 @@ router.post(
             },
           }
         );
-        const obj: {
-          to: string;
-          from: string;
-          data: string;
-        } = {
+        const obj = {
           to: "",
           from: "",
           data: "",
@@ -171,13 +165,11 @@ router.post(
         obj.from = req.body.from;
         obj.data = deployed.methods.safeMint(jsonResult.IpfsHash).encodeABI();
         if (imgResult && jsonResult) {
-          let dbTable = await Token.findAll({
+          let dbTable = yield Token.findAll({
             order: [["tokenId", "DESC"]],
           });
-
           if (dbTable.length == 0) {
             let randomArray = [];
-
             function generateUniqueRandomValue() {
               let value = Math.floor(Math.random() * 1000);
               while (randomArray.includes(value)) {
@@ -186,12 +178,10 @@ router.post(
               randomArray.push(value);
               return value;
             }
-
             let RandomValue = generateUniqueRandomValue();
             lastRandomValue = RandomValue;
           } else {
             let randomArray = [];
-
             function generateUniqueRandomValue() {
               let value = Math.floor(Math.random() * 1000);
               while (randomArray.includes(value)) {
@@ -201,7 +191,6 @@ router.post(
               return value;
             }
             let RandomValue = generateUniqueRandomValue();
-
             for (let i = 0; i < dbTable.length; i++) {
               if (dbTable[i].rank != RandomValue) {
                 lastRandomValue = RandomValue;
@@ -210,8 +199,7 @@ router.post(
               }
             }
           }
-
-          await Token.create({
+          yield Token.create({
             blockChainNetwork: "Ethereum",
             tokenName: tokenName,
             tokenId: TOTALTOKENCOUNT,
@@ -235,33 +223,38 @@ router.post(
     } catch (error) {
       console.error(error);
     }
-  }
+  })
 );
-
-router.post("/create", async (req: Request, res: Response) => {
-  const { transactionResult } = req.body;
-  let tokendata = transactionResult.logs[1].data;
-  let totaldata = transactionResult.logs[2].data;
-  let tokenId = parseInt(tokendata, 16);
-  let totalsupply = parseInt(totaldata, 16);
-
-  if (tokenId) {
-    await Token.update(
-      { tokenId: tokenId },
-      { where: { tokenId: TOTALTOKENCOUNT } }
-    );
-    res.send({ msg: "잘가고있다" });
-  } else {
-    await Token.update({ tokenId: 0 }, { where: { tokenId: TOTALTOKENCOUNT } });
-    res.send({ msg: "No update" });
-  }
-});
-router.post("/destroy", async (req: Request, res: Response) => {
-  await Token.destroy({
-    where: {
-      tokenId: 1000,
-    },
-  });
-  res.send("cancle");
-});
+router.post("/create", (req, res) =>
+  __awaiter(void 0, void 0, void 0, function* () {
+    const { transactionResult } = req.body;
+    let tokendata = transactionResult.logs[1].data;
+    let totaldata = transactionResult.logs[2].data;
+    let tokenId = parseInt(tokendata, 16);
+    let totalsupply = parseInt(totaldata, 16);
+    if (tokenId) {
+      yield Token.update(
+        { tokenId: tokenId },
+        { where: { tokenId: TOTALTOKENCOUNT } }
+      );
+      res.send({ msg: "잘가고있다" });
+    } else {
+      yield Token.update(
+        { tokenId: 0 },
+        { where: { tokenId: TOTALTOKENCOUNT } }
+      );
+      res.send({ msg: "No update" });
+    }
+  })
+);
+router.post("/destroy", (req, res) =>
+  __awaiter(void 0, void 0, void 0, function* () {
+    yield Token.destroy({
+      where: {
+        tokenId: 1000,
+      },
+    });
+    res.send("cancle");
+  })
+);
 export default router;

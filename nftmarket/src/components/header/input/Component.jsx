@@ -4,12 +4,7 @@ import styled from "styled-components";
 
 const { Search } = Input;
 
-const HeaderInputComponent = ({ navigate }) => {
-  const [inputValue, setInputValue] = useState("");
-  const handleSearch = (value) => {
-    navigate(`/search/token?name=${value}`);
-    setInputValue("");
-  };
+const HeaderInputComponent = ({ handleSearch, inputValue, setInputValue }) => {
   return (
     <InputDiv>
       <Search

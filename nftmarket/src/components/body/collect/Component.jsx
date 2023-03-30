@@ -10,7 +10,7 @@ const CollectComponent = ({ tokenArr, type, account, web3, tokenData }) => {
           <>
             {type == "ownToken" || type == "salesToken" ? (
               <Row gutter={[16, 24]}>
-                {tokenArr.map((item, index) => {
+                {tokenArr?.map((item, index) => {
                   return (
                     <>
                       <Col className="gutter-row" span={6} key={`Col-${index}`}>
@@ -39,7 +39,7 @@ const CollectComponent = ({ tokenArr, type, account, web3, tokenData }) => {
               </Row>
             ) : (
               <Row gutter={[16, 24]}>
-                {tokenArr.map((item, index) => {
+                {tokenArr?.map((item, index) => {
                   return (
                     <Col className="gutter-row" span={6} key={`Col-${index}`}>
                       <CollectItemContainer

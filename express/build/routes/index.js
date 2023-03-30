@@ -1,0 +1,13 @@
+import { Router } from "express";
+import nftToken from "./nftToken.js";
+import mint from "./mint.js";
+import allToken from "./allToken.js";
+import sortToken from "./sortToken.js";
+import sellToken from "./sellToken.js";
+const router = Router();
+router.use("/nftToken", nftToken);
+router.use("/mint", mint);
+router.use("/allToken", allToken);
+router.use("/sortToken", sortToken);
+router.use("/sellToken", sellToken);
+export default router;

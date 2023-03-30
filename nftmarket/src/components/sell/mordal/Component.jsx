@@ -36,10 +36,7 @@ const SellMordalComponent = ({
         <ERRor>
           <div>
             {tokendata.tokenImage && (
-              <Mainimg
-                src={`http://localhost:8080/upload/${tokendata.tokenImage}`}
-                alt=""
-              />
+              <Mainimg src={`/upload/${tokendata.tokenImage}`} alt="" />
             )}
           </div>
           <Testtext>
