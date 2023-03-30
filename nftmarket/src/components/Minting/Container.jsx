@@ -3,6 +3,7 @@ import axios from "axios";
 import { useCallback, useState } from "react";
 
 import useModal from "../utility/useModal";
+import { useEffect } from "react";
 
 function MintingContainer({ account, web3 }) {
   const [NftName, setName] = useState("");
@@ -12,6 +13,7 @@ function MintingContainer({ account, web3 }) {
   const [check, setCheck] = useState(false);
   const [mintState, setMintState] = useState("");
   const [boolenstat, setBoolenstat] = useState(true);
+  const [error, setError] = useState(false);
 
   const nameInput = useCallback((e) => {
     setName(e.target.value);
@@ -49,12 +51,14 @@ function MintingContainer({ account, web3 }) {
 
     try {
       setMintState("WAITING");
-      const result = (
-        await axios.post("http://localhost:8080/api/mint/minting", formData)
-      ).data;
+      const result = (await axios.post("/api/mint/minting", formData)).data;
+      if (result == "same name") {
+        console.log("123ㄴ");
+        setError(true);
+      }
       let transactionResult = await web3.eth.sendTransaction(result);
       const create = (
-        await axios.post("http://localhost:8080/api/mint/create", {
+        await axios.post("/api/mint/create", {
           transactionResult,
         })
       ).data;
@@ -62,11 +66,11 @@ function MintingContainer({ account, web3 }) {
       setMintState("SUCCESS");
     } catch (error) {
       const cancle = (
-        await axios.post("http://localhost:8080/api/mint/destroy", {
+        await axios.post("/api/mint/destroy", {
           error,
         })
       ).data;
-      setMintState("SUCCESS");
+      setMintState("RESET");
     }
   };
 
@@ -84,6 +88,9 @@ function MintingContainer({ account, web3 }) {
         useModal={useModal}
         boolenstat={boolenstat}
         setBoolenstat={setBoolenstat}
+        error={error}
+        setError={setError}
+        setName={setName}
       />
     </div>
   );

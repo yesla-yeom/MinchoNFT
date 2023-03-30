@@ -3,7 +3,13 @@ import { useCallback, useEffect, useState } from "react";
 import SellMordalComponent from "./Component";
 import useModal from "../../utility/useModal";
 
-function SellMordalContainer({ account, web3, SetMordal, tokendata }) {
+function SellMordalContainer({
+  account,
+  web3,
+  SetMordal,
+  tokendata,
+  tokenData,
+}) {
   const [ethValue, setEthValue] = useState("");
   const [change, setChange] = useState("");
   const [saleState, setSaleState] = useState("");
@@ -18,7 +24,7 @@ function SellMordalContainer({ account, web3, SetMordal, tokendata }) {
     try {
       setSaleState("WAITING");
       const approve = (
-        await axios.post("http://localhost:8080/api/sellToken/approve", {
+        await axios.post("/api/sellToken/approve", {
           account,
         })
       ).data;
@@ -30,7 +36,7 @@ function SellMordalContainer({ account, web3, SetMordal, tokendata }) {
 
       if (transactionResult) {
         const result = (
-          await axios.post("http://localhost:8080/api/sellToken/listing", {
+          await axios.post("/api/sellToken/listing", {
             ethValue,
             tokendata,
             account,
@@ -42,14 +48,11 @@ function SellMordalContainer({ account, web3, SetMordal, tokendata }) {
           data: result.data,
         });
         if (saleResult) {
-          const update = await axios.post(
-            "http://localhost:8080/api/sellToken/update",
-            {
-              ethValue,
-              tokendata,
-              account,
-            }
-          );
+          const update = await axios.post("/api/sellToken/update", {
+            ethValue,
+            tokendata,
+            account,
+          });
           setChange(update);
         }
         setSaleState("SUCCESS");
@@ -64,7 +67,7 @@ function SellMordalContainer({ account, web3, SetMordal, tokendata }) {
     try {
       setSaleState("WAITING");
       const approvecancle = (
-        await axios.post("http://localhost:8080/api/sellToken/cancle", {
+        await axios.post("/api/sellToken/cancle", {
           tokendata,
         })
       ).data;
@@ -75,7 +78,7 @@ function SellMordalContainer({ account, web3, SetMordal, tokendata }) {
       });
       if (saleResult) {
         const cancleUpdate = (
-          await axios.post("http://localhost:8080/api/sellToken/cancleUpdate", {
+          await axios.post("/api/sellToken/cancleUpdate", {
             tokendata,
           })
         ).data;
@@ -101,6 +104,7 @@ function SellMordalContainer({ account, web3, SetMordal, tokendata }) {
       booleanState={booleanState}
       setBooleanState={setBooleanState}
       saleState={saleState}
+      tokenData={tokenData}
     />
   );
 }

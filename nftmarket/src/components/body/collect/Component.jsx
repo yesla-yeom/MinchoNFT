@@ -2,7 +2,14 @@ import { Row, Col, Button } from "antd";
 import styled from "styled-components";
 import CollectItemContainer from "./item/Container";
 import SellContainer from "../../sell/Container";
-const CollectComponent = ({ tokenArr, type, account, web3, setTokenArr }) => {
+const CollectComponent = ({
+  tokenArr,
+  type,
+  account,
+  web3,
+  setTokenArr,
+  tokenData,
+}) => {
   return (
     <>
       <CollectDiv>
@@ -10,7 +17,7 @@ const CollectComponent = ({ tokenArr, type, account, web3, setTokenArr }) => {
           <>
             {type == "ownToken" || type == "salesToken" ? (
               <Row gutter={[16, 24]}>
-                {tokenArr.map((item, index) => {
+                {tokenArr?.map((item, index) => {
                   return (
                     <>
                       <Col className="gutter-row" span={6} key={`Col-${index}`}>
@@ -26,6 +33,7 @@ const CollectComponent = ({ tokenArr, type, account, web3, setTokenArr }) => {
                           tokenImage={item.tokenImage}
                         />
                         <SellContainer
+                          tokenData={tokenData}
                           web3={web3}
                           name={item.name}
                           account={account}
@@ -37,7 +45,7 @@ const CollectComponent = ({ tokenArr, type, account, web3, setTokenArr }) => {
               </Row>
             ) : (
               <Row gutter={[16, 24]}>
-                {tokenArr.map((item, index) => {
+                {tokenArr?.map((item, index) => {
                   return (
                     <Col className="gutter-row" span={6} key={`Col-${index}`}>
                       <CollectItemContainer

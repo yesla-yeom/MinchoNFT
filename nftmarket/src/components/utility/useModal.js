@@ -1,7 +1,20 @@
 import styled from "styled-components";
 import { Button } from "antd";
+import { useWeb3React } from "@web3-react/core";
+import { useNavigate } from "react-router-dom";
 
-const useModal = (content, state, modalStat, setBoolenstat) => {
+const useModal = (
+  content,
+  state,
+  modalStat,
+  setBoolenstat,
+  error,
+  setError
+) => {
+  const navigate = useNavigate();
+
+  const { account } = useWeb3React();
+
   return (modalStat && state == "WAITING") ||
     (modalStat && state == "SUCCESS") ? (
     <MyModalMask>
@@ -17,6 +30,30 @@ const useModal = (content, state, modalStat, setBoolenstat) => {
             <EditButton
               onClick={() => {
                 setBoolenstat(!state);
+                navigate(`/mynft/${account}`);
+              }}
+            >
+              확인
+            </EditButton>
+          ) : (
+            <EditButton loading>{content}</EditButton>
+          )}
+        </div>
+      </MyModalLine>
+    </MyModalMask>
+  ) : modalStat && state == "RESET" ? (
+    <MyModalMask>
+      <MyModalLine>
+        <div>
+          <h1>{error ? "중복된 NFT이름입니다" : "취소되었습니다"}</h1>
+        </div>
+        <div>{/* <h3>현재</h3> */}</div>
+        <div>
+          {state == "RESET" ? (
+            <EditButton
+              onClick={() => {
+                setBoolenstat(!state);
+                setError(!state);
               }}
             >
               확인

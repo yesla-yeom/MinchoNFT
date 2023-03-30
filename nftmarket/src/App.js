@@ -24,7 +24,7 @@ const { Header, Content, Footer } = Layout;
 function App() {
   useEffect(() => {
     (async () => {
-      await axios.get("http://localhost:8080/api/allToken/list");
+      await axios.get("/api/allToken/list");
     })();
   }, []);
   const { account, logIn, web3 } = useWeb3();

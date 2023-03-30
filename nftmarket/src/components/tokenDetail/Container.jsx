@@ -17,14 +17,14 @@ const TokenDetailContainer = ({ account, web3 }) => {
 
   const tokenDetail = useCallback(async () => {
     const data = (
-      await axios.post("http://localhost:8080/api/nftToken/detail", {
+      await axios.post("/api/nftToken/detail", {
         tokenId: params.tokenId,
       })
     ).data;
     setDetail(data);
     transactionLog(params.tokenId);
     const status = (
-      await axios.post("http://localhost:8080/api/nftToken/likeState", {
+      await axios.post("/api/nftToken/likeState", {
         account,
         tokenId: params.tokenId,
       })
@@ -33,7 +33,7 @@ const TokenDetailContainer = ({ account, web3 }) => {
     else setHeart(true);
 
     const result = (
-      await axios.post("http://localhost:8080/api/nftToken/likeCount", {
+      await axios.post("/api/nftToken/likeCount", {
         tokenId: params.tokenId,
       })
     ).data;
@@ -44,7 +44,7 @@ const TokenDetailContainer = ({ account, web3 }) => {
     setBuyState("WAITING");
     try {
       const result = (
-        await axios.post("http://localhost:8080/api/nftToken/buyToken", {
+        await axios.post("/api/nftToken/buyToken", {
           tokenId: _tokenId,
           account,
           tokenOwner: _tokenOwner,
@@ -55,7 +55,7 @@ const TokenDetailContainer = ({ account, web3 }) => {
         ...result,
       });
       if (transactionResult) {
-        await axios.post("http://localhost:8080/api/nftToken/updateList", {
+        await axios.post("/api/nftToken/updateList", {
           tokenId: _tokenId,
           account,
         });
@@ -69,7 +69,7 @@ const TokenDetailContainer = ({ account, web3 }) => {
 
   const transactionLog = async (_tokenId) => {
     const txLog = (
-      await axios.post("http://localhost:8080/api/nftToken/txLog", {
+      await axios.post("/api/nftToken/txLog", {
         tokenId: _tokenId,
       })
     ).data;
@@ -78,7 +78,7 @@ const TokenDetailContainer = ({ account, web3 }) => {
 
   const handleHeart = async (_tokenId) => {
     const likeResult = (
-      await axios.post("http://localhost:8080/api/nftToken/like", {
+      await axios.post("/api/nftToken/like", {
         heart,
         account,
         tokenId: _tokenId,

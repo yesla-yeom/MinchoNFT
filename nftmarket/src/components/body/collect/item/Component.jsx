@@ -15,11 +15,9 @@ const CollectItemComponent = ({ tokenName, price, way, tokenImage }) => {
           <img
             alt="example"
             src={
-              tokenImage.includes("imgs")
-                ? tokenImage
-                : `http://localhost:8080/upload/${tokenImage}`
+              tokenImage.includes("imgs") ? tokenImage : `/upload/${tokenImage}`
             }
-            style={{ width: "240px" }}
+            style={{ width: "240px", height: "240px" }}
           />
         </Link>
       }

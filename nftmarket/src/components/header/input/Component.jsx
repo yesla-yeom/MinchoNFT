@@ -2,14 +2,14 @@ import { Input } from "antd";
 import styled from "styled-components";
 const { Search } = Input;
 
-const HeaderInputComponent = ({ navigate }) => {
+const HeaderInputComponent = ({ handleSearch, inputValue, setInputValue }) => {
   return (
     <InputDiv>
       <Search
         placeholder="어떤 NFT를 찾으시나요?"
-        onSearch={(value) => {
-          navigate(`/search/token?name=${value}`);
-        }}
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        onSearch={handleSearch}
         style={{
           width: 300,
         }}

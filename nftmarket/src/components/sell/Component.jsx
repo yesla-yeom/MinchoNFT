@@ -8,7 +8,7 @@ function SellComponent({
   web3,
   account,
   findItem,
-
+  tokenData,
   tokendata,
   name,
 }) {
@@ -31,6 +31,7 @@ function SellComponent({
           account={account}
           SetMordal={SetMordal}
           tokendata={tokendata}
+          tokenData={tokenData}
         />
       ) : (
         <></>
