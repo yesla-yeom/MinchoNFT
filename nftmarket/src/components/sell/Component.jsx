@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import SellMordalContainer from "./mordal/Container";
-import CollectItemContainer from "../body/collect/item/Container";
 
 function SellComponent({
   mordal,
@@ -9,7 +8,6 @@ function SellComponent({
   account,
   findItem,
   tokenData,
-
   tokendata,
   name,
 }) {
@@ -45,7 +43,6 @@ const TokenImg = styled.img`
   width: 200px;
 `;
 const ListingPrice = styled.div`
-  /* color: rgba(252, 110, 94, 1); */
   color: rgba(88, 88, 49, 1);
   font-size: 30px;
 `;

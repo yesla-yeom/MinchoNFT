@@ -9,13 +9,11 @@ const useModal = (
   modalStat,
   setBoolenstat,
   error,
-  setError,
-  setName
+  setError
 ) => {
   const navigate = useNavigate();
 
   const { account } = useWeb3React();
-  console.log(state, "나는 받고있는 거래 상태임");
 
   return (modalStat && state == "WAITING") ||
     (modalStat && state == "SUCCESS") ? (

@@ -25,7 +25,7 @@ const TokenDetailComponent = ({
             src={
               detail.tokenImage && detail.tokenImage.includes("imgs")
                 ? detail.tokenImage
-                : `http://localhost:8080/upload/${detail.tokenImage}`
+                : `/upload/${detail.tokenImage}`
             }
             alt=""
           />

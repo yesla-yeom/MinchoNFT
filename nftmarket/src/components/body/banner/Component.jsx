@@ -26,7 +26,7 @@ const BannerDiv = styled.div`
   border-radius: 20px;
   color: white;
   font-weight: 700;
-  font-size: 24px;
+  font-size: 32px;
   & > div {
     text-align: center;
     & > div {

@@ -24,7 +24,7 @@ function SellMordalContainer({
     try {
       setSaleState("WAITING");
       const approve = (
-        await axios.post("http://localhost:8080/api/sellToken/approve", {
+        await axios.post("/api/sellToken/approve", {
           account,
         })
       ).data;
@@ -36,7 +36,7 @@ function SellMordalContainer({
 
       if (transactionResult) {
         const result = (
-          await axios.post("http://localhost:8080/api/sellToken/listing", {
+          await axios.post("/api/sellToken/listing", {
             ethValue,
             tokendata,
             account,
@@ -48,14 +48,11 @@ function SellMordalContainer({
           data: result.data,
         });
         if (saleResult) {
-          const update = await axios.post(
-            "http://localhost:8080/api/sellToken/update",
-            {
-              ethValue,
-              tokendata,
-              account,
-            }
-          );
+          const update = await axios.post("/api/sellToken/update", {
+            ethValue,
+            tokendata,
+            account,
+          });
           setChange(update);
         }
         setSaleState("SUCCESS");
@@ -70,7 +67,7 @@ function SellMordalContainer({
     try {
       setSaleState("WAITING");
       const approvecancle = (
-        await axios.post("http://localhost:8080/api/sellToken/cancle", {
+        await axios.post("/api/sellToken/cancle", {
           tokendata,
         })
       ).data;
@@ -81,7 +78,7 @@ function SellMordalContainer({
       });
       if (saleResult) {
         const cancleUpdate = (
-          await axios.post("http://localhost:8080/api/sellToken/cancleUpdate", {
+          await axios.post("/api/sellToken/cancleUpdate", {
             tokendata,
           })
         ).data;

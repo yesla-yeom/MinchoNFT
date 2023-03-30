@@ -11,10 +11,9 @@ const CollectionContainer = ({ account }) => {
   const params = useParams();
 
   const findCollection = async () => {
-    const data = await axios.post(
-      "http://localhost:8080/api/allToken/collectionList",
-      { tokenName: params.tokenName }
-    );
+    const data = await axios.post("/api/allToken/collectionList", {
+      tokenName: params.tokenName,
+    });
     setCollectionInfo(data.data.searchInfo);
     setCollection(data.data.list);
   };

@@ -53,10 +53,7 @@ function MintingContainer({ account, web3 }) {
 
     try {
       setMintState("WAITING");
-
-      const result = (
-        await axios.post("http://localhost:8080/api/mint/minting", formData)
-      ).data;
+      const result = (await axios.post("/api/mint/minting", formData)).data;
       if (result == "same name") {
         console.log("123ㄴ");
         setError(true);
@@ -65,7 +62,7 @@ function MintingContainer({ account, web3 }) {
 
       console.log("transactionResult:", transactionResult);
       const create = (
-        await axios.post("http://localhost:8080/api/mint/create", {
+        await axios.post("/api/mint/create", {
           transactionResult,
         })
       ).data;
@@ -75,14 +72,11 @@ function MintingContainer({ account, web3 }) {
       // reset();
     } catch (error) {
       const cancle = (
-        await axios.post("http://localhost:8080/api/mint/destroy", {
+        await axios.post("/api/mint/destroy", {
           error,
         })
       ).data;
-      console.log("캔슬");
       setMintState("RESET");
-
-      // reset();
     }
   };
   return (
